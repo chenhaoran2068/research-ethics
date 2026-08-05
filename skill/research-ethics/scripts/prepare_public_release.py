@@ -15,7 +15,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL_FILES = ("SKILL.md",)
+SKILL_FILES = ("SKILL.md", "BUILD_RULES.md")
+PUBLIC_ROOT_FILES = ("BUILD_RULES.md",)
 SKILL_DIRS = ("agents", "scripts", "tests")
 REFERENCE_FILES = (
     "registration-tree.yaml",
@@ -90,6 +91,8 @@ def build(destination: Path) -> None:
         raise ValueError(f"destination already exists: {destination}")
     skill_destination = destination / "skill" / "research-ethics"
     destination.mkdir(parents=True)
+    for name in PUBLIC_ROOT_FILES:
+        copy_file(ROOT / name, destination / name)
     for name in SKILL_FILES:
         copy_file(ROOT / name, skill_destination / name)
     for name in SKILL_DIRS:
