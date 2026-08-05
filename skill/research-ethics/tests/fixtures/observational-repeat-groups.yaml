@@ -1,0 +1,29 @@
+# 脱敏回归样例：验证可重复材料组的实例化输出。
+selections:
+  research-category.route-leaf: investigator-observational
+  research-category.diagnostic-trial: 'no'
+  basic-information.sync-platform: private
+  basic-information.material-donation-flag: 是
+
+values:
+  basic-information.research-title:
+    value: 虚构观察性研究题目
+    source: 回归测试虚构值
+
+repeat_groups:
+  basic-information.material-donation-repeat:
+    - values:
+        material-name:
+          value: 虚构捐献材料甲
+          source: 回归测试虚构值
+        material-source-organization:
+          value: 虚构材料来源机构甲
+          source: 回归测试虚构值
+    - values:
+        material-name:
+          value: 虚构捐献材料乙
+          source: 回归测试虚构值
+        material-source-organization:
+          value: 虚构材料来源机构乙
+          source: 回归测试虚构值
+

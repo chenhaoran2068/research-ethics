@@ -1,0 +1,11 @@
+selections:
+  research-category.route-leaf: investigator-interventional
+  research-category.iit-product-attribute: none
+  research-category.chinese-medicine-theory: 'no'
+  research-category.invasive-bci: 'no'
+  basic-information.sync-platform: private
+  research-design.random-group: 'yes'
+values:
+  basic-information.research-title:
+    value: 虚构干预性临床研究测试方案
+    source: test fixture

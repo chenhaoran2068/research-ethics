@@ -1,0 +1,23 @@
+# 脱敏回归样例：验证 ChiCTR 公开路线的中英文配对字段。
+selections:
+  research-category.route-leaf: investigator-observational
+  research-category.diagnostic-trial: 'yes'
+  basic-information.sync-platform: public-on-chictr
+  basic-information.registration-status: 预填报
+
+values:
+  basic-information.research-title:
+    value: 虚构诊断观察性研究题目
+    source: 回归测试虚构值
+  basic-information.scientific-title:
+    value: Synthetic Diagnostic Observational Study
+    source: 回归测试虚构值
+  basic-information.public-name:
+    value: 虚构研究通俗名称
+    source: 回归测试虚构值
+  basic-information.public-title:
+    value: Synthetic public title
+    source: 回归测试虚构值
+
+repeat_groups: {}
+

@@ -1,0 +1,8 @@
+{
+  "page_id": "research-design",
+  "page_order": 5,
+  "controls": [
+    {"path": "research-design.random-group", "label": "随机分组", "order": 1, "required": true, "widget": "radio", "options": ["yes", "no"], "visible": true, "enabled": true, "bilingual": false, "repeat_group": null, "attachment": false},
+    {"path": "research-design.sample-size", "label": "样本量", "order": 2, "required": true, "widget": "number", "visible": true, "enabled": true, "bilingual": false, "repeat_group": null, "attachment": false}
+  ]
+}

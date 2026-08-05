@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Generated test and document artifacts
+tests/*.generated.*
+tests/_docx_render_qa/
+
+# Never publish local plans, deliveries, browser evidence, or credentials
+deliverables/
+*.docx
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.mhtml
+code.txt
+source.txt
+.codex/
+.env

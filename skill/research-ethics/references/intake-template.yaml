@@ -1,0 +1,15 @@
+# 只含占位符；不要把真实研究、账号或联系方式保存在此模板中。
+selections:
+  research-category.route-leaf: investigator-observational
+  research-category.diagnostic-trial: "<yes-or-no>"
+  basic-information.sync-platform: "<private-or-public-on-chictr>"
+
+values:
+  basic-information.research-title:
+    value: "<研究题目>"
+    source: "<研究计划书位置或用户确认>"
+  basic-information.brief-research-title:
+    value: "<题目简写，可留空>"
+    source: "<研究计划书位置或用户确认>"
+
+repeat_groups: {}

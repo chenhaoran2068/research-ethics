@@ -1,0 +1,15 @@
+# 脱敏回归样例：只包含已确认路线和少量虚构文本。
+selections:
+  research-category.route-leaf: investigator-observational
+  research-category.diagnostic-trial: 'no'
+  basic-information.sync-platform: private
+values:
+  basic-information.research-title:
+    value: 虚构观察性研究题目
+    source: 回归测试虚构值
+  basic-information.brief-research-title:
+    value: 虚构观察性简称
+    source: 回归测试虚构值
+  basic-information.public-name:
+    value: 虚构研究通俗名称
+    source: 回归测试虚构值

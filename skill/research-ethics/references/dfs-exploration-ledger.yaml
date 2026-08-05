@@ -1,0 +1,1861 @@
+# De-identified DFS evidence ledger for the v1 researcher-initiated scope.
+# It is evidence only; registration-tree.yaml remains the sole form-rule source.
+ledger_schema_version: '1.0'
+canonical:
+  path: references/registration-tree.yaml
+  sha256: sha256:192baa4db55fd7d7c2f25f5e62c32b6850aa6e370985bac0a23ccb1a56b97b52
+scope:
+  version: v1
+  supported_root_routes:
+    - investigator-observational
+  deferred_to_v2_root_routes:
+    - investigator-interventional
+    - product-drug
+    - product-medical-device
+    - product-ivd
+    - product-special-food
+evidence_grades:
+  current_page_verified: The compared options were directly observed on their own page; later pages are not implied.
+  downstream_spot_checked: A representative route with this current-page state was checked on later key pages.
+  reused_downstream_structure: The final display copies a representative later structure below this branch; it is not an independent leaf replay.
+  full_leaf_replay: A root-to-last-reachable-page replay; this remains stronger evidence when available.
+  high_risk_deeper_check_required: A current-page result cannot be reused until a deeper representative check covers downstream high-risk pages.
+verification_levels:
+  fully_live_verified: A full root-to-last-reachable-page replay was performed under the recorded selections.
+  sample_verified: A declared, representative live sample was checked within its stated page and condition scope; it does not imply every downstream combination was replayed.
+  assumption_expanded: A current-page delta is retained and the later display template is copied under the declared V1.0 locality assumption; it is not a full replay claim.
+  inferred_from_initial_tree: Present in the initial rule model but not yet supported by this round's declared live sample.
+  mismatch_found: A live sample differed from the initial rule model; run local DFS below the divergent condition before relying on it.
+  out_of_scope_or_blocked: A known branch cannot be completed in the current authorization or runtime environment and is excluded from supported V1 generation.
+  deferred_to_v2: Explicitly excluded product-registration route; not covered by V1.
+runtime_limitations:
+  - status: control_session_unavailable
+    scope: in_app_browser_attachment_after_handoff
+  - status: tab_navigation_not_reliably_effective
+    scope: one recovered unsaved researcher-initiated draft
+    observed_behavior: Supported normal-UI clicks on tab1 and tab7 returned successfully but the visible field signature remained the research-design signature; no platform field conclusion was drawn.
+    mitigation: Use a fresh unsaved draft and root-path replay or the platform next-step controls for subsequent cross-page samples; do not infer a page is visited from a successful click response.
+    detail: After the temporary data-sharing subroute was handed off, the browser-control runtime no longer exposed the existing in-app research tab and its JavaScript control kernel returned a parser error during reattachment attempts.
+    consequence: No subsequent UI action was taken. This is a recoverable control-channel limitation, not a platform finding and not a reason to mark any remaining V1 branch verified, mismatched, or inaccessible.
+  - status: user_paused
+    scope: fresh_unsaved_data_sharing_result_release_method_other_subroute
+    detail: The current normal-UI comparison of the result-release-method other option was intentionally stopped at the user's request before a stable option-state/difference record was retained.
+    consequence: Mark this subroute out_of_scope_or_blocked for the current pass. Preserve previously recorded canonical visibility/non-requiredness evidence, but do not claim a new live comparison or attempt to finish this subroute in the current pass.
+  - status: observed
+    scope: fresh_isolated_unsaved_research_content_draft
+    detail: The DOM-visible control list included the extra-measure-name input before the styled extra-inspection radio exposed a readable checked state. One normal click plus Space on the visible false radio did not change the list.
+    consequence: This is ambiguous between a platform default and a visibility-model difference. It is not a mismatch finding and must not change the canonical condition until a reliable yes/no comparison is captured.
+  - status: observed
+    scope: fresh_isolated_unsaved_research_category_draft
+    detail: A fresh draft confirmed that normal UI cascading selectors can switch from the root classification to the researcher-initiated and observational route. The visible styled diagnostic-test radio accepted a normal DOM-visible click but exposed no changed checked state or changed visible structure afterward.
+    consequence: Classification-selector evidence can be collected in a fresh draft. The diagnostic radio attempt is not counted as a new comparison and must not override the prior recorded diagnostic yes/no observation.
+  - status: observed
+    scope: current_unsaved_research_design_draft
+    detail: Supported normal-UI clicks on the styled vulnerable-group radio, its rendered label, an adjacent page tab, and an inclusion-repeat delete action did not change the platform's checked state, visible page, or repeat count.
+    consequence: These attempted changes are not counted as branch or repeat-behavior verification. Read-only visible-field observations remain partial evidence only.
+  - status: observed
+    scope: current_unsaved_interventional_research_design_draft
+    detail: The normal UI radio for random-group could be selected and its checked state confirmed. The browser surface then failed while operating the visible native random-method select, before a selected method could be confirmed.
+    consequence: Random-group yes/no remains current-page evidence; random-method, blinding, allocation-concealment, and unblinding subbranches remain pending rather than inferred from this attempt.
+  - status: observed
+    scope: current_unsaved_interventional_draft
+    detail: A visible normal-UI click on the implementation-information tab did not change the active visible pane away from research-design in this browser surface.
+    consequence: No multicenter child-condition result was recorded from this attempt. Existing multicenter current-page comparison evidence remains unchanged; deeper child conditions remain pending.
+  - status: observed
+    scope: current_unsaved_interventional_draft
+    detail: The visible research-category navigation link was clicked after a direct reset to hash tab0. The URL retained hash tab0, but the only rendered active pane remained research-design.
+    consequence: This browser session cannot provide a reliable root-path replay for the interventional route. It does not alter existing current-page observations, and it must not be used to infer interventional downstream equivalence.
+  - status: observed
+    scope: fresh_unsaved_interventional_unproduct_draft
+    detail: A new isolated draft reached the visible unmarketed-product-type native select. Standard browser selection was unavailable in this runtime, and one normal keyboard attempt through the rendered chooser left its value unchanged.
+    consequence: The product-type other downstream spot check is not established. No subsequent option-changing retries were performed, and the existing other-type current-page mismatch remains unresolved.
+  - status: observed
+    scope: current_unsaved_interventional_draft_related_attachments_tab
+    detail: Directly opening the related-attachments tab rendered only navigation and terminal actions, with no attachment control, format, or requiredness metadata visible.
+    consequence: This is not evidence that no attachments are required. Attachment details remain out of the current unsaved-draft verification surface and must retain their existing evidence grade.
+  - status: observed
+    scope: fresh_unsaved_interventional_research_design_draft
+    detail: After a normal scroll, the browser's rendered node identifiers no longer reliably matched the visible random-group controls; a subsequent normal click changed the visible pane to research-content instead of producing a confirmed random-group selection.
+    consequence: This attempt is excluded from evidence. Subsequent randomization sampling must use a fresh stable viewport and newly captured locators; no rule or verification level is changed by it.
+  - status: observed
+    scope: fresh_unsaved_interventional_basic_information_draft
+    detail: The DOM-visible styled international-cooperation checkbox pair exposed values true and false but no reliable checked state. One normal click on the true control did not expose a state or structural change in this browser surface.
+    consequence: International-cooperation and overseas-recruitment conditions remain pending. This is not evidence for either option and does not modify canonical conditions.
+manual_live_observations:
+  - provenance: user-assisted observation in the current unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-design current-page yes/no comparison, including the visible checklist and inline other-vulnerable-group text field
+    page_id: research-design
+    control_path: research-design.vulnerable-group
+    compared_options:
+      'yes':
+        visible_field_paths:
+          - research-design.vulnerable-group-type
+          - research-design.vulnerable-group-other
+        visible_option_labels:
+          - 儿童
+          - 孕期/哺乳期妇女
+          - 残障人士
+          - 其他弱势人群
+      'no':
+        hidden_field_paths:
+          - research-design.vulnerable-group-type
+          - research-design.vulnerable-group-other
+    current_page_comparison: Yes displayed the four-option multi-select checklist and its inline other-vulnerable-group text field; no hid the entire local block. User reports all other current-page fields unchanged.
+    boundary: This confirms only the current-page branch. Later pages remain unverified until a representative path is replayed to its last reachable page.
+  - provenance: user-assisted observation in the current unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: basic-information visible-template comparison after observational diagnostic-test yes/no selection
+    page_id: basic-information
+    control_path: research-category.diagnostic-trial
+    selections:
+      research-category.route-leaf: investigator-observational
+    compared_options:
+      'yes':
+        page_template: basic-information
+      'no':
+        page_template: basic-information
+    current_page_comparison: User reports that the visible Basic Information page is the same whether diagnostic trial is yes or no.
+    boundary: This establishes only the Basic Information page template for the compared states. The known research-design difference remains a separate downstream structural branch.
+  - provenance: user-assisted field-order transcription in the current unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: basic-information private-on-both-platforms visible field order only
+    page_id: basic-information
+    control_path: basic-information.sync-platform
+    selections:
+      research-category.route-leaf: investigator-observational
+      basic-information.sync-platform: private
+    observed_field_paths:
+      - basic-information.research-title
+      - basic-information.brief-research-title
+      - basic-information.public-name
+      - basic-information.funding-repeat
+      - basic-information.material-donation-flag
+      - basic-information.material-donation-repeat
+      - basic-information.total-funds
+      - basic-information.research-start-time
+      - basic-information.research-complete-time
+      - basic-information.recruiting-start-time
+      - basic-information.recruiting-end-time
+    observed_structure: Title fields; one repeatable funding-source group with three funding-level selectors and project details; material-donation yes/no with a conditional repeatable material group; total funds; expected study date range; recruitment date range.
+    boundary: This is an ordered current-page transcription only. It does not establish every funding-level dependency, international-cooperation behavior, add/remove behavior, or any later-page consequence.
+  - provenance: user-assisted field-order transcription in the current unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: basic-information public-on-chictr visible field order only
+    page_id: basic-information
+    control_path: basic-information.sync-platform
+    selections:
+      research-category.route-leaf: investigator-observational
+      basic-information.sync-platform: public-on-chictr
+    observed_field_paths:
+      - basic-information.registration-status
+      - basic-information.research-title
+      - basic-information.scientific-title
+      - basic-information.brief-research-title
+      - basic-information.english-acronym
+      - basic-information.public-name
+      - basic-information.public-title
+      - basic-information.funding-repeat
+      - basic-information.funding-source-english
+      - basic-information.material-donation-flag
+      - basic-information.material-donation-repeat
+      - basic-information.material-name-english
+      - basic-information.material-source-organization-english
+      - basic-information.total-funds
+      - basic-information.research-start-time
+      - basic-information.research-complete-time
+      - basic-information.recruiting-start-time
+      - basic-information.recruiting-end-time
+    observed_structure: Registration status; Chinese and English title pairs; a repeatable funding-source group with English funding source; material-donation yes/no with a conditional repeatable Chinese and English material group; total funds; expected study and recruitment date ranges.
+    boundary: This is an ordered current-page transcription only. It does not establish every funding-level dependency, international-cooperation behavior, add/remove behavior, or any later-page consequence.
+  - provenance: user-directed V1 working assumption
+    evidence_grade: reused_downstream_structure
+    verification_level: assumption_expanded
+    sample_scope: public-on-chictr versus private route comparison for later pages
+    page_id: basic-information
+    control_path: basic-information.sync-platform
+    selections:
+      research-category.route-leaf: investigator-observational
+    current_page_comparison: The user reports that, in later pages, the public-on-chictr route is basically the same as the private route, with the principal difference being additional English companion fields.
+    boundary: Treat this as a V1 display assumption, not a complete all-page equivalence proof. A newly observed non-English, page-order, requiredness, repeat-template, or attachment difference cancels the assumption below the affected point.
+  - provenance: user-assisted implementation-information observation in the current unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: data-monitoring-committee and observational-status option comparison
+    page_id: implementation-information
+    control_path: implementation-information.dsmb-flag
+    selections:
+      research-category.route-leaf: investigator-observational
+    current_page_comparison: Data-monitoring-committee has 具有/不具有 and does not change the remaining visible structure. Observational status has 研究尚未开始/研究进行中/已结束研究 and does not change later structure.
+    boundary: This records the user-directed current-page and downstream observation; it does not validate unrelated implementation-page conditions.
+  - provenance: user-assisted implementation-information observation in the current unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: multicenter local condition comparison
+    page_id: implementation-information
+    control_path: implementation-information.multicenter-flag
+    selections:
+      research-category.route-leaf: investigator-observational
+    current_page_comparison: Multicenter yes adds local bottom-of-page fields only. Multicenter type (international/domestic), organization role, and leading-institution region options affect only local implementation-page fields and do not affect the clinical-research-participating-unit section or later pages.
+    boundary: Represent this as a local conditional block. Any subsequently observed difference in the participating-unit template or later pages cancels the local-only assumption.
+  - provenance: user-assisted research-content observation in the current unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-content option-combination comparison
+    page_id: research-content
+    control_path: research-content.extra-inspection-measures
+    selections:
+      research-category.route-leaf: investigator-observational
+    current_page_comparison: Purpose, classification, ICD-11, study type, and research phase selections did not change the remaining current-page or later-page structure in the user's comparison. ICD-11 is recorded as required for this V1 route. Extra inspection yes shows 额外措施名称; no hides it. No later-page effect was observed.
+    boundary: Treat only the extra-inspection name as a local conditional field. If a future platform state exposes an additional option-specific field, record it as a new local condition rather than changing the downstream template without evidence.
+live_current_page_observations:
+  - provenance: two fresh isolated unsaved observational drafts; normal-UI diagnostic-test route comparison
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-design diagnostic-test yes/no comparison at the matched lower design-page viewport
+    page_id: research-design
+    control_path: research-category.diagnostic-trial
+    selections:
+      research-category.route-leaf: investigator-observational
+    compared_options:
+      'yes':
+        added_field_paths:
+          - research-design.diagnostic-gold-standard
+          - research-design.diagnostic-index-test
+          - research-design.diagnostic-target-condition
+          - research-design.diagnostic-target-sample-size
+          - research-design.diagnostic-confusable-population
+          - research-design.diagnostic-confusable-sample-size
+      'no':
+        added_field_paths:
+          - research-design.group-name
+          - research-design.group-sample-size
+          - research-design.control-group-flag
+          - research-design.intervention-name
+          - research-design.joint-measures
+          - research-design.intervention-description
+    current_page_comparison: Diagnostic-test yes displayed the six diagnostic-specific controls and did not display the normal research-group/intervention controls. Diagnostic-test no displayed the observed normal group/intervention controls and no diagnostic.* controls. The two routes are a confirmed research-design structural branch and must not be merged.
+    boundary: This matched-viewport comparison does not prove complete later-page equivalence, repeat-item behavior, or public-policy English variants.
+  - provenance: fresh isolated unsaved interventional draft; normal-UI recruitment switch replay
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: recruitment-information current-page recruitment and representative-status comparison only
+    page_id: recruitment-information
+    control_path: recruitment-information.recruitment-flag
+    selections:
+      research-category.route-leaf: investigator-interventional
+      research-category.iit-product-attribute: none
+    compared_options:
+      'no':
+        deidentified_interactive_control_count: 2
+        hidden_field_paths:
+          - recruitment-information.recruitment-status
+      'yes':
+        deidentified_interactive_control_count: 3
+        added_field_paths:
+          - recruitment-information.recruitment-status
+      recruiting_vs_not_yet_recruiting:
+        added_field_paths:
+          - recruitment-information.first-participant-enrollment-date
+          - recruitment-information.last-participant-exit-date
+          - recruitment-information.recruitment-announcement-start-date
+          - recruitment-information.recruitment-announcement-file
+          - recruitment-information.recruiter-name
+          - recruitment-information.recruiter-phone
+          - recruitment-information.recruiter-email
+    current_page_comparison: The normal-UI sequence no -> yes -> not-yet-recruiting -> recruiting -> not-yet-recruiting -> recruiting was stable. The recruiting state showed the observed date, file-control, and contact block; the file control was inspected structurally only and no file was selected.
+    boundary: Other recruitment statuses, international-cooperation/overseas-recruitment conditions, and all downstream behavior remain pending.
+  - provenance: fresh isolated unsaved interventional draft; normal-UI public-policy switch replay
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: basic-information public-policy private/ChiCTR/public replay on the current page only
+    page_id: basic-information
+    control_path: basic-information.sync-platform
+    selections:
+      research-category.route-leaf: investigator-interventional
+      research-category.iit-product-attribute: none
+      research-category.tcm-guided: 否
+      research-category.invasive-bci: 否
+    compared_options:
+      private_on_both_platforms:
+        deidentified_interactive_control_count: 13
+      public_on_chictr:
+        deidentified_interactive_control_count: 13
+        added_field_paths:
+          - basic-information.registration-status
+          - basic-information.scientific-title
+          - basic-information.english-acronym
+          - basic-information.public-title
+          - basic-information.funding-source-english
+    current_page_comparison: The normal-UI sequence private -> ChiCTR public -> private -> ChiCTR public was stable. ChiCTR public added registration-status radios and the observed English companion controls for title, acronym, public title, and funding source, consistently with the existing rule model.
+    boundary: This does not establish the English-pairing conditions on implementation, content, design, or disclosure pages. Those page-specific candidates remain pending.
+  - provenance: fresh isolated unsaved interventional draft; repeated normal-UI selector comparison
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-design vulnerable-group yes/no comparison and fourth type-option toggle on the current page only
+    page_id: research-design
+    control_path: research-design.vulnerable-group
+    selections:
+      research-category.route-leaf: investigator-interventional
+      research-category.iit-product-attribute: none
+    compared_options:
+      'no':
+        deidentified_interactive_control_count: 18
+      'yes':
+        deidentified_interactive_control_count: 22
+        added_control_template: vulnerableGroupType[] checkbox x4
+    current_page_comparison: Repeated normal-UI yes/no switching was stable. The four type checkboxes appeared only under yes, consistently with the prior user-assisted observation. Toggling the fourth type option did not alter the de-identified current-view control signature; the current browser surface cannot establish CSS visibility of the other-text control, so this does not supersede the existing conditional rule.
+    boundary: Later-page equivalence, requiredness behavior after validation, and per-type downstream effects are not established.
+  - provenance: user-assisted normal-UI selector comparison in the current unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-design randomization current-page sample after randomized-controlled design; random-group radios were visibly disabled while the downstream controls were visible
+    page_id: research-design
+    control_path: research-design.random-group-method
+    selections:
+      research-category.route-leaf: investigator-interventional
+      research-design.study-design: randomized-controlled
+    observed_option_labels:
+      - 简单随机
+      - 区组随机
+      - 分层随机
+      - 中央随机
+      - 其他
+    compared_options:
+      other:
+        added_field_paths:
+          - research-design.other-random-group-method
+    current_page_comparison: Under randomized-controlled design, the random-group radio pair was visibly disabled and its randomization controls were shown. Selecting other random method added the specific random-method text field.
+  - provenance: fresh isolated unsaved interventional draft; normal-UI selector comparison
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-design blinding current-page comparison; user reports no other local or later-form effect
+    page_id: research-design
+    control_path: research-design.blinding-type
+    compared_options:
+      double-blind:
+        visible_field_paths:
+          - research-design.unblinding-method
+      single-blind-assessor-blind:
+        visible_field_paths:
+          - research-design.unblinding-method
+      single-blind-assessor-open:
+        visible_field_paths:
+          - research-design.unblinding-method
+      triple-blind:
+        visible_field_paths:
+          - research-design.unblinding-method
+      open-label-assessor-blind:
+        hidden_field_paths:
+          - research-design.unblinding-method
+      open-label-assessor-open:
+        hidden_field_paths:
+          - research-design.unblinding-method
+    observed_option_labels:
+      - 双盲（对受试者和研究者均隐藏分组）
+      - 单盲（对受试者隐藏分组），对评估者隐藏分组
+      - 单盲（对受试者隐藏分组），对评估者不隐藏分组
+      - 开放标签，对评估者隐藏分组
+      - 开放标签，对评估者不隐藏分组
+      - 三盲（受试者盲、研究者盲、数据分析者盲）
+    current_page_comparison: Both open-label options hide only the unblinding-method textarea. Double-blind, both single-blind options, and triple-blind show it. Allocation-concealment fields and all other form content were reported unchanged; the prior narrower open-label observation is superseded.
+  - provenance: fresh isolated unsaved interventional draft; normal-UI selector comparison
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-design allocation-concealment current-page comparison under double-blind
+    page_id: research-design
+    control_path: research-design.allocation-concealment-method
+    observed_option_labels:
+      - 信封法
+      - 中央随机法
+      - 其他
+    compared_options:
+      other:
+        added_field_paths:
+          - research-design.other-allocation-concealment-method
+    current_page_comparison: Selecting other allocation-concealment method added the specific-method textarea.
+  - provenance: fresh isolated unsaved interventional draft; normal-UI select comparison
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-design current-page comparison under researcher-initiated interventional classification; no product-attribute radio state or study values were used
+    page_id: research-design
+    control_path: research-design.study-design
+    compared_options:
+      randomized-controlled:
+        added_field_paths:
+          - research-design.study-design-subtype
+        observed_option_labels:
+          - 平行设计
+          - 交叉设计
+          - 析因设计
+          - 序贯设计
+          - 其他
+      randomized-controlled_other-subtype:
+        added_field_paths:
+          - research-design.other-study-design
+      nonrandomized-controlled:
+        added_field_paths:
+          - research-design.study-design-subtype
+        observed_option_labels:
+          - 单臂试验
+          - 非随机同期平行对照
+          - 非同期平行对照
+          - 其他
+      nonrandomized-controlled_other-subtype:
+        not_visible_in_current_dom:
+          - research-design.other-study-design
+    current_page_comparison: Randomized and nonrandomized controlled designs both added the second-level selector with distinct option lists. Only randomized-controlled > other added the specific-design text field. No later page is implied by this current-page evidence.
+  - provenance: user-assisted clarification of the current unsaved observational draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-design current-page comparison under researcher-initiated observational classification; user checked the applicable study-design options
+    page_id: research-design
+    control_path: research-design.study-design
+    compared_options:
+      diagnostic:
+        hidden_field_paths:
+          - research-design.study-design-subtype
+          - research-design.other-study-design
+      case-control:
+        hidden_field_paths:
+          - research-design.study-design-subtype
+      cohort:
+        added_field_paths:
+          - research-design.study-design-subtype
+        observed_option_labels:
+          - 回顾性
+          - 前瞻性
+          - 双向队列研究
+      other-observational:
+        added_field_paths:
+          - research-design.other-study-design
+      randomized-controlled:
+        hidden_field_paths:
+          - research-design.study-design-subtype
+      nonrandomized-controlled:
+        hidden_field_paths:
+          - research-design.study-design-subtype
+    current_page_comparison: In the observational route, only cohort added the second-level selector. Case-control, randomized-controlled, and nonrandomized-controlled did not add it; other added its free-text design field. This user-assisted clarification supersedes the prior observational case-control entry.
+  - provenance: fresh isolated unsaved observational draft; normal-UI selector round trip
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: basic-information current-page public-strategy round trip under researcher-initiated observational classification; no study values entered and no save action used
+    page_id: basic-information
+    control_path: basic-information.sync-platform
+    compared_options:
+      private:
+        hidden_field_paths:
+          - basic-information.registration-status
+          - basic-information.scientific-title
+          - basic-information.english-acronym
+          - basic-information.public-title
+          - basic-information.funding-source-english
+      public-on-chictr:
+        added_field_paths:
+          - basic-information.registration-status
+          - basic-information.scientific-title
+          - basic-information.english-acronym
+          - basic-information.public-title
+          - basic-information.funding-source-english
+    current_page_comparison: Fresh selector round trip reproduced the public bilingual-field expansion and the private-state disappearance. No later page is implied by this current-page evidence.
+  - provenance: single-operator normal-UI selection in an unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-category current-page unproduct visibility only
+    page_id: research-category
+    selections:
+      research-category.route-leaf: investigator-interventional
+      research-category.iit-product-attribute: unproduct
+    control_path: research-category.iit-product-attribute
+    compared_option: unproduct
+    visible_field_paths:
+      - research-category.unmarketed-product-type
+      - research-category.unmarketed-product-name
+      - research-category.unmarketed-product-organization
+      - research-category.unmarketed-product-area-type
+      - research-category.unmarketed-product-repeat
+    observed_option_sets:
+      research-category.unmarketed-product-type:
+        - 药品
+        - 医疗器械
+        - 其他
+      research-category.unmarketed-product-area-type:
+        - 境内
+        - 境外
+    boundary: Only the unproduct option was switched from the unselected researcher-initiated interventional state in this replay. Biomedical and none remain pending separate current-page comparisons; later pages remain unverified.
+  - provenance: user-assisted comparison in the current unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: out_of_scope_or_blocked
+    sample_scope: research-category, investigator-interventional > unproduct > product-type comparison only
+    page_id: research-category
+    selections:
+      research-category.route-leaf: investigator-interventional
+      research-category.iit-product-attribute: unproduct
+      research-category.unmarketed-product-type: 其他
+    control_path: research-category.unmarketed-product-type
+    compared_options:
+      药品_and_医疗器械:
+        visible_field_paths:
+          - research-category.unmarketed-product-name
+          - research-category.unmarketed-product-organization
+          - research-category.unmarketed-product-area-type
+          - research-category.tcm-guided
+          - research-category.invasive-bci
+      其他:
+        added_field_paths:
+          - research-category.unmarketed-product-type-other
+        not_visible_in_current_dom:
+          - research-category.tcm-guided
+          - research-category.invasive-bci
+          - research-category.unmarketed-organ-type
+    mismatch_against_initial_tree:
+      - Initial tree treated tcm-guided and invasive-bci as visible in this route, but they were absent after choosing product type 其他.
+      - Initial tree kept unmarketed-organ-type visible; it was absent in all three sampled product-type values.
+    required_follow_up: User-directed pause. Do not resume this subroute in V1, and do not treat its downstream structure as verified or generate it as supported V1 content.
+    blocked_reason: user_paused_after_current_browser_runtime_could_not_reliably_select_unmarketed_product_type_other_in_an_unsaved_draft
+  - provenance: single-operator normal-UI comparison in an unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: basic-information current-page public-strategy comparison only
+    page_id: basic-information
+    control_path: basic-information.sync-platform
+    compared_options:
+      private_on_both_platforms:
+        visible_field_paths:
+          - basic-information.research-title
+          - basic-information.brief-research-title
+          - basic-information.public-name
+      public_on_chictr:
+        added_field_paths:
+          - basic-information.registration-status
+          - basic-information.scientific-title
+          - basic-information.english-acronym
+          - basic-information.public-title
+          - basic-information.funding-source-english
+    current_page_comparison: The observed added fields match the initial tree's bilingual-pairing model; downstream pages were not implied.
+  - provenance: single-operator normal-UI comparison in an unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-category current-page product-attribute comparison only
+    page_id: research-category
+    selections:
+      research-category.route-leaf: investigator-interventional
+    control_path: research-category.iit-product-attribute
+    compared_options:
+      none_and_biomedical:
+        visible_field_paths:
+          - research-category.tcm-guided
+          - research-category.invasive-bci
+      unproduct:
+        added_field_paths:
+          - research-category.unmarketed-product-repeat
+    current_page_comparison: Biomedical and none had the same observed current-page structure; a fresh normal-UI replay confirmed identical de-identified signatures of nine interactive controls. Unproduct added the repeatable product-information group. Current-page equality does not establish downstream equivalence.
+  - provenance: single-operator normal-UI comparison in an unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-category current-page diagnostic-test yes/no comparison only
+    page_id: research-category
+    selections:
+      research-category.route-leaf: investigator-observational
+    control_path: research-category.diagnostic-trial
+    compared_options:
+      'yes':
+        visible_field_paths:
+          - research-category.tcm-guided
+          - research-category.invasive-bci
+      'no':
+        visible_field_paths:
+          - research-category.tcm-guided
+          - research-category.invasive-bci
+    current_page_comparison: Both choices were normally selected and had the same current-page structure. This does not determine later research-content or research-design differences.
+  - provenance: single-operator normal-UI comparison in a fresh unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-category current-page TCM-theory yes/no comparison only
+    page_id: research-category
+    control_path: research-category.tcm-guided
+    compared_options:
+      'yes':
+        current_page_control_count: 9
+      'no':
+        current_page_control_count: 9
+    current_page_comparison: Both choices were normally selected. The de-identified visible control signature was identical, with no added, removed, or changed current-page controls.
+    boundary: This does not establish later-page equivalence. A representative downstream route remains required before this choice may be safely merged during exploration.
+  - provenance: single-operator normal-UI comparison in a fresh unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-category current-page invasive-BCI yes/no comparison only
+    page_id: research-category
+    control_path: research-category.invasive-bci
+    supersedes: An earlier count-only signature comparison was unstable because it used a non-canonical tag matcher; it is not retained as evidence of a structural difference.
+    compared_options:
+      'yes':
+        deidentified_interactive_control_count: 9
+      'no':
+        deidentified_interactive_control_count: 9
+    current_page_comparison: Both choices were normally selected. A stable de-identified extraction of interactive control type and technical name was identical, with no added or removed current-page controls.
+    boundary: This does not establish later-page equivalence. A representative downstream route remains required before this choice may be safely merged during exploration.
+  - provenance: single-operator normal-UI comparison in a fresh unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-category current-page innovative-drug-device yes/no comparison only
+    page_id: research-category
+    control_path: research-category.innovative-drug-device
+    compared_options:
+      'yes':
+        deidentified_interactive_control_count: 9
+      'no':
+        deidentified_interactive_control_count: 9
+    current_page_comparison: Both choices were normally selected. A stable de-identified extraction of interactive control type and technical name was identical, with no added, removed, or changed current-page controls.
+    boundary: This does not establish later-page equivalence. A representative downstream route remains required before this choice may be safely merged during exploration.
+  - provenance: single-operator normal-UI comparison in an unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: implementation-information current-page multicenter yes/no comparison only
+    page_id: implementation-information
+    control_path: implementation-information.multicenter-flag
+    compared_options:
+      'no':
+        hidden_field_paths:
+          - implementation-information.multicenter-type
+          - implementation-information.organization-role
+          - implementation-information.has-participating-branches
+      'yes':
+        added_field_paths:
+          - implementation-information.multicenter-type
+          - implementation-information.organization-role
+          - implementation-information.has-participating-branches
+    current_page_comparison: Checked-state confirmation was captured for the yes option. Subbranches of multicenter type, organization role, and participating organizations remain pending.
+  - provenance: single-operator normal-UI comparison in an unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-design current-page random-group yes/no and random-method-other comparison only
+    page_id: research-design
+    control_path: research-design.random-group
+    compared_options:
+      'no':
+        hidden_field_paths:
+          - research-design.random-group-method
+          - research-design.random-sequence-method
+      'yes':
+        added_field_paths:
+          - research-design.random-group-method
+          - research-design.random-sequence-method
+      yes_random_method_other:
+        added_field_paths:
+          - research-design.other-random-group-method
+    observed_option_sets:
+      research-design.random-group-method:
+        - 简单随机
+        - 区组随机
+        - 分层随机
+        - 中央随机
+        - 其他
+    current_page_comparison: Both random-group values and the other random-method option were selected through the normal UI. Blindness and allocation-concealment controls were not reached in the current scroll window and remain pending.
+  - provenance: user-assisted clarification of the current unsaved observational draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: observational research-design / random-group relationship on the current page
+    page_id: research-design
+    control_path: research-design.random-group
+    related_control_path: research-design.study-design
+    current_page_comparison: In the observational route, study-design selection did not auto-select, enable, disable, add, or hide the random-group yes/no control. The random-group choice remains an independent local control.
+  - provenance: single-operator normal-UI comparison in an unsaved test draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-design current-page biological-sample yes/no comparison; user reports no other current-page or later-form change
+    page_id: research-design
+    control_path: research-design.biological-sample-collection
+    compared_options:
+      'no':
+        hidden_field_paths:
+          - research-design.biological-samples-standard
+      'yes':
+        added_field_paths:
+          - research-design.biological-samples-standard
+        visible_child_paths:
+          - research-design.sample-name
+          - research-design.sample-type
+          - research-design.sample-destination
+          - research-design.sample-description
+        repeatable_control: research-design.add-standard-sample
+        sample_type_options:
+          - 细胞
+          - 组织
+          - 器官
+          - 血液
+          - 血清
+          - 细菌
+          - 其他
+        sample_destination_options:
+          - 使用后销毁
+          - 使用后保存
+          - 其他
+    repeat_template:
+      initial_instances: 1
+      add_action: research-design.add-standard-sample
+      additional_instance_matches_initial: true
+      remove_action: research-design.remove-standard-sample
+      remove_behavior: User confirms it is consistent with the other repeatable groups.
+    current_page_comparison: Yes showed the biological-sample group with sample name, type, destination, optional description, and an add-item control; no hid the entire group. User reports all other form content unchanged. User subsequently confirmed that an added instance reproduces the initial template and that its deletion behavior is consistent with the other repeatable groups.
+  - provenance: single-operator normal-UI comparison in an unsaved interventional draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: other-information current-page platform selection and one repeat-template add/remove cycle
+    page_id: other-information
+    control_path: other-information.platform-name
+    selections:
+      research-category.route-leaf: investigator-interventional
+    compared_options:
+      other:
+        added_field_paths:
+          - other-information.platform-other-name
+      named-platform:
+        hidden_field_paths:
+          - other-information.platform-other-name
+    observed_option_ids:
+      - chictr
+      - nmpa-drug-trial-platform
+      - nih-clinical-research-registry
+      - other
+    repeat_template:
+      parent_path: other-information.other-platform-records
+      initial_instances: 1
+      add_action: other-information.add-platform-record
+      additional_instance_paths:
+        - other-information.platform-name
+        - other-information.platform-record-number
+      conditional_instance_path: other-information.platform-other-name
+      remove_action: other-information.remove-platform-record
+      remove_requires_confirmation: true
+      confirmed_after_remove: one initial instance remained
+    current_page_comparison: A second instance was added, its named-platform selection hid the other-name field, and its removal required a normal confirmation without changing the first instance. No external registry records or values were entered.
+  - provenance: single-operator normal-UI selector comparison in an unsaved interventional draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-content current-page comparison between the Other and Diagnosis primary-purpose values
+    page_id: research-content
+    control_path: research-content.primary-purpose
+    compared_options:
+      other:
+        visible_field_paths:
+          - research-content.research-objective-description
+          - research-content.research-content-description
+          - research-content.scientific-social-value-evaluation
+          - research-content.risk-protection-evaluation
+          - research-content.comparative-value-risk-evaluation
+      diagnosis:
+        visible_field_paths:
+          - research-content.research-objective-description
+          - research-content.research-content-description
+          - research-content.scientific-social-value-evaluation
+          - research-content.risk-protection-evaluation
+          - research-content.comparative-value-risk-evaluation
+    observed_option_labels:
+      - 病因
+      - 诊断
+      - 治疗
+      - 康复
+      - 预后
+      - 预防
+      - 控制
+      - 健康维护
+      - 筛查
+      - 基础研究
+      - 其他
+    current_page_comparison: The Other and Diagnosis selections yielded the same visible current-page field structure. This records no current-page structural branch only; it does not prove downstream equivalence.
+  - provenance: single-operator normal-UI selector comparison in an unsaved interventional draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-content current-page comparison between the Other and Not-applicable research-phase values
+    page_id: research-content
+    control_path: research-content.research-phase
+    compared_options:
+      other:
+        added_field_paths:
+          - research-content.research-phase-other
+      not-applicable:
+        hidden_field_paths:
+          - research-content.research-phase-other
+    current_page_comparison: The Other selection added the phase-name text control. The normal Not-applicable selection removed it. The remaining visible current-page controls were unchanged.
+  - provenance: single-operator normal-UI repeat-template test in an unsaved interventional draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-design inclusion-criteria one add/remove cycle
+    page_id: research-design
+    control_path: research-design.inclusion-criteria
+    repeat_template:
+      initial_instances: 1
+      instance_path: research-design.inclusion-criterion
+      add_action: research-design.add-inclusion-criterion
+      additional_instance_matches_initial: true
+      remove_action: research-design.remove-inclusion-criterion
+      remove_requires_confirmation: true
+      confirmed_after_remove: one initial instance remained
+    current_page_comparison: The second criterion had the same text control and add action as the initial item, plus a remove action. Confirmed removal returned the group to one item. No criterion values were entered.
+  - provenance: single-operator normal-UI repeat-template test in an unsaved interventional draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-design research-groups one add/remove cycle
+    page_id: research-design
+    control_path: research-design.research-groups
+    repeat_template:
+      initial_instances: 1
+      add_action: research-design.add-research-group
+      additional_instance_core_paths:
+        - research-design.group-name
+        - research-design.group-sample-size
+        - research-design.control-group-flag
+        - research-design.intervention-name
+        - research-design.joint-measures
+        - research-design.intervention-type
+        - research-design.intervention-frequency
+        - research-design.intervention-description
+      additional_instance_matches_initial: true
+      remove_action: research-design.remove-research-group
+      remove_requires_confirmation: true
+      confirmed_after_remove: one initial instance remained
+    current_page_comparison: The added group reproduced the visible group template and exposed its own remove action. Confirmed removal returned the repeat group to its original single instance. No group values were entered.
+  - provenance: single-operator normal-UI selector comparison in an unsaved interventional draft
+    evidence_grade: current_page_verified
+    verification_level: mismatch_found
+    v1_disposition: manual_only_until_local_replay
+    sample_scope: research-design current-page comparison between Other and Physical-treatment intervention types
+    page_id: research-design
+    control_path: research-design.intervention-type
+    compared_options:
+      other:
+        expected_but_not_visible_field_paths:
+          - research-design.other-intervention-type
+      physical-treatment:
+        visible_core_field_paths:
+          - research-design.group-name
+          - research-design.group-sample-size
+          - research-design.control-group-flag
+          - research-design.intervention-name
+          - research-design.joint-measures
+          - research-design.intervention-description
+    current_page_comparison: The normal Other selection did not render the canonical other-intervention-type input, and its visible current-page structure matched the normal Physical-treatment selection. This is a local mismatch; do not use the canonical Other-input rule for V1 generation until a fresh isolated local replay resolves it.
+  - provenance: single-operator normal-UI repeat-template test in an unsaved interventional draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: basic-information funding-repeat one add/remove cycle
+    page_id: basic-information
+    control_path: basic-information.funding-repeat
+    repeat_template:
+      initial_instances: 1
+      additional_instance_matches_initial: true
+      observed_core_paths:
+        - basic-information.funding-project-name
+        - basic-information.funding-project-number
+        - basic-information.funding-international-cooperation
+        - basic-information.funding-project-time
+        - basic-information.funding-amount
+      remove_requires_confirmation: true
+      confirmed_after_remove: one initial instance remained
+    current_page_comparison: The added funding source reproduced the observed template. Deleting the second source after normal confirmation restored one instance. No funding values were entered.
+  - provenance: single-operator normal-UI radio and repeat-template test in an unsaved interventional draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: basic-information material-donation yes/no visibility and one add/remove cycle
+    page_id: basic-information
+    control_path: basic-information.material-donation-flag
+    compared_options:
+      'yes':
+        added_field_paths:
+          - basic-information.material-donation-repeat
+          - basic-information.material-name
+          - basic-information.material-source-organization
+      'no':
+        hidden_field_paths:
+          - basic-information.material-donation-repeat
+          - basic-information.material-name
+          - basic-information.material-source-organization
+    repeat_template:
+      initial_instances: 1
+      parent_path: basic-information.material-donation-repeat
+      additional_instance_matches_initial: true
+      observed_core_paths:
+        - basic-information.material-name
+        - basic-information.material-source-organization
+      remove_requires_confirmation: true
+      confirmed_after_remove: one initial instance remained
+    current_page_comparison: The yes radio exposed the material donation template in the lower page view. Its second item reproduced the two visible material text controls; confirmed deletion returned it to one item. A fresh normal-UI yes/no replay then confirmed that the no state hides this repeatable group.
+  - provenance: single-operator normal-UI selector comparison in an unsaved interventional draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: recruitment-information current-page comparison between Recruiting and Not-yet-recruiting statuses
+    page_id: recruitment-information
+    control_path: recruitment-information.recruitment-status
+    compared_options:
+      recruiting:
+        added_field_paths:
+          - recruitment-information.first-participant-enrollment-date
+          - recruitment-information.last-participant-exit-date
+          - recruitment-information.recruitment-announcement-start-date
+          - recruitment-information.recruitment-announcement-file
+          - recruitment-information.recruiter-name
+          - recruitment-information.recruiter-phone
+          - recruitment-information.recruiter-email
+      not-yet-recruiting:
+        hidden_field_paths:
+          - recruitment-information.first-participant-enrollment-date
+          - recruitment-information.last-participant-exit-date
+          - recruitment-information.recruitment-announcement-start-date
+          - recruitment-information.recruitment-announcement-file
+          - recruitment-information.recruiter-name
+          - recruitment-information.recruiter-phone
+          - recruitment-information.recruiter-email
+    current_page_comparison: The normal selector comparison showed the full date, upload-control, and contact block only for Recruiting. The upload control was inspected structurally only; no file was chosen or uploaded.
+  - provenance: single-operator normal-UI radio and repeat-template test in an unsaved interventional draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: implementation-information participating-branches yes visibility and one add/remove cycle
+    page_id: implementation-information
+    control_path: implementation-information.has-participating-branches
+    compared_options:
+      'yes':
+        added_field_paths:
+          - implementation-information.participating-organization-repeat
+          - implementation-information.branch-organization-name
+          - implementation-information.branch-postcode
+          - implementation-information.branch-address
+          - implementation-information.branch-user-name
+          - implementation-information.branch-user-mobile
+          - implementation-information.branch-user-email
+    repeat_template:
+      initial_instances: 1
+      parent_path: implementation-information.participating-organization-repeat
+      additional_instance_matches_initial: true
+      observed_core_paths:
+        - implementation-information.branch-organization-name
+        - implementation-information.branch-postcode
+        - implementation-information.branch-address
+        - implementation-information.branch-user-name
+        - implementation-information.branch-user-mobile
+        - implementation-information.branch-user-email
+      remove_requires_confirmation: true
+      confirmed_after_remove: one initial instance remained
+    current_page_comparison: The yes radio exposed the participating-organization template. Its second item copied all six visible controls; confirmed deletion returned it to one item. The no state was not independently rechecked in this run.
+  - provenance: single-operator normal-UI radio comparison in an unsaved interventional draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: data-sharing-and-public-disclosure current-page share/no-share comparison
+    page_id: data-sharing-and-public-disclosure
+    control_path: data-sharing-and-public-disclosure.data-share-statement
+    selections:
+      research-category.route-leaf: investigator-interventional
+    compared_options:
+      share:
+        added_field_paths:
+          - data-sharing-and-public-disclosure.data-share-plan
+          - data-sharing-and-public-disclosure.data-acquisition-condition
+          - data-sharing-and-public-disclosure.data-url
+          - data-sharing-and-public-disclosure.data-analysis
+      no-share:
+        hidden_field_paths:
+          - data-sharing-and-public-disclosure.data-share-plan
+          - data-sharing-and-public-disclosure.data-acquisition-condition
+          - data-sharing-and-public-disclosure.data-url
+          - data-sharing-and-public-disclosure.data-analysis
+    current_page_comparison: The normal yes/no comparison was completed on the data-sharing page. Result-publication controls remained visible in both states and were not treated as part of this branch.
+  - provenance: single-operator normal-UI cascading-selector comparison in an unsaved interventional draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-design outcome-indicator type hierarchy comparison after Primary outcome selection
+    page_id: research-design
+    control_path: research-design.indicator-type-level-2
+    compared_options:
+      therapeutic-outcome:
+        added_field_paths:
+          - research-design.indicator-type-level-3
+        observed_level_3_options:
+          - clinical-event
+          - objective-laboratory-or-examination
+          - subjective-indicator
+      safety-outcome:
+        hidden_field_paths:
+          - research-design.indicator-type-level-3
+    current_page_comparison: Primary outcome exposed Treatment and Safety second-level types. Treatment exposed the third-level selector; Safety removed it. Indicator name, time point, measurement method, and description remained visible in both sampled states.
+  - provenance: single-operator normal-UI comparison in the current unsaved observational diagnostic-test-yes draft
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: research-design segmented top-to-bottom current-page inspection; no navigation, save, submission, upload, or new draft
+    page_id: research-design
+    control_path: research-design.study-design
+    selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial: 'yes'
+    compared_controls:
+      research-design.study-design:
+        observed_options:
+          - 横断面研究
+          - 病例对照研究
+          - 队列研究
+          - 个案报告
+          - 生态学研究
+          - 诊断试验
+          - 其他
+          - 随机对照试验
+          - 非随机对照试验
+        local_deltas:
+          cohort: displays a second selector with 回顾性、前瞻性、双向队列研究
+          other: displays a required free-text other-study-design control
+      research-design.vulnerable-group:
+        compared_options:
+          'yes': displays vulnerable-group-type choices and the existing other-text control
+          'no': hides those local controls
+      research-design.random-group:
+        compared_options:
+          'yes': displays random-group-method, random-sequence-method, and blinding controls
+          'no': hides the randomization local block
+        sampled_nested_delta: random-group-method other displays other-random-group-method
+      research-design.blinding-type:
+        sampled_option: double-blind
+        local_delta: displays uncover-blindness-method, allocation-concealment method, and allocation-concealment description
+      research-design.inclusion-criteria:
+        repeat_template: additional text instance matches initial; deletion asks for confirmation and restores one instance
+      research-design.exclusion-criteria:
+        repeat_template: additional text instance matches initial; deletion asks for confirmation and restores one instance
+      research-design.outcome-indicator-repeat:
+        repeat_template: additional instance matches the core indicator template; deletion asks for confirmation and restores one instance
+        observed_hierarchy: primary or secondary; sampled primary then therapeutic or safety; therapeutic displays a third selector with clinical event, objective laboratory or examination indicator, and subjective indicator
+      research-design.biological-sample-collection:
+        observed_state: no selected in the visible terminal segment
+        boundary: the yes-template did not become reliably observable through the current safe UI surface and is not inferred
+    current_page_comparison: The inspected changes are local to Research Design. No later page was opened in this pass, so this record does not establish downstream equivalence.
+    boundary: This supplements rather than upgrades the separate user-assisted diagnostic yes/no cross-page observation.
+  - provenance: current unsaved observational private-route draft; normal UI tabs, options, and repeat-item actions
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    route_scope: investigator-observational + private
+    page_id: recruitment-information
+    control_path: research-category.route-leaf
+    observed_page_state: not_present_in_current_route_navigation
+    current_page_comparison: The current private observational draft displayed no recruitment-information tab between research design and other information. This is a route-local absence observation, not a claim about interventional or product routes.
+  - provenance: current unsaved observational private-route draft; normal UI selector and repeat-item actions
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    route_scope: investigator-observational + private
+    page_id: other-information
+    control_path: other-information.platform-name
+    observed_option_labels:
+      - 中国临床试验注册中心
+      - 药物临床试验登记与信息公示平台
+      - 临床研究注册（NIH）
+      - 其他
+    compared_options:
+      named_platform:
+        hidden_field_paths:
+          - other-information.platform-other-name
+      other:
+        added_field_paths:
+          - other-information.platform-other-name
+    repeat_template:
+      initial_instances: 1
+      add_action: other-information.add-platform-record
+      additional_instance_matches_initial: true
+      remove_action: other-information.remove-platform-record
+      remove_requires_confirmation: true
+      confirmed_after_remove: one initial instance remained
+    current_page_comparison: The named-platform representative retained only the record number. Other added the other-platform-name field. An added item reproduced the template and was removed through the page's yes/no confirmation.
+  - provenance: current unsaved observational private-route draft; normal UI radio and checkbox comparison
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    route_scope: investigator-observational + private
+    page_id: data-sharing-and-public-disclosure
+    control_path: data-sharing-and-public-disclosure.data-share-statement
+    compared_options:
+      share:
+        added_field_paths:
+          - data-sharing-and-public-disclosure.data-share-plan
+          - data-sharing-and-public-disclosure.data-acquisition-condition
+          - data-sharing-and-public-disclosure.data-url
+          - data-sharing-and-public-disclosure.data-analysis
+      do-not-share:
+        hidden_field_paths:
+          - data-sharing-and-public-disclosure.data-share-plan
+          - data-sharing-and-public-disclosure.data-acquisition-condition
+          - data-sharing-and-public-disclosure.data-url
+          - data-sharing-and-public-disclosure.data-analysis
+    related_controls:
+      statistical-result-public:
+        compared_options: [公开, 不公开]
+        effect: no visible structural change
+      result-release-method:
+        options: [申请药品/器械, 申请专利后公开, 学术论文发表, 其他]
+        other-description: visible inline and non-required
+    current_page_comparison: Sharing showed four data-detail fields. Both statistical-result-public values retained the same result-release-method group.
+  - provenance: current unsaved observational private-route draft; visual inspection only, no file chooser opened
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    route_scope: investigator-observational + private
+    page_id: related-attachments
+    control_path: related-attachments.research-protocol-file
+    controls:
+      - path: related-attachments.research-protocol-file
+        required: true
+        format: PDF
+      - path: related-attachments.consent-or-waiver-file
+        required: true
+        format: PDF
+        sync_size_guidance: ChiCTR synchronization recommended at or below 10 MB
+      - path: related-attachments.other-files
+        required: false
+        format: PDF
+    current_page_comparison: Three upload slots were visible. No chooser was opened and no file was selected, uploaded, saved, or submitted.
+  - provenance: current unsaved observational ChiCTR-public draft; normal UI direct-tab comparison
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    route_scope: investigator-observational + public-on-chictr
+    page_id: basic-information
+    control_path: basic-information.sync-platform
+    page_sequence_observed:
+      - basic-information
+      - implementation-information
+      - research-content
+      - research-design
+      - other-information
+      - data-sharing-and-public-disclosure
+      - related-attachments
+    current_page_deltas:
+      implementation-information:
+        added_field_paths:
+          - implementation-information.applicant-name-english
+          - implementation-information.applicant-address-english
+          - implementation-information.applicant-organization-english
+      research-content:
+        added_field_paths:
+          - research-content.research-objective-description-english
+          - research-content.target-disease
+      research-design:
+        added_field_paths:
+          - research-design.inclusion-criterion-english
+          - research-design.exclusion-criterion-english
+          - research-design.group-name-english
+          - research-design.intervention-name-english
+          - research-design.random-sequence-method-english
+          - research-design.indicator-name-english
+          - research-design.indicator-timepoint-english
+          - research-design.indicator-measurement-method-english
+          - research-design.sample-name-english
+      data-sharing-and-public-disclosure:
+        compared_options:
+          share: retained_full_chinese_and_english_data_detail_group
+          do-not-share: retained_same_full_chinese_and_english_data_detail_group
+        added_field_paths:
+          - data-sharing-and-public-disclosure.data-share-plan-english
+          - data-sharing-and-public-disclosure.data-analysis-english
+        unchanged_visible_group:
+          - data-sharing-and-public-disclosure.statistical-result-public
+          - data-sharing-and-public-disclosure.result-release-method
+      related-attachments:
+        visible_slot_count: 3
+        comparison: same_categories_as_private_route
+    boundary: Diagnostic-test-yes English fields were read from the canonical route inventory and require a separate live representative pass before upgrading beyond the current public diagnostic-no direct-tab observation. No save, submit, completion, file chooser, or upload action was used.
+structural_branches: []
+routes:
+  - route_id: investigator-observational.public-material-repeat.partial
+    status: partially_verified
+    evidence_grade: current_page_verified
+    verification_level: inferred_from_initial_tree
+    # Fresh unsaved-draft replay: only visible, de-identified paths and
+    # repeat-template behavior are retained. This is never final-tree evidence.
+    selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial: 'yes'
+      basic-information.sync-platform: public-on-chictr
+      basic-information.material-donation-flag: 是
+    structural_decisions: []
+    display:
+      complete: false
+      pages:
+        - page_id: research-category
+          disposition: visited
+          field_paths:
+            - research-category.route-leaf
+            - research-category.diagnostic-trial
+          signature_hash: sha256:42c4cfd45dea99dfbc6f235ec52ed03a25b9d4361d02afcf70ec62da163dd766
+        - page_id: basic-information
+          disposition: visited
+          field_paths:
+            - basic-information.sync-platform
+            - basic-information.registration-status
+            - basic-information.research-title
+            - basic-information.scientific-title
+            - basic-information.brief-research-title
+            - basic-information.english-acronym
+            - basic-information.public-name
+            - basic-information.public-title
+            - basic-information.funding-source-level-1
+            - basic-information.funding-source-english
+            - basic-information.funding-project-name
+            - basic-information.funding-project-number
+            - basic-information.material-donation-flag
+            - basic-information.material-name
+            - basic-information.material-name-english
+            - basic-information.material-source-organization
+            - basic-information.material-source-organization-english
+          signature_hash: sha256:7473fe182f24b861e98b7abf8f8f43f189a73448313254ebc7ee7582e8356712
+      leaf:
+        status: blocked
+        blocked_reason: ordinary_next_control_reported_save_failure_in_unsaved_draft; no_save_or_submit_was_intentionally_clicked
+  - route_id: investigator-interventional.random-other.partial
+    status: deferred_to_v2
+    evidence_grade: current_page_verified
+    verification_level: inferred_from_initial_tree
+    selections:
+      research-category.route-leaf: investigator-interventional
+      research-design.random-group: 'yes'
+      research-design.random-group-method: other
+    structural_decisions: []
+    display:
+      complete: false
+      pages:
+        - page_id: research-design
+          disposition: visited
+          field_paths:
+            - research-design.vulnerable-group
+            - research-design.vulnerable-group-type
+            - research-design.vulnerable-group-other
+            - research-design.random-group
+            - research-design.random-group-method
+            - research-design.other-random-group-method
+            - research-design.random-sequence-method
+          signature_hash: sha256:e859787ca9826ccd88921d6a7460c3b6b110601e8f0187a57656e05edff6d458
+      leaf:
+        status: blocked
+        blocked_reason: visible_tabs_were_inspected_without_using_persistent_forward_navigation
+  - route_id: investigator-interventional.design-baseline.partial
+    status: deferred_to_v2
+    evidence_grade: downstream_spot_checked
+    verification_level: sample_verified
+    sample_scope: researcher-initiated interventional route; the selected root was followed by a direct normal-UI visit to research-design. This is one representative downstream-page check only, without controlled downstream option comparisons or a forward leaf replay.
+    selections:
+      research-category.route-leaf: investigator-interventional
+    structural_decisions: []
+    display:
+      complete: false
+      pages:
+        - page_id: research-category
+          disposition: visited
+          field_paths:
+            - research-category.route-leaf
+          signature_hash: sha256:bf4f2e1c1d7e4b5c54d2a1ce3439b934e3ed85c529f7dd6fba954338a595dd59
+        - page_id: research-design
+          disposition: visited
+          field_paths:
+            - research-design.total-sample-size
+            - research-design.sample-calculation-basis
+            - research-design.group-sample-size
+            - research-design.vulnerable-group
+            - research-design.random-group
+            - research-design.random-group-method
+            - research-design.random-sequence-method
+            - research-design.blinding-type
+            - research-design.unblinding-method
+            - research-design.biological-sample-collection
+            - research-design.biological-samples-standard
+          signature_hash: sha256:0d369a1ccf0cb6c8a31136a48847ea690ce4dc26c9d95c6b3b98a7a0f296954c
+      leaf:
+        status: blocked
+        blocked_reason: root_to_research_design_spot_check_only; no controlled downstream branch comparison or root_to_leaf_forward_replay
+  - route_id: investigator-observational.diagnostic-yes.tabs.partial
+    status: partially_verified
+    evidence_grade: downstream_spot_checked
+    verification_level: sample_verified
+    sample_scope: research-category current-page comparison plus basic-information, research-design, and related-attachments representative downstream pages
+    selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial: 'yes'
+    structural_decisions: []
+    display:
+      complete: false
+      pages:
+        - page_id: research-category
+          disposition: visited
+          field_paths:
+            - research-category.route-leaf
+            - research-category.diagnostic-trial
+            - research-category.tcm-guided
+            - research-category.invasive-bci
+          signature_hash: sha256:a7d67d78a810b80ef53a96d85983c16a8e4db215b9ec32ce08af9b98fc96181b
+        - page_id: basic-information
+          disposition: visited
+          field_paths:
+            - basic-information.sync-platform
+            - basic-information.registration-status
+            - basic-information.material-donation-flag
+            - basic-information.material-name
+            - basic-information.material-name-english
+            - basic-information.material-source-organization
+            - basic-information.material-source-organization-english
+          signature_hash: sha256:bf80749cea18f41c8dbaa9ada3488a3316b6bf342a68656c9a6fc87d20a4acbb
+        - page_id: implementation-information
+          disposition: visited
+          field_paths:
+            - implementation-information.multicenter-flag
+          signature_hash: sha256:b0e84a5a40e89d9f3c45871099991a197016bc71057a6123ccdc789f7e844e17
+        - page_id: research-content
+          disposition: visited
+          field_paths:
+            - research-content.extra-inspection-measures
+            - research-content.extra-measure-name
+            - research-content.research-phase
+            - research-content.research-phase-other
+          signature_hash: sha256:4913580d42a314fc0975e34c2402dead41d5c3e8fc59d0f484dd3ff216304c58
+        - page_id: research-design
+          disposition: visited
+          field_paths:
+            - research-design.diagnostic-measures
+            - research-design.vulnerable-group
+            - research-design.random-group
+            - research-design.biological-sample-collection
+          signature_hash: sha256:6eaccfc6ccf65fab83ab1145284b9a1c842c3509d3b2cc80843089345273220a
+        - page_id: recruitment-information
+          disposition: skipped
+          field_paths: []
+        - page_id: other-information
+          disposition: visited
+          field_paths:
+            - other-information.platform-name
+            - other-information.platform-other-name
+            - other-information.platform-record-number
+          signature_hash: sha256:662637b2cccd130ee1cb889b73f1ab77b8c5a568fe68d023b569d1e987509977
+        - page_id: data-sharing-and-public-disclosure
+          disposition: visited
+          field_paths:
+            - data-sharing-and-public-disclosure.data-share-statement
+          signature_hash: sha256:a9400d602423fe36f1ed0f5353499b1f931acd227efffc10fac3bfecae0530af
+        - page_id: related-attachments
+          disposition: visited
+          field_paths:
+            - related-attachments.research-protocol-file
+            - related-attachments.consent-or-waiver-file
+            - related-attachments.other-files
+          signature_hash: sha256:1893609cfb666574c17ef35ba2859ba00b9e9e5363bde6f7763d44fc21f64939
+      leaf:
+        status: blocked
+        blocked_reason: tabs_are_directly_reachable_but_no_nonpersistent_root_to_leaf_forward_replay_exists
+  - route_id: investigator-observational.diagnostic-no.tabs.partial
+    status: partially_verified
+    evidence_grade: downstream_spot_checked
+    verification_level: sample_verified
+    sample_scope: research-category current-page comparison plus basic-information and research-design representative downstream pages
+    selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial: 'no'
+    structural_decisions: []
+    display:
+      complete: false
+      pages:
+        - page_id: research-category
+          disposition: visited
+          field_paths:
+            - research-category.route-leaf
+            - research-category.diagnostic-trial
+            - research-category.tcm-guided
+            - research-category.invasive-bci
+          signature_hash: sha256:a7d67d78a810b80ef53a96d85983c16a8e4db215b9ec32ce08af9b98fc96181b
+        - page_id: basic-information
+          disposition: visited
+          field_paths:
+            - basic-information.sync-platform
+            - basic-information.registration-status
+            - basic-information.material-donation-flag
+            - basic-information.material-name
+            - basic-information.material-name-english
+            - basic-information.material-source-organization
+            - basic-information.material-source-organization-english
+          signature_hash: sha256:bf80749cea18f41c8dbaa9ada3488a3316b6bf342a68656c9a6fc87d20a4acbb
+        - page_id: implementation-information
+          disposition: visited
+          field_paths:
+            - implementation-information.multicenter-flag
+          signature_hash: sha256:b0e84a5a40e89d9f3c45871099991a197016bc71057a6123ccdc789f7e844e17
+        - page_id: research-content
+          disposition: visited
+          field_paths:
+            - research-content.extra-inspection-measures
+            - research-content.extra-measure-name
+            - research-content.research-phase
+            - research-content.research-phase-other
+          signature_hash: sha256:4913580d42a314fc0975e34c2402dead41d5c3e8fc59d0f484dd3ff216304c58
+        - page_id: research-design
+          disposition: visited
+          field_paths:
+            - research-design.study-design
+            - research-design.vulnerable-group
+            - research-design.random-group
+            - research-design.biological-sample-collection
+          signature_hash: sha256:bb64e3477285576e603297b13b863945236f7dda92cb299aca1438e24f93f4a5
+        - page_id: recruitment-information
+          disposition: skipped
+          field_paths: []
+        - page_id: other-information
+          disposition: visited
+          field_paths:
+            - other-information.platform-name
+            - other-information.platform-other-name
+            - other-information.platform-record-number
+          signature_hash: sha256:662637b2cccd130ee1cb889b73f1ab77b8c5a568fe68d023b569d1e987509977
+        - page_id: data-sharing-and-public-disclosure
+          disposition: visited
+          field_paths:
+            - data-sharing-and-public-disclosure.data-share-statement
+          signature_hash: sha256:a9400d602423fe36f1ed0f5353499b1f931acd227efffc10fac3bfecae0530af
+        - page_id: related-attachments
+          disposition: visited
+          field_paths:
+            - related-attachments.research-protocol-file
+            - related-attachments.consent-or-waiver-file
+            - related-attachments.other-files
+          signature_hash: sha256:1893609cfb666574c17ef35ba2859ba00b9e9e5363bde6f7763d44fc21f64939
+      leaf:
+        status: blocked
+        blocked_reason: tabs_are_directly_reachable_but_no_nonpersistent_root_to_leaf_forward_replay_exists
+  - route_id: investigator-observational.diagnostic-yes.data-sharing-visibility.partial
+    status: partially_verified
+    evidence_grade: current_page_verified
+    verification_level: sample_verified
+    sample_scope: data-sharing-and-public-disclosure current-page share/no-share controlled comparison with checked-state confirmation
+    selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial: 'yes'
+      data-sharing-and-public-disclosure.data-share-statement: share
+    structural_decisions: []
+    display:
+      complete: false
+      pages:
+        - page_id: data-sharing-and-public-disclosure
+          disposition: visited
+          field_paths:
+            - data-sharing-and-public-disclosure.data-share-statement
+            - data-sharing-and-public-disclosure.data-share-plan
+            - data-sharing-and-public-disclosure.data-acquisition-condition
+            - data-sharing-and-public-disclosure.data-url
+            - data-sharing-and-public-disclosure.data-analysis
+            - data-sharing-and-public-disclosure.statistical-result-public
+            - data-sharing-and-public-disclosure.result-release-method
+            - data-sharing-and-public-disclosure.result-release-method-other
+          signature_hash: sha256:4487543c4b3183d05643da2e3d902c44ab024791080b5123f7c9dfe683b9a5b0
+      leaf:
+        status: blocked
+        blocked_reason: current_page_yes_no_visibility_was_reverified_in_a_fresh_unsaved_draft_but_no_root_to_leaf_forward_replay_exists
+  - route_id: investigator-interventional.design-vulnerable-repeat.partial
+    status: deferred_to_v2
+    evidence_grade: current_page_verified
+    verification_level: inferred_from_initial_tree
+    selections:
+      research-category.route-leaf: investigator-interventional
+      research-design.vulnerable-group: 'yes'
+    structural_decisions: []
+    display:
+      complete: false
+      pages:
+        - page_id: research-design
+          disposition: visited
+          field_paths:
+            - research-design.vulnerable-group
+            - research-design.vulnerable-group-type
+            - research-design.vulnerable-group-other
+            - research-design.inclusion-criteria
+            - research-design.exclusion-criteria
+          signature_hash: sha256:1d1163611a12c3698590e2a2ea0a1057f0ce5f6f6e6fa1e84fc5ceccc138145b
+      leaf:
+        status: blocked
+        blocked_reason: fresh_unsaved_design_page_confirmed_vulnerable_yes_no_visibility_and_inclusion_repeat_template_but_no_root_to_leaf_forward_replay_exists
+safe_merges: []
+controlled_collector_trial:
+  status: stopped_not_adopted
+  timebox: within_20_minutes
+  target:
+    page_id: research-design
+    control: research-design.vulnerable-group
+    intended_options:
+      - 'yes'
+      - 'no'
+  safe_actions_taken:
+    - Read only visible control metadata: name, label, order, requiredness, type, disabled state, select options, repeat-name, and bilingual-name marker.
+    - Attempted one normal browser click on the visible no radio control in an unsaved test draft.
+  result:
+    snapshot_reading: succeeded
+    option_switching: failed_to_change_checked_state
+    stable_repeatable_difference: not_established
+    reason: The platform's styled radio kept the yes option selected after the supported normal-UI click, so a reliable controlled before/after comparison could not be proven.
+  decision:
+    - No collector code was written to the worktree or attached to DFS.
+    - No source, screenshot, values, credentials, or raw markup was retained.
+    - Continue with normal single-operator UI DFS; field signatures remain a manual, per-route evidence aid only.
+live_sampling_revisions:
+  - route_id: investigator-observational.diagnostic-yes.exempt-consent.current-page.20260805
+    control_path: research-design.exempt-consent
+    status: sample_verified
+    evidence_grade: current_page_controlled_comparison
+    verification_level: sample_verified
+    current_page_effect: local_fields_changed
+    downstream_effect: not_checked
+    selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial: 'yes'
+      research-category.tcm-guided: 'no'
+      research-category.invasive-bci: 'no'
+      research-design.exempt-consent:
+      - 'yes'
+      - 'no'
+    observed_difference:
+      added_when_no:
+      - research-design.first-subjects-expected-date
+      removed_when_yes:
+      - research-design.first-subjects-expected-date
+    page_access_sample:
+      directly_accessed_pages:
+      - research-category
+      - basic-information
+      - implementation-information
+      - research-content
+      - research-design
+      - other-information
+      - data-sharing-and-public-disclosure
+      - related-attachments
+      recruitment_tab: not_present_in_initial_unfilled_tabset
+    boundary: Direct tab access and current-page switching were confirmed without entering values, saving, submitting, completing, or uploading. This is not a forward root-to-leaf replay and does not prove recruitment-page conditions or attachment service validation.
+    evidence_handling: Deidentified control names, option states, and field-visibility facts only; no values, raw markup, screenshot, account data, or attachment content retained.
+  - route_id: investigator-observational.diagnostic-no.control-group.current-page.20260805
+    control_path: research-design.control-group-flag
+    status: sample_verified
+    evidence_grade: current_page_controlled_comparison
+    verification_level: sample_verified
+    current_page_effect: none
+    downstream_effect: not_checked
+    selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial: 'no'
+      research-category.tcm-guided: 'no'
+      research-category.invasive-bci: 'no'
+      research-design.control-group-flag:
+      - 'yes'
+      - 'no'
+    observed_difference:
+      unchanged_current_page_fields:
+      - research-design.group-name
+      - research-design.group-sample-size
+      - research-design.control-group-flag
+      - research-design.intervention-name
+      - research-design.joint-measures
+      - research-design.intervention-type
+      - research-design.intervention-description
+    boundary: Both option states were checked in a fresh unfilled diagnostic-no draft. This proves only the compared current-page signature and does not establish downstream equivalence.
+    evidence_handling: Deidentified control names and boolean checked states only; no values, raw markup, screenshot, account data, or attachment content retained.
+  - route_id: investigator-observational.diagnostic-no.joint-measures.current-page.20260805
+    control_path: research-design.joint-measures
+    status: sample_verified
+    evidence_grade: current_page_controlled_comparison
+    verification_level: sample_verified
+    current_page_effect: none
+    downstream_effect: not_checked
+    selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial: 'no'
+      research-category.tcm-guided: 'no'
+      research-category.invasive-bci: 'no'
+      research-design.joint-measures:
+      - 'yes'
+      - 'no'
+    observed_difference:
+      unchanged_current_page_fields:
+      - research-design.group-name
+      - research-design.group-sample-size
+      - research-design.control-group-flag
+      - research-design.intervention-name
+      - research-design.joint-measures
+      - research-design.intervention-type
+      - research-design.intervention-description
+    boundary: Both option states were checked in a fresh unfilled diagnostic-no draft. This proves only the compared current-page signature and does not establish downstream equivalence.
+    evidence_handling: Deidentified control names and boolean checked states only; no values, raw markup, screenshot, account data, or attachment content retained.
+  - route_id: investigator-interventional.ordinary.random-group.yes-no.current-page
+    status: mismatch_found
+    evidence_grade: current_page_controlled_comparison
+    verification_level: mismatch_found
+    selections:
+      research-category.route-leaf: investigator-interventional
+      research-category.product-info-type: none
+      research-category.chinese-medicine-theory: 'no'
+      research-category.invasive-bci: 'no'
+      research-design.random-group: ['yes', 'no']
+    observed_difference:
+      added_when_yes:
+        - research-design.random-sequence-method
+      removed_when_no:
+        - research-design.random-sequence-method
+      current_route_absent_from_visible_structure:
+        - research-design.random-group-method
+        - research-design.other-random-group-method
+        - research-design.blinding-type
+        - research-design.allocation-concealment
+        - research-design.unblinding-procedure
+    page_scope: research-design current-page, same unsaved ordinary-interventional draft
+    privacy: deidentified control-name and visibility signature only
+    next_action: local_dfs_required_below_research-design.random-group
+  - route_id: investigator-interventional.ordinary.sample-collection.yes-no.current-page
+    status: partially_verified
+    evidence_grade: current_page_controlled_comparison
+    verification_level: sample_verified
+    selections:
+      research-category.route-leaf: investigator-interventional
+      research-category.product-info-type: none
+      research-design.sample-collection: ['yes', 'no']
+    observed_difference:
+      added_when_yes:
+        - research-design.biological-sample-name
+        - research-design.biological-sample-description
+      removed_when_no:
+        - research-design.biological-sample-name
+        - research-design.biological-sample-description
+    page_scope: research-design current-page, same unsaved ordinary-interventional draft
+    privacy: deidentified control-name and visibility signature only
+    next_action: repeat_add_remove_and_downstream_spot_check_remain
+  - route_id: investigator-interventional.ordinary.study-design.current-page
+    status: mismatch_found
+    evidence_grade: current_page_visibility_check
+    verification_level: mismatch_found
+    selections:
+      research-category.route-leaf: investigator-interventional
+      research-category.product-info-type: none
+      research-category.chinese-medicine-theory: 'no'
+      research-category.invasive-bci: 'no'
+    observed_difference:
+      absent_from_visible_structure:
+        - research-design.study-design
+    page_scope: research-design current-page, fresh unsaved root-path replay
+    privacy: deidentified control-name and visibility signature only
+    next_action: local_dfs_required_before_design_type_or_subtype_generation
+  - route_id: investigator-observational.diagnostic-yes-no.research-design.current-page
+    status: partially_verified
+    evidence_grade: current_page_controlled_comparison
+    verification_level: sample_verified
+    selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial: ['yes', 'no']
+    observed_difference:
+      diagnostic_yes_fields:
+        - research-design.diagnostic-gold-standard
+        - research-design.diagnostic-index-test
+        - research-design.diagnostic-target-condition
+        - research-design.diagnostic-target-sample-size
+        - research-design.diagnostic-confusable-population
+      diagnostic_no_fields:
+        - research-design.group-name
+        - research-design.group-sample-size
+        - research-design.control-group-flag
+        - research-design.intervention-name
+        - research-design.joint-measures
+        - research-design.intervention-description
+    page_scope: research-design matched lower viewport in separate fresh unsaved root-path replays
+    privacy: deidentified field-name and visibility signature only
+    next_action: independent_representative_downstream_checks_and_leaf_replays_remain
+  - route_id: investigator-observational.diagnostic-yes.exempt-consent.yes-no.current-page
+    status: partially_verified
+    evidence_grade: current_page_controlled_comparison
+    verification_level: sample_verified
+    selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial: 'yes'
+      research-design.exempt-consent: ['yes', 'no']
+    observed_difference:
+      added_when_no:
+        - research-design.first-consent-expected-date
+      absent_when_yes:
+        - research-design.first-consent-expected-date
+    page_scope: research-design current-page
+    privacy: deidentified field-name and visibility signature only
+    next_action: representative_downstream_spot_check_remains
+  - route_id: investigator-observational.diagnostic-no.group-option-equivalence.current-page
+    status: partially_verified
+    evidence_grade: current_page_controlled_comparison
+    verification_level: sample_verified
+    selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial: 'no'
+      research-design.control-group-flag: ['yes', 'no']
+      research-design.joint-measures: ['yes', 'no']
+    observed_difference:
+      current_page_structural_difference: none
+    page_scope: research-design current-page
+    privacy: deidentified field-name and visibility signature only
+    next_action: representative_downstream_equivalence_check_remains
+  - route_id: investigator-observational.diagnostic-yes.public-strategy.cross-page.20260805
+    control_path: basic-information.sync-platform
+    status: sample_verified
+    evidence_grade: representative_cross_page_comparison
+    verification_level: sample_verified
+    current_page_effect: local_fields_changed
+    downstream_effect: confirmed_cross_page
+    selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial: 'yes'
+      basic-information.sync-platform:
+      - two-platforms-private
+      - chictr-public
+    observed_difference:
+      added_when_chictr_public:
+      - basic-information.registration-status
+      - basic-information.scientific-title-english
+      - basic-information.english-acronym
+      - basic-information.public-title-english
+      - data-sharing-and-public-disclosure.data-share-plan-english
+      - data-sharing-and-public-disclosure.data-analysis-english
+      public_data-share-statement-yes-and-no:
+      - data-sharing-and-public-disclosure.data-share-plan
+      - data-sharing-and-public-disclosure.data-share-plan-english
+      - data-sharing-and-public-disclosure.data-acquisition-condition
+      - data-sharing-and-public-disclosure.data-url
+      - data-sharing-and-public-disclosure.data-analysis
+      - data-sharing-and-public-disclosure.data-analysis-english
+      shared_result-publication-group:
+      - data-sharing-and-public-disclosure.statistical-result-public
+      - data-sharing-and-public-disclosure.release-method
+      - data-sharing-and-public-disclosure.release-method-other
+      unchanged_sampled_attachment_categories:
+      - related-attachments.research-protocol
+      - related-attachments.consent-template-or-waiver
+      - related-attachments.other-documents
+    boundary: "Fresh unfilled diagnostic-yes draft; normal UI selection and direct-tab representative comparison only. The public route's data-share statement yes/no group was rechecked: both options retain the full Chinese/English data-detail group. This does not establish forward validation, server behavior, or every result-publication sub-option."
+    evidence_handling: Deidentified technical field names, option labels, and visible structural facts only; no values, raw markup, screenshots, account data, or attachments retained.
+  - route_id: investigator-observational.diagnostic-no.data-share-statement.current-page.20260805
+    control_path: data-sharing-and-public-disclosure.data-share-statement
+    status: sample_verified
+    evidence_grade: current_page_controlled_comparison
+    verification_level: sample_verified
+    current_page_effect: local_fields_changed
+    downstream_effect: not_checked
+    selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial: 'no'
+      research-design.study-design: cross-sectional
+      data-sharing-and-public-disclosure.data-share-statement:
+      - 'yes'
+      - 'no'
+    observed_difference:
+      added_when_yes:
+      - data-sharing-and-public-disclosure.data-share-plan
+      - data-sharing-and-public-disclosure.data-acquisition-condition
+      - data-sharing-and-public-disclosure.data-url
+      - data-sharing-and-public-disclosure.data-analysis
+      unchanged_current_page_fields:
+      - data-sharing-and-public-disclosure.statistical-result-public
+      - data-sharing-and-public-disclosure.release-method
+      - data-sharing-and-public-disclosure.release-method-other
+    boundary: Fresh unfilled diagnostic-no cross-sectional draft; this proves only the current-page signature and does not establish downstream equivalence or every result-publication option.
+    evidence_handling: Deidentified technical field names and boolean selection facts only; no values, raw markup, screenshots, account data, or attachments retained.
+  - route_id: investigator-observational.diagnostic-no.statistical-result-public.current-page.20260805
+    control_path: data-sharing-and-public-disclosure.statistical-result-public
+    status: sample_verified
+    evidence_grade: current_page_controlled_comparison
+    verification_level: sample_verified
+    current_page_effect: none
+    downstream_effect: not_checked
+    selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial: 'no'
+      research-design.study-design: cross-sectional
+      data-sharing-and-public-disclosure.statistical-result-public:
+      - 'yes'
+      - 'no'
+    observed_difference:
+      current_page_structural_difference: none
+      unchanged_current_page_fields:
+      - data-sharing-and-public-disclosure.release-method
+      - data-sharing-and-public-disclosure.release-method-other
+    boundary: Fresh unfilled diagnostic-no cross-sectional draft; only the current page was compared. The release-method other sub-option remains out of scope.
+    evidence_handling: Deidentified technical field names and boolean selection facts only; no values, raw markup, screenshots, account data, or attachments retained.
+  - route_id: investigator-observational.diagnostic-yes-no.initial-tabs-and-design-entry.20260805
+    control_path: research-category.diagnostic-trial
+    status: sample_verified
+    evidence_grade: root-path_current-page_comparison
+    verification_level: sample_verified
+    current_page_effect: page_or_structure_changed
+    downstream_effect: not_checked
+    selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial:
+      - 'yes'
+      - 'no'
+    observed_difference:
+      shared_initial_visible_tabs:
+      - research-category
+      - basic-information
+      - implementation-information
+      - research-content
+      - research-design
+      - other-information
+      - data-sharing-and-public-disclosure
+      - related-attachments
+      shared_initial_absence:
+      - recruitment-information
+      diagnostic_no_design_entry:
+      - research-design.study-design-type
+      diagnostic_yes_design_entry:
+      - research-design.participant-sex
+    boundary: Fresh unfilled root-path replays. Initial recruitment-tab absence is not evidence that recruitment is globally skipped; a forward replay after valid entries remains necessary.
+    evidence_handling: Deidentified page identifiers, control names, and option labels only; no values, raw markup, screenshots, account data, or attachments retained.
+  - route_id: investigator-observational.chictr-public.basic-funding-material.current-page.20260805
+    control_path: basic-information.funding-source-level-1
+    status: sample_verified
+    evidence_grade: current_page_controlled_comparison
+    verification_level: sample_verified
+    current_page_effect: local_fields_changed
+    downstream_effect: not_checked
+    selections:
+      research-category.route-leaf: investigator-observational
+      basic-information.sync-platform: public-on-chictr
+    observed_difference:
+      funding-level-1-other: displayed_local_other-name-field_and_no-dependent-level-selectors
+      funding-level-1-national: displayed_dependent_second-level-selector
+      national-level-2-key-national-r-and-d-program: displayed_third-level-special-topic-dictionary
+      material-donation-yes: displayed_repeatable_chinese-and-english-material-template
+      material-donation-no: hid_material-template
+    boundary: This is a controlled current-page sample, not a full enumeration of funding dictionaries. An add-item click did not yield a stable second visible material instance in the browser surface, so repeat duplication is not upgraded by this entry.
+    evidence_handling: Deidentified control names, option classes, and field-visibility facts only; no entered values, raw markup, screenshots, account data, or attachments retained.
+  - route_id: investigator-observational.diagnostic-yes.chictr-public.design-local-controls.20260805
+    control_path: research-design.random-group-method
+    status: sample_verified
+    evidence_grade: current_page_controlled_comparison
+    verification_level: sample_verified
+    current_page_effect: local_fields_changed
+    downstream_effect: not_checked
+    selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial: 'yes'
+      basic-information.sync-platform: public-on-chictr
+    observed_difference:
+      random-group-no: hid_random-method_chinese-and-english-randomization-description
+      random-group-yes-standard-method: displayed_chinese-and-english-randomization-description
+      random-group-yes-method-other: displayed_other-random-method-explanation_and_chinese-randomization-description_but_hid_english-randomization-description
+      blinding-open-label-assessor-blind-or-open: hid_unblinding-allocation-method-and-allocation-description
+      blinding-double-or-single: displayed_unblinding-allocation-method-and-allocation-description
+      exempt-consent-no: displayed_first-consent-expected-date
+      exempt-consent-yes: hid_first-consent-expected-date
+    boundary: Direct current-page comparisons only. The public diagnostic field inventory was also re-read in this draft; six Chinese diagnostic controls and their English companions were visible. This record does not establish each downstream option combination.
+    evidence_handling: Deidentified control names and visibility differences only; no values, raw markup, screenshots, account data, or attachments retained.
+  - route_id: investigator-observational.diagnostic-yes.chictr-public.content-extra-inspection.current-page.20260805
+    control_path: research-content.extra-inspection-measures
+    status: sample_verified
+    evidence_grade: current_page_controlled_comparison
+    verification_level: sample_verified
+    current_page_effect: local_fields_changed
+    downstream_effect: not_checked
+    selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial: 'yes'
+      basic-information.sync-platform: public-on-chictr
+    observed_difference:
+      'yes': displayed_research-content.extra-measure-name
+      'no': hid_research-content.extra-measure-name
+      english-companion: not_present
+    boundary: Only the current research-content page was compared. The other long dictionaries on that page remain represented as controls, not individually enumerated structural branches.
+    evidence_handling: Deidentified control names and visibility facts only; no values, raw markup, screenshots, account data, or attachments retained.
