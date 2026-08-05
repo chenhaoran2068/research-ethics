@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1 - 2026-08-06
+
+- Adds explicit `actual_submission` and `test_public` operating modes.
+- Actual local submissions retain authorized real project facts; de-identification is required only for tests, public examples, reusable fixtures, or other persistent shared artifacts.
+- Adds intake validation and regression tests for the operating-mode boundary.
+
 ## 1.0.0 - 2026-08-06
 
 - First public V1 release for researcher-initiated observational research.

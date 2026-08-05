@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate a de-identified V1 intake before rendering a filling draft."""
+"""Validate a V1 intake before rendering a filling draft."""
 
 from __future__ import annotations
 
@@ -17,6 +17,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CANONICAL = PROJECT_ROOT / "references" / "registration-tree.yaml"
 SUPPORTED_ROUTE = "investigator-observational"
 DISABLED_PLATFORM = "traditional-disabled"
+OPERATING_MODES = {"actual_submission", "test_public"}
 
 
 def load_mapping(path: Path) -> dict[str, Any]:
@@ -40,11 +41,16 @@ def validate(canonical: dict[str, Any], intake: dict[str, Any]) -> list[str]:
         return ["canonical YAML 无法通过校验：" + "; ".join(errors[:3])]
 
     selections = intake.get("selections")
+    metadata = intake.get("metadata", {})
     values = intake.get("values", {})
     repeat_groups = intake.get("repeat_groups", {})
     issues: list[str] = []
     if not isinstance(selections, dict):
         return ["intake.selections 必须是映射"]
+    if not isinstance(metadata, dict):
+        issues.append("intake.metadata 必须是映射")
+    elif metadata.get("operating_mode", "test_public") not in OPERATING_MODES:
+        issues.append("metadata.operating_mode 必须是 actual_submission 或 test_public")
     if not isinstance(values, dict):
         issues.append("intake.values 必须是映射")
     if not isinstance(repeat_groups, dict):

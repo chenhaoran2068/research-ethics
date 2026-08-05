@@ -44,6 +44,12 @@ The skill will:
 3. ask for missing real-world facts;
 4. generate Markdown and Word filling drafts in platform order.
 
+### Operating mode
+
+- **Actual submission**: say that you are preparing a real ethics application or registration. The skill may use the necessary real project facts in a user-authorized local private workspace and output; it does not automatically de-identify them. It must never copy those facts into Git, examples, tests, logs, or the installed skill.
+- **Test or public use**: say that the material is for a demo, regression test, public example, or sharing. The skill must de-identify any persistent input and output first.
+- **Unclear purpose**: the skill asks which mode applies before retaining material.
+
 Word output semantics:
 
 - blue: a proposed value or selection;
@@ -57,6 +63,7 @@ Each unresolved item is classified as one of: real-world fact, platform rule, ma
 - Check all generated values against the current platform page before submission.
 - Do not treat the output as ethics approval, legal advice, or final platform guidance.
 - Do not commit research plans, screenshots, source HTML, account data, credentials, or real filling drafts to this repository.
+- Keep actual-submission and test/public workspaces separate.
 - Attachments are listed as preparation requirements only; the skill never uploads them.
 
 ## Validation
