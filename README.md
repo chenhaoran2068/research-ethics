@@ -41,8 +41,11 @@ The skill will:
 
 1. identify the V1 route and stop for V2 routes;
 2. extract only supported candidate values from the plan;
-3. ask for missing real-world facts;
-4. generate Markdown and Word filling drafts in platform order.
+3. first present a structural-confirmation sheet for every currently visible choice that changes fields, requiredness, pages, repeat groups, or attachments;
+4. wait for the user's explicit confirmation, including any newly revealed structural choices;
+5. only then generate Markdown and Word filling drafts in platform order.
+
+The research plan can supply a **recommendation** and source for a choice, but it never substitutes for this explicit confirmation. The renderer rejects an intake that does not carry matching user-confirmed structural selections.
 
 ### Operating mode
 
@@ -75,6 +78,7 @@ py -3.13 scripts\validate_atomic_schema.py references\registration-tree.yaml
 py -3.13 scripts\validate_dfs_ledger.py
 py -3.13 scripts\validate_v1_artifacts.py
 py -3.13 scripts\check_v1_skill_readiness.py
+py -3.13 tests\test_structural_confirmation_gate.py
 py -3.13 tests\test_chictr_public_e2e.py
 ```
 

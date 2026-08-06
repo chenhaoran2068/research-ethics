@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.2 - 2026-08-06
+
+- Adds a hard structural-confirmation gate before any V1 Markdown or Word filling draft can be rendered.
+- Requires explicit user-confirmed option IDs, rejects missing or mismatched confirmations, and adds a confirmation-sheet generator for iterative conditional choices.
+
 ## 1.0.1 - 2026-08-06
 
 - Adds explicit `actual_submission` and `test_public` operating modes.

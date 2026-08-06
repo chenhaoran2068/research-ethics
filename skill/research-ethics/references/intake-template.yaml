@@ -1,6 +1,10 @@
 # 只含占位符；不要把真实研究、账号或联系方式保存在此模板中。
 metadata:
   operating_mode: test_public  # test_public | actual_submission
+  structural_confirmation:
+    status: pending  # pending | explicitly_confirmed
+    method: "<only-after-user-explicit-confirmation>"
+    confirmed_selections: {}
 
 selections:
   research-category.route-leaf: investigator-observational

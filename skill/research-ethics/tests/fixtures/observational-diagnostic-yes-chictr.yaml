@@ -1,9 +1,54 @@
-# 脱敏回归样例：验证 ChiCTR 公开路线的中英文配对字段。
+# 脱敏回归样例：验证 ChiCTR 公开路线；结构性选择均为合成且已显式确认的测试值。
+metadata:
+  operating_mode: test_public
+  structural_confirmation:
+    status: explicitly_confirmed
+    method: user_explicit
+    confirmed_selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial: 'yes'
+      basic-information.sync-platform: public-on-chictr
+      basic-information.funding-international-cooperation: 否
+      basic-information.material-donation-flag: 否
+      data-sharing-and-public-disclosure.data-share-statement: do-not-share
+      data-sharing-and-public-disclosure.result-release-method: academic-publication
+      implementation-information.multicenter-flag: 否
+      other-information.platform-name: chictr
+      research-content.extra-inspection-measures: 否
+      research-content.research-phase: '1005.14'
+      research-design.biological-sample-collection: 'no'
+      research-design.exempt-consent: 'no'
+      research-design.indicator-type-level-2: therapeutic
+      research-design.maximum-age-secondary-unit: unlimited
+      research-design.maximum-age-unit: unlimited
+      research-design.minimum-age-secondary-unit: unlimited
+      research-design.minimum-age-unit: unlimited
+      research-design.random-group: 'no'
+      research-design.study-design: cross-sectional
+      research-design.vulnerable-group: 'no'
 selections:
   research-category.route-leaf: investigator-observational
   research-category.diagnostic-trial: 'yes'
   basic-information.sync-platform: public-on-chictr
   basic-information.registration-status: 预填报
+  basic-information.funding-international-cooperation: 否
+  basic-information.material-donation-flag: 否
+  data-sharing-and-public-disclosure.data-share-statement: do-not-share
+  data-sharing-and-public-disclosure.result-release-method: academic-publication
+  implementation-information.multicenter-flag: 否
+  other-information.platform-name: chictr
+  research-content.extra-inspection-measures: 否
+  research-content.research-phase: '1005.14'
+  research-design.biological-sample-collection: 'no'
+  research-design.exempt-consent: 'no'
+  research-design.indicator-type-level-2: therapeutic
+  research-design.maximum-age-secondary-unit: unlimited
+  research-design.maximum-age-unit: unlimited
+  research-design.minimum-age-secondary-unit: unlimited
+  research-design.minimum-age-unit: unlimited
+  research-design.random-group: 'no'
+  research-design.study-design: cross-sectional
+  research-design.vulnerable-group: 'no'
 
 values:
   basic-information.research-title:
@@ -20,4 +65,3 @@ values:
     source: 回归测试虚构值
 
 repeat_groups: {}
-

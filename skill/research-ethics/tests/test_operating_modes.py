@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from validate_v1_intake import validate  # noqa: E402
+from confirmation_support import confirmed_intake  # noqa: E402
 
 
 class OperatingModeTest(unittest.TestCase):
@@ -22,27 +23,12 @@ class OperatingModeTest(unittest.TestCase):
             self.canonical = yaml.safe_load(handle)
 
     def test_actual_submission_is_an_explicit_valid_mode(self) -> None:
-        intake = {
-            "metadata": {"operating_mode": "actual_submission"},
-            "selections": {
-                "research-category.route-leaf": "investigator-observational",
-                "research-category.diagnostic-trial": "no",
-                "basic-information.sync-platform": "private",
-            },
-            "values": {},
-            "repeat_groups": {},
-        }
+        intake = confirmed_intake(self.canonical, operating_mode="actual_submission")
         self.assertEqual([], validate(self.canonical, intake))
 
     def test_unknown_mode_is_rejected(self) -> None:
-        intake = {
-            "metadata": {"operating_mode": "automatic-redaction"},
-            "selections": {
-                "research-category.route-leaf": "investigator-observational",
-                "research-category.diagnostic-trial": "no",
-                "basic-information.sync-platform": "private",
-            },
-        }
+        intake = confirmed_intake(self.canonical)
+        intake["metadata"]["operating_mode"] = "automatic-redaction"
         issues = validate(self.canonical, intake)
         self.assertTrue(any("metadata.operating_mode" in issue for issue in issues))
 
