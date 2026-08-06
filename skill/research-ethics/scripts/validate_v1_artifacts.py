@@ -14,7 +14,7 @@ from generate_v1_candidate_queue import collect
 from generate_v1_field_coverage_matrix import render as render_field_matrix
 from generate_observational_v1_coverage import render as render_observational_coverage
 from generate_observational_v1_unmerged import build_model, html_document, markdown as unmerged_markdown
-from validate_dfs_ledger import LedgerValidationError, validate_ledger
+from validate_dfs_ledger import LedgerValidationError, sha256_file, validate_ledger
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -43,7 +43,7 @@ UUID = re.compile(r"(?i)\b[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}\b")
 
 
 def sha256(path: Path) -> str:
-    return "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
+    return sha256_file(path)
 
 
 def check_scope(canonical: dict) -> None:

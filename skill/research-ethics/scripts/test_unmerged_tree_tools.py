@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import sys
 import tempfile
 import unittest
@@ -12,11 +11,11 @@ from pathlib import Path
 import yaml
 
 from generate_unmerged_vertical_tree import build_tree, html_document, markdown_index
-from validate_dfs_ledger import LedgerValidationError, validate_ledger
+from validate_dfs_ledger import LedgerValidationError, sha256_file, validate_ledger
 
 
 def digest(path: Path) -> str:
-    return "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
+    return sha256_file(path)
 
 
 def signature(letter: str) -> str:

@@ -1,4 +1,4 @@
 interface:
   display_name: "医学研究伦理与方案准备"
-  short_description: "先核验研究计划书覆盖与条件，再生成伦理备案逐项填写稿"
-  default_prompt: "Use $research-ethics in actual_submission mode to 先按中国大陆观察性研究路线生成代码化研究计划书骨架，再确认并准备备案填写稿。"
+  short_description: "生成中国通用中英文研究计划书及可复制伦理备案逐项填写稿"
+  default_prompt: "Use $research-ethics to generate a China-general bilingual research-protocol skeleton, then confirm and prepare a registration filling draft."

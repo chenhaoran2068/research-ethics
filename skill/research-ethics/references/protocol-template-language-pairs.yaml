@@ -1,0 +1,151 @@
+schema_version: "0.1"
+title: 中国通用研究计划书中英文配对目录
+status: controlled_translation_draft
+reviewed_on: "2026-08-06"
+scope:
+  profile: china-mainland
+  route: investigator-observational
+  canonical_language: zh-CN
+  paired_language: en
+  purpose: "为同一覆盖矩阵的静态章节和写作提示提供受控英文配对；不保存或翻译任何项目事实。"
+rules:
+  - "中文章节、条件和备案字段映射以 protocol-coverage-matrix.yaml 为唯一事实源。"
+  - "英文标题和写作提示只能通过相同 module_id、chapter_id 引用，不能另建独立章节树。"
+  - "英文研究事实、专业术语和平台实际填写值必须由用户确认；本目录中的静态提示不构成项目事实。"
+  - "仅 public-on-chictr 的实际英文登记字段构成当前 V1 已观察到的平台英文要求。"
+module_pairs:
+  core-governance:
+    title_en: "Core Study Information and Governance"
+  core-rationale-objectives:
+    title_en: "Scientific Rationale and Objectives"
+  core-design-population:
+    title_en: "Overall Design, Setting, and Study Population"
+  core-variables-procedures:
+    title_en: "Variables, Outcomes, and Study Procedures"
+  core-statistics-data:
+    title_en: "Sample Size, Statistical Analysis, and Data Governance"
+  core-ethics-operations:
+    title_en: "Ethical Safeguards, Study Operations, and Attachments"
+  observational-methods:
+    title_en: "Observational-Study Methods Module"
+  diagnostic-methods:
+    title_en: "Diagnostic-Study Module"
+  multicenter:
+    title_en: "Multicentre Study Module"
+  biospecimen-and-hgr:
+    title_en: "Biospecimen and Human Genetic Resources Module"
+  public-registration:
+    title_en: "Public Registration and English-Pairing Module"
+  international-collaboration:
+    title_en: "International Collaboration Module"
+  consent-waiver-and-vulnerable-participants:
+    title_en: "Consent-Waiver and Vulnerable-Participant Module"
+chapter_pairs:
+  P-01:
+    title_en: "Study Title, Version, and Amendment Record"
+    prompt_en: "State the Chinese title, the English title where needed, protocol version, date, and substantive amendment history."
+  P-02:
+    title_en: "Study Institution, Principal Investigator, and Study Team"
+    prompt_en: "State the coordinating institution, investigator roles, contact information, team responsibilities, and relevant qualifications."
+  P-03:
+    title_en: "Funding, Conflicts of Interest, and Resource Assurance"
+    prompt_en: "Describe funding sources and amounts, conflicts of interest, equipment, data and personnel resources, and arrangements that protect study independence."
+  P-04:
+    title_en: "Background and Scientific Rationale"
+    prompt_en: "Describe the clinical problem, current evidence, uncertainty, need for the study, and the rationale for avoiding meaningless duplication."
+  P-05:
+    title_en: "Study Objectives, Research Questions, and Hypotheses"
+    prompt_en: "Distinguish primary from secondary objectives and state testable research questions, hypotheses, and the intended population."
+  P-06:
+    title_en: "Study Value and Anticipated Outputs"
+    prompt_en: "Describe potential clinical, public-health, or methodological value and how findings will be interpreted and disseminated."
+  P-07:
+    title_en: "Overall Study Design and Timeline"
+    prompt_en: "Specify the observational design, single- or multicentre setting, retrospective or prospective direction, study time window, and key milestones."
+  P-08:
+    title_en: "Study Setting, Data Sources, and Eligibility Frame"
+    prompt_en: "Describe institutions, databases, outpatient or inpatient sources, disease or health status, target population, and applicability boundaries."
+  P-09:
+    title_en: "Inclusion, Exclusion, and Withdrawal Criteria"
+    prompt_en: "Provide operational inclusion and exclusion criteria aligned with the study objective, withdrawal or exclusion rules, and their ethical rationale."
+  P-10:
+    title_en: "Recruitment, Screening, and Information/Consent Pathway"
+    prompt_en: "If recruitment is needed, describe the target participants, approach, materials, safeguards against undue influence, and expected timing."
+  P-11:
+    title_en: "Exposure, Grouping, Comparators, and Confounding"
+    prompt_en: "Define exposures, comparison groups or strata, time zero, potential confounders, effect modifiers, and measurement methods."
+  P-12:
+    title_en: "Outcome Measures and Measurement Plan"
+    prompt_en: "Define primary, secondary, and safety outcomes separately; specify instruments, time points, decision criteria, and sources of missing data."
+  P-13:
+    title_en: "Study Procedures, Follow-up, and Additional Measures"
+    prompt_en: "Use a flowchart or schedule to describe data collection, follow-up, additional examinations, tests, or diagnostic procedures and how they are minimised."
+  P-14:
+    title_en: "Data Quality, Bias Control, and Traceability"
+    prompt_en: "Describe training, data verification, measurement consistency, identification and control of bias, data provenance, and traceability."
+  P-15:
+    title_en: "Sample-Size and Feasibility Rationale"
+    prompt_en: "Describe the sample-size calculation, available case count or database scale, power assumptions, and treatment of unforeseen losses."
+  P-16:
+    title_en: "Statistical Analysis Plan"
+    prompt_en: "Pre-specify analysis populations, descriptive methods, primary models, confounding control, subgroup or sensitivity analyses, missing-data handling, and software."
+  P-17:
+    title_en: "Data Processing, Access Control, and Retention"
+    prompt_en: "Describe minimum-necessary data, de-identification, key management, access permissions, transmission, backup, retention, and destruction arrangements."
+  P-18:
+    title_en: "Data Sharing, Results Disclosure, and Reuse Boundaries"
+    prompt_en: "State whether data will be shared, the scope and conditions of access, the results-publication plan, and privacy and ethical limits."
+  P-19:
+    title_en: "Risk-Benefit Assessment and Risk Minimisation"
+    prompt_en: "Address physical, psychological, privacy, economic, and social risks; anticipated benefits, alternatives, and measures to minimise risk."
+  P-20:
+    title_en: "Informed Consent, Waiver, and Participant Rights"
+    prompt_en: "Describe the consent process, comprehension and voluntariness, right to withdraw, compensation and injury arrangements; if seeking a waiver, justify each criterion."
+  P-21:
+    title_en: "Ethics Oversight, Deviations, and Protocol Amendments"
+    prompt_en: "Describe that study activities do not begin before ethics approval, how substantive amendments are re-reviewed, how deviations or adverse events are reported, and the continuing-oversight pathway."
+  P-22:
+    title_en: "Attachments and Submission-Materials Checklist"
+    prompt_en: "List the protocol, consent or waiver materials, ethics approval documents, study tools, recruitment materials, data-management materials, and any institution-specific attachments."
+  O-01:
+    title_en: "Specific Observational Design"
+    prompt_en: "Specify cohort, case-control, cross-sectional, or another design; for cohorts, state retrospective, prospective, or ambidirectional direction and the observation period."
+  O-02:
+    title_en: "Temporal Relationships, Selection Processes, and Bias Control"
+    prompt_en: "Describe the timing of exposure, outcome, and enrolment; identify selection bias, information bias, confounding, and reverse causation."
+  O-03:
+    title_en: "Source and Processing of Routinely Collected Health Data"
+    prompt_en: "When using records, registries, or databases, describe coding, linkage, data cleaning, data quality, and missing-data handling."
+  D-01:
+    title_en: "Diagnostic Purpose, Clinical Question, and Target Population"
+    prompt_en: "Define the intended clinical use of the index test, the intended-use setting, target condition, target population, and pre-specified thresholds."
+  D-02:
+    title_en: "Index Test, Reference Standard, and Interpretation Rules"
+    prompt_en: "Describe conduct and interpretation of the index test and reference standard, training, blinding, decision thresholds, and handling of indeterminate results."
+  D-03:
+    title_en: "Diagnostic-Accuracy Measures and Participant Flow"
+    prompt_en: "Pre-specify sensitivity, specificity, and other measures with confidence intervals; present inclusion, exclusion, missing-data, and verification flow."
+  C-01:
+    title_en: "Multicentre Structure, Roles, and Coordination"
+    prompt_en: "Describe domestic or international multicentre classification, coordinating and participating institutions, the common protocol, responsibilities, data flow, and quality control."
+  C-02:
+    title_en: "Participating Institutions, Ethics Coordination, and Data Security"
+    prompt_en: "Describe each participating institution, its local ethics pathway, data access, inter-institutional transfer, and allocation of responsibilities."
+  C-03:
+    title_en: "Biospecimen Collection, Type, Quantity, and Disposition"
+    prompt_en: "Describe specimen name, type, quantity, collection time point, purpose, storage location, retention period, destruction, and future use."
+  C-04:
+    title_en: "Human Genetic Resources and External Provision Assessment"
+    prompt_en: "Identify whether human genetic resources materials or information, international collaboration, export, or external provision are involved, and flag separate approval or filing checks."
+  C-05:
+    title_en: "ChiCTR Public Information and English Terminology Check"
+    prompt_en: "Prepare paired Chinese and English titles, acronyms, funding, materials, and public information item by item; the user must verify research facts and specialist terminology in English."
+  C-06:
+    title_en: "International Collaboration, Data/Biospecimen Flows, and Responsibilities"
+    prompt_en: "Describe collaborators, tasks, data and biospecimen flows, cross-border arrangements, applicable approvals or filings, intellectual property, and participant-rights safeguards."
+  C-07:
+    title_en: "Consent-Waiver Criteria and Alternative Safeguards"
+    prompt_en: "If applying for a waiver, address minimum risk, impracticability, privacy protection, impact on rights and interests, and the basis for ethics-committee review."
+  C-08:
+    title_en: "Additional Safeguards for Vulnerable Participants"
+    prompt_en: "Describe the necessity of including children, pregnant or breastfeeding women, persons with disabilities, or other vulnerable groups, and the consent or proxy-consent and additional safeguards."

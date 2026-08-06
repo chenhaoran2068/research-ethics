@@ -72,7 +72,15 @@ def yaml_load(path: Path) -> Any:
 
 
 def sha256_file(path: Path) -> str:
-    return "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
+    """Hash UTF-8 text after normalizing line endings.
+
+    The ledger is a content-integrity record, not a record of a checkout's
+    CRLF/LF policy.  Git archives and Windows worktrees may legitimately use
+    different line endings for the same canonical YAML, so raw-byte hashing
+    would make a valid public release fail after installation.
+    """
+    normalized = path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+    return "sha256:" + hashlib.sha256(normalized.encode("utf-8")).hexdigest()
 
 
 def children_of(node: dict[str, Any]) -> Iterable[dict[str, Any]]:

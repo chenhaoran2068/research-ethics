@@ -1,0 +1,85 @@
+schema_version: "0.1"
+title: "中国通用研究计划书：语义段落组合规则"
+purpose: >-
+  规定代码生成的研究计划书如何把同一事实模型组织为可审查的中文、英文或双语文本。
+  本规则约束段落、子节、清单和表格的使用；不提供或推断研究事实。
+
+scope:
+  country_profile: china-mainland
+  supported_route: investigator-observational
+  canonical_language: zh
+  paired_languages:
+    - en
+  bilingual_contract: >-
+    中文与英文必须读取同一章节、同一语义单元和同一 statement_id；
+    不允许通过临时翻译或另一套事实来补写英文。
+
+paragraph_contract:
+  narrative:
+    use_when: "两个或以上相互关联的事实共同构成一个完整论点、解释或判断。"
+    requirements:
+      - "一个段落只表达一个完整论点；通常由 2–5 个相关陈述组成。"
+      - "不得按原始材料中的句号、换行或摘录顺序机械断段。"
+      - "段内应体现事实之间的关系，例如背景→证据缺口→本研究必要性。"
+    prohibited:
+      - "将无关的伦理、数据、方法或行政事实混在同一段。"
+      - "把每一句或每个来源摘录单独排成一个段落。"
+  definition_list:
+    use_when: "读者需要逐项查找、核对或填写的结构化事实。"
+    examples: ["研究机构与职责", "变量定义", "权限与保存期限"]
+  criteria_list:
+    use_when: "纳入、排除、退出或暂停等并列判定标准。"
+  procedure_steps:
+    use_when: "按时间或操作顺序执行的研究、招募、告知或修订流程。"
+  checklist:
+    use_when: "附件、提交物或交付物的核对清单。"
+  sectioned_narrative:
+    use_when: "同一章节包含互不混杂、但各自需要完整论述的主题。"
+
+table_policy:
+  use_when: "至少三条同构记录具有相同字段，且横向比较能显著降低歧义。"
+  otherwise: "使用叙述段、定义清单或步骤清单；不得为单一事实或两项短事实硬造表格。"
+  forbidden: "不得用表格把本应连贯论证的背景、理由、风险获益或伦理判断切碎。"
+
+chapter_forms:
+  default: narrative
+  overrides:
+    P-01: definition_list
+    P-02: definition_list
+    P-03: definition_list
+    P-09: criteria_list
+    P-10: procedure_steps
+    P-11: definition_list
+    P-12: definition_list
+    P-17: definition_list
+    P-18:
+      form: sectioned_narrative
+      required_units:
+        - id: results-publication
+          title_zh: "研究结果发布"
+          title_en: "Results Publication"
+          prompt_zh: "说明拟公开的结果范围、时点、渠道与避免选择性报告的安排。"
+          prompt_en: "State the planned result scope, timing, channels, and safeguards against selective reporting."
+        - id: data-sharing
+          title_zh: "数据共享"
+          title_en: "Data Sharing"
+          prompt_zh: "说明是否共享、共享对象、最小必要数据集、访问条件及去标识化要求。"
+          prompt_en: "State whether data will be shared, with whom, the minimum dataset, access conditions, and de-identification safeguards."
+        - id: data-reuse
+          title_zh: "数据再利用边界"
+          title_en: "Data Reuse Boundaries"
+          prompt_zh: "说明允许和禁止的再利用目的、再次审批、保存期限及撤回或销毁安排。"
+          prompt_en: "State permitted and prohibited reuse purposes, re-approval, retention, and withdrawal or destruction arrangements."
+    P-21: procedure_steps
+    P-22: checklist
+    D-03: procedure_steps
+    C-01: definition_list
+    C-02: definition_list
+    C-03: definition_list
+    C-06: definition_list
+
+validation_contract:
+  narrative_minimum_confirmed_statements: 2
+  require_statement_id: true
+  require_paired_languages_for_bilingual: true
+  reject_punctuation_based_paragraphs: true

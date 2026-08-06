@@ -16,7 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL_FILES = ("SKILL.md", "BUILD_RULES.md")
-PUBLIC_ROOT_FILES = ("BUILD_RULES.md",)
+PUBLIC_ROOT_FILES = ("README.md", "BUILD_RULES.md")
 SKILL_DIRS = ("agents", "scripts", "tests")
 REFERENCE_FILES = (
     "registration-tree.yaml",
@@ -34,9 +34,25 @@ REFERENCE_FILES = (
     "v1-field-coverage-matrix.md",
     "unproduct-other-local-dfs-protocol.md",
     "intervention-type-other-local-replay-protocol.md",
+    # Code-generated protocol skeleton and semantic-composition rules.
+    "protocol-coverage-matrix.yaml",
+    "protocol-template-sources.yaml",
+    "protocol-template-language-pairs.yaml",
+    "protocol-template-architecture.md",
+    "protocol-semantic-composition.yaml",
+    "protocol-semantic-fact-template.yaml",
+    "version-roadmap.md",
 )
 FORBIDDEN_SUFFIXES = {".docx", ".png", ".jpg", ".jpeg", ".webp", ".mhtml", ".pdf"}
 FORBIDDEN_NAMES = {"code.txt", "source.txt"}
+# These files supported a one-off, private document-restructuring review.
+# Public V1 teaches code-generated skeletons and never needs to reproduce a
+# user plan by manual restructuring.
+PRIVATE_ONLY_BASENAMES = {
+    "restructure_observational_protocol.py",
+    "validate_restructured_protocol_docx.py",
+    "test_restructure_observational_protocol.py",
+}
 SENSITIVE_PATTERNS = (
     ("email", re.compile(r"(?i)\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b")),
     ("mobile", re.compile(r"(?<!\d)1[3-9]\d{9}(?!\d)")),
@@ -55,6 +71,8 @@ def copy_tree(source: Path, destination: Path) -> None:
         if not path.is_file() or "__pycache__" in path.parts:
             continue
         if path.suffix.lower() in FORBIDDEN_SUFFIXES or path.name.lower() in FORBIDDEN_NAMES:
+            continue
+        if path.name in PRIVATE_ONLY_BASENAMES:
             continue
         if path.name.endswith(".generated.md") or path.name.endswith(".generated.docx"):
             continue

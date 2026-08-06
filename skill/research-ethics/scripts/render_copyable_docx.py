@@ -11,7 +11,9 @@ from __future__ import annotations
 import argparse
 import re
 import sys
+import tempfile
 from pathlib import Path
+from zipfile import ZIP_DEFLATED, ZipFile
 
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -25,6 +27,55 @@ BLACK = RGBColor(0, 0, 0)
 MUTED = RGBColor(85, 85, 85)
 SUGGESTION_BLUE = RGBColor(46, 117, 182)
 PENDING_RED = RGBColor(192, 0, 0)
+DEFAULT_FOOTER = "research-ethics V1｜请以平台当前可见字段为准"
+PENDING_MARKERS = (
+    "待用户确认",
+    "由研究者／用户确认后填写",
+    "[To be completed after researcher/user confirmation]",
+)
+
+
+def scrub_privacy_metadata(output: Path) -> None:
+    """Remove machine/session metadata from a generated DOCX in place.
+
+    A new python-docx document inherits Word's default rsid attributes even
+    after its visible core properties are cleared.  They are not research
+    facts, but public examples and shareable filling drafts should not retain
+    avoidable document-session identifiers.  This small OOXML pass removes
+    rsid attributes, custom properties, and their package references.
+    """
+    with ZipFile(output, "r") as source, tempfile.NamedTemporaryFile(
+        suffix=".docx", delete=False, dir=output.parent
+    ) as temporary:
+        temporary_path = Path(temporary.name)
+        with ZipFile(temporary, "w", compression=ZIP_DEFLATED) as target:
+            for name in source.namelist():
+                if name == "docProps/custom.xml":
+                    continue
+                payload = source.read(name)
+                if name.endswith(".xml"):
+                    # Preserve the original namespace prefixes and mc:Ignorable
+                    # declarations. Re-serializing Word OOXML with ElementTree
+                    # can rename prefixes while leaving their string references
+                    # behind, which makes Microsoft Word flag a healthy file as
+                    # damaged. These narrowly scoped substitutions avoid that.
+                    payload = re.sub(rb'\s+w:rsid[A-Za-z]*="[^"]*"', b"", payload)
+                    payload = re.sub(rb"<w:rsids\b[^>]*>.*?</w:rsids>", b"", payload, flags=re.DOTALL)
+                    payload = re.sub(rb"<w:rsid(?:Root)?\b[^>]*/>", b"", payload)
+                    if name == "_rels/.rels":
+                        payload = re.sub(
+                            rb'<Relationship\b[^>]*Type="[^"]*/custom-properties"[^>]*/>',
+                            b"",
+                            payload,
+                        )
+                    elif name == "[Content_Types].xml":
+                        payload = re.sub(
+                            rb'<Override\b[^>]*PartName="/docProps/custom\.xml"[^>]*/>',
+                            b"",
+                            payload,
+                        )
+                target.writestr(name, payload)
+    temporary_path.replace(output)
 
 
 def set_font(run, *, size: float, bold: bool = False, color=BLACK) -> None:
@@ -45,18 +96,21 @@ def plain_markdown(text: str) -> str:
 
 def add_colored_fragment(paragraph, text: str, *, size: float = 11, color=BLACK) -> None:
     """Add text while keeping unresolved placeholders visibly distinct."""
-    marker = "待用户确认"
-    chunks = text.split(marker)
-    for index, chunk in enumerate(chunks):
-        if chunk:
-            run = paragraph.add_run(chunk)
+    marker_pattern = re.compile("|".join(re.escape(marker) for marker in PENDING_MARKERS))
+    previous_end = 0
+    for match in marker_pattern.finditer(text):
+        if match.start() > previous_end:
+            run = paragraph.add_run(text[previous_end : match.start()])
             set_font(run, size=size, color=color)
-        if index < len(chunks) - 1:
-            run = paragraph.add_run(marker)
-            set_font(run, size=size, color=PENDING_RED)
+        run = paragraph.add_run(match.group(0))
+        set_font(run, size=size, color=PENDING_RED)
+        previous_end = match.end()
+    if previous_end < len(text):
+        run = paragraph.add_run(text[previous_end:])
+        set_font(run, size=size, color=color)
 
 
-def configure(document: Document) -> None:
+def configure(document: Document, *, footer_text: str = DEFAULT_FOOTER) -> None:
     section = document.sections[0]
     section.page_width = Inches(8.5)
     section.page_height = Inches(11)
@@ -99,9 +153,17 @@ def configure(document: Document) -> None:
     bullet.paragraph_format.space_after = Pt(4)
     bullet.paragraph_format.line_spacing = 1.25
 
+    numbered = document.styles["List Number"]
+    numbered.font.name = FONT_ASCII
+    numbered._element.rPr.rFonts.set(qn("w:eastAsia"), FONT_CJK)
+    numbered.font.size = Pt(11)
+    numbered.font.color.rgb = BLACK
+    numbered.paragraph_format.space_after = Pt(4)
+    numbered.paragraph_format.line_spacing = 1.25
+
     footer = section.footer.paragraphs[0]
     footer.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    run = footer.add_run("research-ethics V1｜请以平台当前可见字段为准")
+    run = footer.add_run(footer_text)
     set_font(run, size=8.5, color=MUTED)
 
 
@@ -137,15 +199,21 @@ def add_bullet(document: Document, text: str) -> None:
     add_colored_fragment(paragraph, text, color=BLACK)
 
 
+def add_numbered(document: Document, text: str) -> None:
+    paragraph = document.add_paragraph(style="List Number")
+    add_colored_fragment(paragraph, plain_markdown(text), color=BLACK)
+
+
 def add_body(document: Document, text: str) -> None:
     paragraph = document.add_paragraph()
-    run = paragraph.add_run(plain_markdown(text))
-    set_font(run, size=11)
+    # Pending facts can occur in an ordinary narrative paragraph as well as a
+    # checklist bullet.  Keep the visible unresolved marker red in both forms.
+    add_colored_fragment(paragraph, plain_markdown(text), color=BLACK)
 
 
-def build(markdown: str, output: Path) -> None:
+def build(markdown: str, output: Path, *, footer_text: str = DEFAULT_FOOTER) -> None:
     document = Document()
-    configure(document)
+    configure(document, footer_text=footer_text)
     properties = document.core_properties
     for name in ("author", "last_modified_by", "title", "subject", "keywords", "comments", "category"):
         setattr(properties, name, "")
@@ -169,10 +237,13 @@ def build(markdown: str, output: Path) -> None:
             set_font(run, size=11, bold=True)
         elif line.startswith("- "):
             add_bullet(document, line[2:])
+        elif re.match(r"^\d+\.\s+", line):
+            add_numbered(document, re.sub(r"^\d+\.\s+", "", line))
         else:
             add_body(document, line)
     output.parent.mkdir(parents=True, exist_ok=True)
     document.save(output)
+    scrub_privacy_metadata(output)
 
 
 def main() -> int:

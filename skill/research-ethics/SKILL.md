@@ -5,12 +5,14 @@ description: 为中国医学研究伦理申报和国家医学研究登记准备�
 
 # research-ethics
 
-生成可复核的“代码化方案骨架”和“平台填写准备稿”，不替用户登录、保存、提交或上传。
+生成可复核的“中国通用、代码化方案骨架”和“平台填写准备稿”，不替用户登录、保存、提交或上传。
 
 ## 当前支持范围
 
 - 支持：研究者发起的临床研究 → 观察性研究 → 诊断试验“是”或“否”。
 - 支持两个公开策略：`private`（两个平台均不公开）与 `public-on-chictr`（中国临床试验注册中心公开）。后者必须给出适用的中英文配对字段。
+- 中文为中国通用层的主要语言。用户明确需要双语时，从同一份研究事实生成中文与英文配对内容；`public-on-chictr` 的实际英文平台字段必须确认，`private` 路线的英文研究资料不伪称为平台必填。
+- 生成中国通用骨架不要求提供某家医院模板；医院格式、附件和流程由使用者自行调整，或在私有工作区作为可选补充层叠加。
 - 延后：干预性研究，以及药品、器械、IVD、特殊医学用途配方食品等产品注册路线，均为 `deferred_to_v2`。
 - 阻止：传统医学平台注册平台（暂未开通）与结果发布方式“其他”的未核验细节，标为 `out_of_scope_or_blocked`；不要猜填。
 
@@ -27,7 +29,15 @@ description: 为中国医学研究伦理申报和国家医学研究登记准备�
    ```
 
    该骨架是代码生成的填写框架，不是项目事实，也不是固定 Word 模板。Word、Markdown 或院内格式只能从同一矩阵渲染。
-4. 在目标医院正式申报前，强制要求用户提供或确认本院伦理模板、附件和流程要求；不要从其他医院或国家迁移这些要求。
+   需要双语时，使用同一覆盖矩阵与中英文配对目录：
+
+   ```powershell
+   py -3.13 scripts/render_protocol_template.py --diagnostic-trial yes --public-chictr --language bilingual --output protocol-skeleton-bilingual.md
+   py -3.13 scripts/render_protocol_docx.py --markdown protocol-skeleton-bilingual.md --output protocol-skeleton-bilingual.docx
+   ```
+
+   `zh`、`en` 与 `bilingual` 只改变受控章节和写作提示的渲染语言；研究事实、英文术语和平台实际填写值仍须在确认工作流中由用户确认。
+4. 把目标医院模板、附件和流程要求作为**可选的私有补充层**；只有用户希望适配具体医院时才读取或分析。生成中国通用骨架时，明确提示使用者在正式提交前自行按本院要求调整；不要从其他医院或国家迁移这些要求。
 5. 完成计划书后，再进入下方两阶段确认工作流，为登记系统生成逐项填写稿。
 
 ## 运行模式：先确定，再读取材料
@@ -45,7 +55,7 @@ description: 为中国医学研究伦理申报和国家医学研究登记准备�
 3. 若选择后新出现结构性控件，重新生成第一阶段确认单并再次询问，直至结构性选择稳定。然后运行 `scripts/render_confirmation_batches.py --stage gaps`，按平台页面顺序一批一批向用户列出**全部**剩余必填项、可选项和可重复组。用户必须给出内容，或明确选为不适用、账户自动带入、平台实时字典、附件已准备或暂缓；把结果写入 `metadata.completion_confirmation`。实际申报 intake 只能放在用户授权的私有工作区，不能放入 skill、Git 或测试目录。
 4. 只有 `scripts/validate_v1_intake.py` 通过两阶段确认校验后，才运行 `scripts/render_copyable_checklist.py` 生成按平台页面顺序的 Markdown 填写稿；校验器和渲染器都会拒绝跳过任一确认阶段的 intake。`user_deferred` 才保留红色“待用户确认”；其他已经明确处理的缺口不得伪装成普通缺失。
 5. 把仍保留的红色“待用户确认”明确分为：用户明确暂缓的真实事实、平台规则待核验、计划书映射待补全、平台实时字典待选择。把“账户自动带入”“实时字典中选择”“需上传附件”分别标明，不伪造内容。
-6. 使用工作区依赖中的 Python 运行 `scripts/render_copyable_docx.py`，由同一 Markdown 生成 Word 填写稿。所有 Word 填写稿必须使用同一视觉语义：建议填写／选择的实际值为蓝色；`待用户确认` 为红色；字段名、可选项、来源、操作和规则证据均为黑色。`actual_submission` 的 Word 只能输出到用户指定的私有目录；生成后按 documents 工作流渲染并检查页面；若渲染环境缺少 LibreOffice，则执行 DOCX 结构检查并明确说明未完成视觉检查。
+6. 使用工作区依赖中的 Python 运行 `scripts/render_copyable_docx.py`，由同一 Markdown 生成 Word 填写稿。所有 Word 填写稿必须使用同一视觉语义：建议填写／选择的实际值为蓝色；`待用户确认` 为红色；字段名、可选项、来源、操作和规则证据均为黑色。`actual_submission` 的 Word 只能输出到用户指定的私有目录；生成后按 documents 工作流使用本机 Microsoft Word 导出 PDF、再转为逐页 PNG 检查页面；不得调用 LibreOffice／`soffice`。若这一非 LibreOffice 路径不可用，则执行 DOCX 结构检查并明确说明未完成视觉检查。
 7. 运行现有 YAML、账本、产物校验器。若平台当前页面与规则不一致，以平台页面为准，记录为规则待修订，而不是默默修改研究内容。
 
 ## 生成要求
@@ -76,4 +86,34 @@ description: 为中国医学研究伦理申报和国家医学研究登记准备�
 - `scripts/validate_v1_intake.py`：检查路线、选项路径及被阻止的分支。
 - `scripts/deidentify_protocol_docx.py`：研究方案 DOCX → 脱敏副本；还须清除修订痕迹和文档元数据，并进行残留模式检查。
 - `scripts/render_protocol_template.py`：从代码化覆盖矩阵生成中国大陆观察性研究的计划书骨架。
+- `references/protocol-template-language-pairs.yaml`：与同一章节 ID 配对的受控英文标题与写作提示；不包含项目事实。
+- `scripts/render_protocol_docx.py`：由生成的计划书 Markdown 渲染 Word 骨架；不承担研究事实生成。
 - `scripts/validate_protocol_template_assets.py`：校验计划书资料登记册、模块、章节和来源引用。
+## 代码化研究计划书的语义段落规则
+
+当用户要求生成已填入项目事实的研究计划书，而非仅输出章节骨架时，必须先读取：
+
+- `references/protocol-semantic-composition.yaml`
+- `references/protocol-semantic-fact-template.yaml`
+
+工作方式如下：
+
+1. 先把已确认的项目事实写入**私有事实模型**；每条事实使用稳定的 `statement_id`，并标注 `confirmed` 或 `pending`。不得把真实事实写入公开测试样例、规则文件或 Git 历史。
+2. 用 `scripts/render_semantic_protocol.py` 从“覆盖矩阵 + 语义组合规则 + 事实模型”生成中文、英文或双语计划书。中文与英文必须读取同一 `statement_id`；不得让模型临时翻译、补写或为两种语言使用不同事实。
+3. 按完整论点组织叙述段：一个叙述段通常包含 2–5 个相互关联的陈述，例如“背景 → 已有证据 → 关键缺口 → 本研究必要性”。**不得按句号、原文换行或来源摘录机械换段。**
+4. 只有在内容形态适合时才使用其他形式：可查找事实用定义清单；纳排／退出标准用标准清单；流程用顺序步骤；附件用核对清单；三条及以上同构记录才可用表格。不得用表格切碎背景、伦理判断或风险获益论证。
+5. 一章中含有互不混杂的主题时，使用有标题的独立小节。例如“结果发布、数据共享与再利用边界”必须拆为三个小节，不能混为一段或一个泛泛章节。
+6. 生成前运行 `scripts/validate_semantic_protocol_assets.py`；生成后使用合成／脱敏事实模型运行回归测试。真实方案只可作为私有验收样本，不应成为手工编辑或公开测试的中心。
+7. 默认输出须标明 `presentation_status: content_structure_draft`：这表示内容、章节、段落逻辑和待确认项已按规则生成，但不表示已完成机构品牌、视觉美编、分页控制或最终提交版式。只有经过专门的 Word／PDF 视觉审查和必要的机构模板适配，才可升级为视觉已审查版本。
+
+示例（合成或已获私有授权的事实模型）：
+
+```powershell
+py -3.13 scripts/render_semantic_protocol.py `
+  --facts private-facts.yaml `
+  --language bilingual `
+  --output protocol-bilingual.md
+py -3.13 scripts/render_protocol_docx.py `
+  --markdown protocol-bilingual.md `
+  --output protocol-bilingual.docx
+```
