@@ -10,6 +10,14 @@ from typing import Any
 
 import yaml
 
+from confirmation_workflow import (
+    CORE_STRUCTURAL_PATHS,
+    active_structural_paths,
+    pending_completion_items,
+    plan_value_candidates,
+    selected_values,
+    structural_driver_paths,
+)
 from validate_atomic_schema import AtomicSchemaValidator
 
 
@@ -20,10 +28,13 @@ DISABLED_PLATFORM = "traditional-disabled"
 OPERATING_MODES = {"actual_submission", "test_public"}
 CONFIRMATION_STATUS = "explicitly_confirmed"
 CONFIRMATION_METHOD = "user_explicit"
-CORE_STRUCTURAL_PATHS = {
-    "research-category.route-leaf",
-    "research-category.diagnostic-trial",
-    "basic-information.sync-platform",
+RESOLUTION_STATES = {
+    "provided",
+    "not_applicable",
+    "account_prefill",
+    "platform_realtime",
+    "attachment_prepared",
+    "user_deferred",
 }
 
 
@@ -33,62 +44,6 @@ def load_mapping(path: Path) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"{path} must contain a mapping")
     return value
-
-
-def selected_values(value: Any) -> list[str]:
-    if isinstance(value, list):
-        return [str(item) for item in value]
-    return [str(value)]
-
-
-def _condition_control_paths(value: Any) -> set[str]:
-    """Return canonical control paths referenced by a condition expression."""
-    paths: set[str] = set()
-    if isinstance(value, dict):
-        control = value.get("control")
-        if isinstance(control, str):
-            paths.add(control)
-        for child in value.values():
-            paths.update(_condition_control_paths(child))
-    elif isinstance(value, list):
-        for child in value:
-            paths.update(_condition_control_paths(child))
-    return paths
-
-
-def structural_driver_paths(canonical: dict[str, Any]) -> set[str]:
-    """Find selection controls that can change page or field structure.
-
-    The canonical workflow remains the sole rules source: a structural driver is
-    any control referenced by a display, requiredness, enablement, or option
-    visibility condition in the authored workflow, plus the three V1 route
-    selectors that establish the starting route.
-    """
-    workflow = canonical.get("workflow", {})
-    if not isinstance(workflow, dict):
-        return set(CORE_STRUCTURAL_PATHS)
-    return CORE_STRUCTURAL_PATHS | _condition_control_paths(workflow.get("pages", []))
-
-
-def active_structural_paths(
-    validator: AtomicSchemaValidator, canonical: dict[str, Any], selections: dict[str, Any]
-) -> list[str]:
-    """List structural decisions visible for the proposed route.
-
-    A selection can reveal further structural decisions.  Callers therefore
-    regenerate the confirmation sheet after changing a proposed selection until
-    no newly visible decision remains unconfirmed.
-    """
-    active: set[str] = set()
-    for path in structural_driver_paths(canonical):
-        control = validator.controls.get(path)
-        if control is None:
-            continue
-        if path not in CORE_STRUCTURAL_PATHS and (not control.options or not control.observable):
-            continue
-        if path in CORE_STRUCTURAL_PATHS or all(validator._evaluate(condition, selections) for condition in control.visibility_chain):
-            active.add(path)
-    return sorted(active)
 
 
 def _confirmation_issues(
@@ -116,6 +71,77 @@ def _confirmation_issues(
     return issues
 
 
+def _proposal_confirmation_issues(canonical: dict[str, Any], metadata: dict[str, Any], intake: dict[str, Any]) -> list[str]:
+    confirmation = metadata.get("proposal_confirmation")
+    if not isinstance(confirmation, dict):
+        return ["必须先完成 metadata.proposal_confirmation；请先确认研究计划书已提取的拟填写内容"]
+    issues: list[str] = []
+    if confirmation.get("status") != CONFIRMATION_STATUS:
+        issues.append(f"metadata.proposal_confirmation.status 必须是 {CONFIRMATION_STATUS}")
+    if confirmation.get("method") != CONFIRMATION_METHOD:
+        issues.append(f"metadata.proposal_confirmation.method 必须是 {CONFIRMATION_METHOD}")
+    confirmed = confirmation.get("confirmed_values")
+    if not isinstance(confirmed, dict):
+        return issues + ["metadata.proposal_confirmation.confirmed_values 必须是映射"]
+    for candidate in plan_value_candidates(canonical, intake):
+        if confirmed.get(candidate["key"]) != candidate["value"]:
+            issues.append(f"计划书已提取值尚未获得用户明确确认或确认值不一致：{candidate['key']}")
+    return issues
+
+
+def _resolution_state(value: Any) -> str | None:
+    if isinstance(value, dict):
+        value = value.get("state")
+    return str(value) if value is not None else None
+
+
+def _completion_confirmation_issues(canonical: dict[str, Any], metadata: dict[str, Any], intake: dict[str, Any]) -> list[str]:
+    confirmation = metadata.get("completion_confirmation")
+    if not isinstance(confirmation, dict):
+        return ["必须先完成 metadata.completion_confirmation；请先按页面顺序补全所有缺失必填和可选内容"]
+    issues: list[str] = []
+    if confirmation.get("status") != CONFIRMATION_STATUS:
+        issues.append(f"metadata.completion_confirmation.status 必须是 {CONFIRMATION_STATUS}")
+    if confirmation.get("method") != CONFIRMATION_METHOD:
+        issues.append(f"metadata.completion_confirmation.method 必须是 {CONFIRMATION_METHOD}")
+    resolutions = confirmation.get("resolutions")
+    if not isinstance(resolutions, dict):
+        return issues + ["metadata.completion_confirmation.resolutions 必须是映射"]
+    for item in pending_completion_items(canonical, intake):
+        state = _resolution_state(resolutions.get(item["key"]))
+        if state not in RESOLUTION_STATES:
+            issues.append(f"缺失项尚未由用户明确处理：{item['key']}")
+            continue
+        if state == "provided":
+            issues.append(f"已标记 provided 但 intake 仍没有实际值或选项：{item['key']}")
+        if item["required"] and state == "not_applicable":
+            issues.append(f"必填项不能标记为 not_applicable：{item['key']}")
+    return issues
+
+
+def framework_issues(canonical: dict[str, Any], intake: dict[str, Any]) -> list[str]:
+    """Return only first-stage issues, for the ordered gap-sheet renderer."""
+    validator = AtomicSchemaValidator(canonical)
+    errors = validator.validate()
+    if errors:
+        return ["canonical YAML 无法通过校验：" + "; ".join(errors[:3])]
+    selections = intake.get("selections")
+    metadata = intake.get("metadata", {})
+    if not isinstance(selections, dict) or not isinstance(metadata, dict):
+        return ["intake.selections 和 intake.metadata 必须是映射"]
+    issues: list[str] = []
+    if selections.get("research-category.route-leaf") != SUPPORTED_ROUTE:
+        issues.append("V1 仅支持 investigator-observational；其他路线为 deferred_to_v2")
+    if selections.get("research-category.diagnostic-trial") not in {"yes", "no"}:
+        issues.append("必须选择 research-category.diagnostic-trial = yes 或 no")
+    if selections.get("basic-information.sync-platform") not in {"private", "public-on-chictr"}:
+        issues.append("必须选择公开策略 private 或 public-on-chictr")
+    if not issues:
+        issues.extend(_confirmation_issues(validator, canonical, metadata, selections))
+        issues.extend(_proposal_confirmation_issues(canonical, metadata, intake))
+    return issues
+
+
 def validate(canonical: dict[str, Any], intake: dict[str, Any]) -> list[str]:
     validator = AtomicSchemaValidator(canonical)
     errors = validator.validate()
@@ -139,22 +165,15 @@ def validate(canonical: dict[str, Any], intake: dict[str, Any]) -> list[str]:
     if not isinstance(repeat_groups, dict):
         issues.append("intake.repeat_groups 必须是映射")
 
-    if selections.get("research-category.route-leaf") != SUPPORTED_ROUTE:
-        issues.append("V1 仅支持 investigator-observational；其他路线为 deferred_to_v2")
-    if selections.get("research-category.diagnostic-trial") not in {"yes", "no"}:
-        issues.append("必须选择 research-category.diagnostic-trial = yes 或 no")
-    if selections.get("basic-information.sync-platform") not in {"private", "public-on-chictr"}:
-        issues.append("必须选择公开策略 private 或 public-on-chictr")
+    framework: list[str] = []
+    if isinstance(metadata, dict):
+        framework = framework_issues(canonical, intake)
+        issues.extend(framework)
+        if not framework:
+            issues.extend(_completion_confirmation_issues(canonical, metadata, intake))
+
     if selections.get("basic-information.sync-platform") == DISABLED_PLATFORM:
         issues.append("传统医学注册平台暂未开通，不能生成 V1 填写稿")
-
-    if (
-        isinstance(metadata, dict)
-        and selections.get("research-category.route-leaf") == SUPPORTED_ROUTE
-        and selections.get("research-category.diagnostic-trial") in {"yes", "no"}
-        and selections.get("basic-information.sync-platform") in {"private", "public-on-chictr"}
-    ):
-        issues.extend(_confirmation_issues(validator, canonical, metadata, selections))
 
     for path, selected in selections.items():
         control = validator.controls.get(path)

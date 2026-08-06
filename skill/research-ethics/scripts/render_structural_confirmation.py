@@ -17,7 +17,7 @@ from typing import Any
 import yaml
 
 from validate_atomic_schema import AtomicSchemaValidator
-from validate_v1_intake import active_structural_paths
+from confirmation_workflow import active_structural_paths
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]

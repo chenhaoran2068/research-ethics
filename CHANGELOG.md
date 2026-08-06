@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.3 - 2026-08-06
+
+- Replaces the single structural-only gate with an enforced two-stage confirmation flow.
+- Stage one confirms the route, all structural choices, and every value extracted from the research plan.
+- Stage two lists all remaining required fields, optional fields, and repeat groups in platform order and requires an explicit user resolution before drafting.
+- Keeps red `待用户确认` only for values the user explicitly defers; distinguishes account prefill, real-time dictionaries, and prepared attachments.
+
 ## 1.0.2 - 2026-08-06
 
 - Adds a hard structural-confirmation gate before any V1 Markdown or Word filling draft can be rendered.
