@@ -1,0 +1,84 @@
+schema_version: "0.1"
+title: 研究计划书模板资料登记册
+status: research_informed_draft
+reviewed_on: "2026-08-06"
+use_policy:
+  - 只保存来源元数据、适用范围和映射结论；不复制法规、指南或医院模板原文。
+  - binding_china_mainland 表示中国大陆规则基线；guidance 表示质量或伦理参考，不等同于法定格式。
+  - 平台观察仅用于登记备案字段映射；不能单独替代伦理、法律或医院要求。
+  - 任何具体医院模板、既有真实方案和本地流程只可在授权的私有工作区分析，不能写入公开 skill 或 Git。
+sources:
+  - id: cn-ethics-2023
+    title: 涉及人的生命科学和医学研究伦理审查办法
+    authority: binding_china_mainland
+    issuer: 国家卫生健康委等四部门
+    issued: "2023-02-18"
+    url: https://www.nhc.gov.cn/wjw/c100375/202302/902b4a1dc3af4aba862a6387e6e376dc.shtml
+    role: 人体研究伦理、受试者权益、伦理审查和研究方案的中国大陆基线。
+  - id: cn-investigator-clinical-2024
+    title: 医疗卫生机构开展研究者发起的临床研究管理办法
+    authority: binding_china_mainland
+    issuer: 国家卫生健康委、国家中医药局、国家疾控局
+    issued: "2024-09-18"
+    effective: "2024-10-01"
+    url: https://www.nhc.gov.cn/qjjys/c100016/202409/3a3ad0a7b656420d9580b65f2321a623.shtml
+    role: 研究者发起临床研究的立项、科学性审查、方案、研究目的、方法、终点、统计、研究对象和安全性基线。
+  - id: cn-personal-information-protection-law
+    title: 中华人民共和国个人信息保护法
+    authority: binding_china_mainland
+    issuer: 全国人民代表大会常务委员会
+    issued: "2021-08-20"
+    effective: "2021-11-01"
+    url: https://www.npc.gov.cn/npc/c2/c30834/202108/t20210820_313088.html
+    role: 医疗健康等敏感个人信息、最小必要、透明、同意与安全措施的基线。
+  - id: cn-human-genetic-resources
+    title: 中华人民共和国人类遗传资源管理条例
+    authority: binding_china_mainland
+    issuer: 国务院
+    issued: "2019-05-28"
+    amended: "2024-03-10"
+    url: https://xzfg.moj.gov.cn/SearchTitleFront?QueryAll=%E4%BA%BA%E7%B1%BB%E9%81%97%E4%BC%A0%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E6%9D%A1%E4%BE%8B
+    role: 生物样本、人类遗传资源信息、国际合作和对外提供的条件模块基线。
+  - id: platform-observational-v1
+    title: 国家医学研究登记备案信息系统观察性研究字段树
+    authority: platform_observed
+    issuer: 当前平台现场观察与脱敏规则树
+    reviewed_on: "2026-08-06"
+    url: https://www.medicalresearch.org.cn/
+    role: 将研究计划书内容映射至 V1 登记字段、条件分支和附件；证据等级以 registration-tree.yaml 为准。
+  - id: strobe
+    title: STROBE Statement
+    authority: reporting_guidance
+    issuer: STROBE Initiative / EQUATOR Network
+    url: https://www.equator-network.org/reporting-guidelines/strobe/
+    role: 观察性研究设计、对象、变量、偏倚、样本量、统计和结果透明性的质量检查参考。
+  - id: record
+    title: RECORD Statement
+    authority: reporting_guidance
+    issuer: RECORD Initiative / EQUATOR Network
+    url: https://www.equator-network.org/reporting-guidelines/record/
+    role: 使用常规收集医疗数据时的数据来源、可追溯性和数据处理质量参考。
+  - id: stard-2015
+    title: STARD 2015
+    authority: reporting_guidance
+    issuer: EQUATOR Network
+    url: https://www.equator-network.org/reporting-guidelines/stard/
+    role: 诊断准确性研究的目标人群、指标试验、参考标准、准确性指标和受试者流程参考。
+  - id: declaration-of-helsinki-2024
+    title: WMA Declaration of Helsinki 2024
+    authority: ethics_guidance
+    issuer: World Medical Association
+    issued: "2024-10"
+    url: https://www.wma.net/what-we-do/medical-ethics/declaration-of-helsinki/
+    role: 涉及人医学研究的国际伦理原则参考；不替代中国法律或本地伦理委员会要求。
+  - id: spirit-2025
+    title: SPIRIT 2025 Statement
+    authority: reporting_guidance
+    issuer: SPIRIT-CONSORT Group
+    url: https://www.consort-spirit.org/
+    role: V2 干预性研究方案内容的前瞻性质量参考；不用于替代 V1 观察性规则。
+  - id: local-hospital-overlay
+    title: 特定医院伦理模板与流程
+    authority: local_required_input
+    issuer: 使用机构
+    role: 风险获益、知情同意、隐私、附件、审查程序和章节顺序的本地补充。必须由用户在私有工作区提供或确认。

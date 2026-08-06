@@ -1,0 +1,302 @@
+schema_version: "0.1"
+title: 中国大陆医学研究计划书覆盖矩阵
+status: research_informed_draft
+reviewed_on: "2026-08-06"
+source_registry: protocol-template-sources.yaml
+scope:
+  implemented_profile: china-mainland
+  implemented_route: investigator-observational
+  deferred_routes:
+    - investigator-interventional
+    - product-drug
+    - product-device
+    - product-ivd
+    - product-special-medical-food
+  important_boundary: "本矩阵提供计划书骨架与覆盖检查，不替代伦理审查、法律意见、医院模板或平台最终校验。"
+profiles:
+  china-mainland:
+    display_name: 中国大陆
+    authority_sources:
+      - cn-ethics-2023
+      - cn-investigator-clinical-2024
+      - cn-personal-information-protection-law
+      - cn-human-genetic-resources
+      - local-hospital-overlay
+    generator_routes:
+      investigator-observational:
+        status: research_informed_draft
+        required_modules:
+          - core-governance
+          - core-rationale-objectives
+          - core-design-population
+          - core-variables-procedures
+          - core-statistics-data
+          - core-ethics-operations
+          - observational-methods
+        conditional_modules:
+          diagnostic-trial: diagnostic-methods
+          multicenter: multicenter
+          biospecimen: biospecimen-and-hgr
+          public-on-chictr: public-registration
+          international-collaboration: international-collaboration
+          consent-waiver: consent-waiver-and-vulnerable-participants
+          vulnerable-participants: consent-waiver-and-vulnerable-participants
+modules:
+  - id: core-governance
+    order: 10
+    title: 研究基本信息与治理
+    applies_when: always
+    sources: [cn-investigator-clinical-2024, platform-observational-v1, local-hospital-overlay]
+    chapters:
+      - id: P-01
+        title: 研究题目、版本与修订记录
+        registration_paths: [basic-information.research-title, basic-information.brief-research-title]
+        evidence: required_for_registration_or_local_review
+        prompt: "写明中文题目、必要时英文题目、方案版本号、日期和实质修订记录。"
+      - id: P-02
+        title: 研究机构、主要研究者与研究团队
+        registration_paths: [research-category.implementing-organization, implementation-information.applicant-name, implementation-information.applicant-email, implementation-information.team-members]
+        evidence: required_for_registration_or_local_review
+        prompt: "写明牵头机构、研究者角色、联系方式、团队职责及必要资质。"
+      - id: P-03
+        title: 经费、利益冲突与资源保障
+        registration_paths: [basic-information.funding-source-level-1, basic-information.funding-project-name, basic-information.total-funds]
+        evidence: required_for_registration_or_local_review
+        prompt: "说明经费来源、金额、利益冲突、设备／数据／人员资源以及独立性安排。"
+  - id: core-rationale-objectives
+    order: 20
+    title: 研究背景、依据与目标
+    applies_when: always
+    sources: [cn-investigator-clinical-2024, platform-observational-v1, strobe, declaration-of-helsinki-2024]
+    chapters:
+      - id: P-04
+        title: 研究背景与科学依据
+        registration_paths: [research-content.research-content-description]
+        evidence: required_for_scientific_review
+        prompt: "交代临床问题、现有证据、不确定性、研究必要性及避免无意义重复研究的依据。"
+      - id: P-05
+        title: 研究目的、研究问题与假设
+        registration_paths: [research-content.primary-purpose, research-content.research-objective-description]
+        evidence: required_for_registration_or_local_review
+        prompt: "区分主要与次要目的；写明可检验的研究问题、假设和预期适用人群。"
+      - id: P-06
+        title: 研究价值与预期产出
+        registration_paths: [research-content.research-content-description]
+        evidence: recommended_quality_content
+        prompt: "说明可能的临床、公共卫生或方法学价值，以及结果如何被解释和传播。"
+  - id: core-design-population
+    order: 30
+    title: 总体设计、场景与研究对象
+    applies_when: always
+    sources: [cn-investigator-clinical-2024, cn-ethics-2023, platform-observational-v1, strobe]
+    chapters:
+      - id: P-07
+        title: 总体研究设计与时间线
+        registration_paths: [research-content.study-type, research-content.research-phase, basic-information.research-start-time, basic-information.research-complete-time]
+        evidence: required_for_registration_or_local_review
+        prompt: "明确观察性研究类型、单／多中心、回顾性／前瞻性、研究时间窗和关键里程碑。"
+      - id: P-08
+        title: 研究场景、数据来源与纳入范围
+        registration_paths: [research-content.target-disease, research-content.disease-symptom, research-content.icd11-classification]
+        evidence: required_for_scientific_review
+        prompt: "说明医疗机构／数据库／门诊住院来源、疾病或健康状态、目标人群与适用边界。"
+      - id: P-09
+        title: 纳入、排除与退出标准
+        registration_paths: [research-design.inclusion-criterion, research-design.exclusion-criterion]
+        evidence: required_for_scientific_review
+        prompt: "给出可执行且与研究目的一致的入排标准、退出／剔除规则及其伦理理由。"
+      - id: P-10
+        title: 招募、筛选与知情告知路径
+        registration_paths: [recruitment-information.recruitment-flag, recruitment-information.recruitment-status]
+        evidence: conditional_registration_or_local_review
+        prompt: "如需招募，说明招募对象、方式、材料、避免不当影响的措施和预计时间。"
+  - id: core-variables-procedures
+    order: 40
+    title: 变量、结局与研究流程
+    applies_when: always
+    sources: [cn-investigator-clinical-2024, platform-observational-v1, strobe, record]
+    chapters:
+      - id: P-11
+        title: 暴露、分组、比较与混杂因素
+        registration_paths: [research-design.group-name, research-design.group-sample-size]
+        evidence: required_for_scientific_review
+        prompt: "定义暴露、比较组／分层、时间零点、潜在混杂因素、效应修饰因素及测量方法。"
+      - id: P-12
+        title: 结局指标与测量计划
+        registration_paths: [research-design.indicator-name, research-design.indicator-measurement-method, research-design.indicator-timepoint]
+        evidence: required_for_registration_or_local_review
+        prompt: "分别定义主要、次要及安全性结局，写明测量工具、时间点、判定标准和缺失数据来源。"
+      - id: P-13
+        title: 研究流程、随访与额外措施
+        registration_paths: [research-content.extra-inspection-measures, research-content.extra-measure-name]
+        evidence: required_for_scientific_review
+        prompt: "用流程图或时间表说明数据收集、随访、额外检查／检验／诊断措施及其最小化原则。"
+      - id: P-14
+        title: 数据质量、偏倚控制与可追溯性
+        registration_paths: []
+        evidence: recommended_quality_content
+        prompt: "说明培训、数据核查、测量一致性、偏倚识别与控制、数据来源和可追溯性。"
+  - id: core-statistics-data
+    order: 50
+    title: 样本量、统计与数据治理
+    applies_when: always
+    sources: [cn-investigator-clinical-2024, cn-personal-information-protection-law, platform-observational-v1, strobe, record]
+    chapters:
+      - id: P-15
+        title: 样本量与可行性依据
+        registration_paths: [research-design.total-sample-size, research-design.sample-calculation-basis]
+        evidence: required_for_registration_or_local_review
+        prompt: "说明样本量估计、可得病例数或数据库规模、效能假设与不可预见损失的处理。"
+      - id: P-16
+        title: 统计分析计划
+        registration_paths: [research-design.statistical-analysis-method]
+        evidence: required_for_registration_or_local_review
+        prompt: "预先定义分析集、描述方法、主要模型、混杂控制、亚组／敏感性分析、缺失值和软件。"
+      - id: P-17
+        title: 数据处理、访问控制与保存期限
+        registration_paths: [data-sharing-and-public-disclosure.data-share-statement, data-sharing-and-public-disclosure.data-analysis]
+        evidence: required_for_ethics_and_privacy_review
+        prompt: "说明最小必要数据、去标识化、密钥管理、访问权限、传输、备份、保留和销毁安排。"
+      - id: P-18
+        title: 数据共享、结果公开与再利用边界
+        registration_paths: [data-sharing-and-public-disclosure.data-share-statement, data-sharing-and-public-disclosure.statistical-result-public]
+        evidence: required_for_registration_or_local_review
+        prompt: "说明是否共享、共享数据范围、获取条件、公开结果计划、隐私与伦理限制。"
+  - id: core-ethics-operations
+    order: 60
+    title: 伦理保护、运行与附件
+    applies_when: always
+    sources: [cn-ethics-2023, cn-investigator-clinical-2024, cn-personal-information-protection-law, declaration-of-helsinki-2024, platform-observational-v1, local-hospital-overlay]
+    chapters:
+      - id: P-19
+        title: 风险—获益评估与风险最小化
+        registration_paths: [research-content.risk-protection-evaluation, research-content.comparative-value-risk-evaluation]
+        evidence: required_for_ethics_review
+        prompt: "分别说明身体、心理、隐私、经济和社会风险，预期获益、替代方案与风险最小化措施。"
+      - id: P-20
+        title: 知情同意、豁免与受试者权益
+        registration_paths: [research-design.exempt-consent, related-attachments.consent-or-waiver-file]
+        evidence: required_for_ethics_review
+        prompt: "说明同意程序、理解与自愿性、退出权利、补偿／伤害处理；如申请豁免，逐项论证条件。"
+      - id: P-21
+        title: 伦理监督、偏离处理与方案修订
+        registration_paths: [related-attachments.consent-or-waiver-file, related-attachments.research-protocol-file]
+        evidence: required_for_ethics_and_operations
+        prompt: "说明伦理批准前不得实施、实质修订再审、偏离／不良事件报告和持续监督路径。"
+      - id: P-22
+        title: 附件与提交材料清单
+        registration_paths: [related-attachments.consent-or-waiver-file, related-attachments.research-protocol-file, related-attachments.other-files]
+        evidence: required_for_registration_or_local_review
+        prompt: "列出方案、知情同意／豁免、伦理批件、研究工具、招募材料、数据管理和本院要求附件。"
+  - id: observational-methods
+    order: 70
+    title: 观察性研究方法模块
+    applies_when: investigator-observational
+    sources: [strobe, record, platform-observational-v1]
+    chapters:
+      - id: O-01
+        title: 观察性设计的具体类型
+        registration_paths: [research-design.study-design, research-design.study-design-subtype]
+        evidence: required_for_scientific_review
+        prompt: "明确队列、病例对照、横断面或其他设计；队列需说明回顾性／前瞻性／双向及观察起止。"
+      - id: O-02
+        title: 时间关系、选择机制与偏倚控制
+        registration_paths: [research-design.study-design, research-design.sample-description]
+        evidence: recommended_quality_content
+        prompt: "说明暴露、结局和入组的时间关系；识别选择偏倚、信息偏倚、混杂与反向因果。"
+      - id: O-03
+        title: 常规医疗数据的来源与处理
+        registration_paths: []
+        evidence: conditional_quality_content
+        prompt: "使用病历、登记或数据库时，说明编码、链接、数据清洗、数据质量和缺失处理。"
+  - id: diagnostic-methods
+    order: 80
+    title: 诊断试验模块
+    applies_when: diagnostic-trial
+    sources: [stard-2015, platform-observational-v1]
+    chapters:
+      - id: D-01
+        title: 诊断用途、临床问题与目标人群
+        registration_paths: [research-design.diagnostic-index-test, research-design.diagnostic-target-condition]
+        evidence: required_for_scientific_review
+        prompt: "定义指标试验的临床用途、预期使用场景、目标疾病、目标人群和预设阈值。"
+      - id: D-02
+        title: 指标试验、参考标准与判定规则
+        registration_paths: [research-design.diagnostic-index-test, research-design.diagnostic-gold-standard]
+        evidence: required_for_scientific_review
+        prompt: "写明指标试验和参考标准的实施、判读、培训、盲法、判定阈值及不确定结果处理。"
+      - id: D-03
+        title: 诊断准确性指标与受试者流程
+        registration_paths: [research-design.diagnostic-target-sample-size, research-design.diagnostic-confusable-population, research-design.indicator-name]
+        evidence: required_for_scientific_review
+        prompt: "预先定义敏感度、特异度等指标及置信区间；呈现纳入、排除、缺失和验证流程。"
+  - id: multicenter
+    order: 90
+    title: 多中心条件模块
+    applies_when: multicenter
+    sources: [cn-ethics-2023, platform-observational-v1, local-hospital-overlay]
+    chapters:
+      - id: C-01
+        title: 多中心架构、角色与协调
+        registration_paths: [implementation-information.multicenter-flag, implementation-information.multicenter-type, implementation-information.organization-role]
+        evidence: conditional_registration_or_local_review
+        prompt: "说明国内／国际多中心类别、牵头与参与机构、统一方案、职责、数据流和质量控制。"
+      - id: C-02
+        title: 参与机构、伦理协作与数据安全
+        registration_paths: [implementation-information.has-participating-branches, implementation-information.branch-organization-name, implementation-information.branch-address]
+        evidence: conditional_ethics_and_privacy_review
+        prompt: "逐项说明参与机构、当地伦理路径、数据访问、跨机构传输和责任分工。"
+  - id: biospecimen-and-hgr
+    order: 100
+    title: 生物样本与人类遗传资源条件模块
+    applies_when: biospecimen
+    sources: [cn-human-genetic-resources, cn-ethics-2023, platform-observational-v1]
+    chapters:
+      - id: C-03
+        title: 生物样本采集、类型、数量与去向
+        registration_paths: [research-design.biological-sample-collection, research-design.sample-name, research-design.sample-type, research-design.sample-destination]
+        evidence: conditional_registration_or_ethics_review
+        prompt: "说明样本名称、类型、数量、采集时点、用途、保存地点、保存期、销毁与后续使用。"
+      - id: C-04
+        title: 人类遗传资源与对外提供判断
+        registration_paths: [research-design.biological-sample-collection, basic-information.funding-international-cooperation]
+        evidence: conditional_regulatory_review
+        prompt: "识别是否涉及人类遗传资源材料或信息、国际合作、出境／对外提供，并提示另行核对审批或备案。"
+  - id: public-registration
+    order: 110
+    title: 公开登记与中英文信息条件模块
+    applies_when: public-on-chictr
+    sources: [platform-observational-v1]
+    chapters:
+      - id: C-05
+        title: ChiCTR 公开信息与英文术语核对
+        registration_paths: [basic-information.sync-platform, basic-information.scientific-title, basic-information.public-title]
+        evidence: conditional_registration_requirement
+        prompt: "逐项准备中英文题目、缩略语、资助、材料与公开信息；英文须由用户核对研究事实和专业术语。"
+  - id: international-collaboration
+    order: 120
+    title: 国际合作条件模块
+    applies_when: international-collaboration
+    sources: [cn-human-genetic-resources, cn-personal-information-protection-law, platform-observational-v1]
+    chapters:
+      - id: C-06
+        title: 国际合作、数据／样本流与责任
+        registration_paths: [basic-information.funding-international-cooperation]
+        evidence: conditional_regulatory_review
+        prompt: "说明合作方、任务、数据和样本流、跨境安排、适用审批／备案、知识产权和受试者权益保障。"
+  - id: consent-waiver-and-vulnerable-participants
+    order: 130
+    title: 知情同意豁免与弱势群体条件模块
+    applies_when: consent-waiver-or-vulnerable-participants
+    sources: [cn-ethics-2023, cn-personal-information-protection-law, declaration-of-helsinki-2024, platform-observational-v1]
+    chapters:
+      - id: C-07
+        title: 知情同意豁免的条件与替代保护
+        registration_paths: [research-design.exempt-consent]
+        evidence: conditional_ethics_review
+        prompt: "如申请豁免，逐项说明最小风险、不可行性、隐私保护、权益影响和伦理委员会审查依据。"
+      - id: C-08
+        title: 弱势群体的额外保护
+        registration_paths: [research-design.vulnerable-group, research-design.vulnerable-group-type]
+        evidence: conditional_ethics_review
+        prompt: "说明儿童、孕哺期妇女、残障人士或其他弱势群体纳入的必要性、同意／代同意和额外保护。"

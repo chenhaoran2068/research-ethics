@@ -1,6 +1,6 @@
 # research-ethics
 
-`research-ethics` is a Codex skill for turning a Chinese medical research plan into a reviewable, platform-ordered registration filling draft.
+`research-ethics` is a Codex skill for preparing a code-generated Chinese medical research-plan skeleton, checking its coverage, and turning a confirmed plan into a reviewable, platform-ordered registration filling draft.
 
 It creates a **copyable preparation document**, not a submission. It never logs in, saves, submits, completes a registration, or uploads attachments on behalf of a user.
 
@@ -20,6 +20,23 @@ Deferred to V2:
 - Product-registration routes: drugs, devices, IVDs, and special medical-purpose foods.
 
 The current release is `READY_WITH_EXCLUSIONS`: it is based on documented sampling and locality assumptions, not a claim that every possible platform combination has been replayed live.
+
+## Code-generated protocol skeletons
+
+V1 also provides a research-informed, deterministic protocol skeleton for the supported China-mainland observational route. The machine-readable coverage matrix—not a hand-maintained Word document—defines chapters, conditions, platform mappings, and evidence roles. It distinguishes:
+
+- binding China-mainland requirements;
+- observed platform fields;
+- international ethics and reporting guidance; and
+- the mandatory, separately supplied hospital overlay.
+
+It can generate a Markdown skeleton using, for example:
+
+```powershell
+py -3.13 scripts\render_protocol_template.py --diagnostic-trial no --output protocol-skeleton.md
+```
+
+The skeleton is a completion framework, not an ethics-approved protocol and not a substitute for the target hospital's format. See [`skill/research-ethics/references/version-roadmap.md`](skill/research-ethics/references/version-roadmap.md) for the V1–V5 route plan and [`protocol-template-architecture.md`](skill/research-ethics/references/protocol-template-architecture.md) for the architecture.
 
 ## Install in Codex
 
@@ -82,6 +99,8 @@ py -3.13 scripts\check_v1_skill_readiness.py
 py -3.13 tests\test_structural_confirmation_gate.py
 py -3.13 tests\test_two_stage_confirmation.py
 py -3.13 tests\test_chictr_public_e2e.py
+py -3.13 scripts\validate_protocol_template_assets.py
+py -3.13 tests\test_protocol_template_generator.py
 ```
 
 See `references/v1-acceptance.md` and `references/chictr-public-route-acceptance.md` for the exact V1 evidence boundary.

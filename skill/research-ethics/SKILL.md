@@ -1,11 +1,11 @@
 ---
 name: research-ethics
-description: 为中国医学研究伦理申报和国家医学研究登记准备“研究计划书 → 用户确认 → 按平台顺序可复制填写稿”。支持受控的实际申报模式与脱敏测试／公开模式。当用户需要根据研究计划书、伦理材料或资助材料生成逐项填写清单、ChiCTR 中英文配对内容、确认缺口或相关附件清单时使用。当前 V1 只支持研究者发起的观察性研究；干预性和产品注册路线必须明确转为 V2，不得臆造。
+description: 为中国医学研究伦理申报和国家医学研究登记准备“代码化研究计划书骨架 → 用户确认 → 按平台顺序可复制填写稿”。当用户需要根据研究计划书、伦理材料或资助材料生成或审查研究计划书骨架、检查方案覆盖缺口、生成逐项填写清单、ChiCTR 中英文配对内容、确认缺口或相关附件清单时使用。当前 V1 只支持中国大陆研究者发起的观察性研究；干预性和产品注册路线必须明确转为 V2，不得臆造。
 ---
 
 # research-ethics
 
-生成可复核的“平台填写准备稿”，不替用户登录、保存、提交或上传。
+生成可复核的“代码化方案骨架”和“平台填写准备稿”，不替用户登录、保存、提交或上传。
 
 ## 当前支持范围
 
@@ -13,6 +13,22 @@ description: 为中国医学研究伦理申报和国家医学研究登记准备�
 - 支持两个公开策略：`private`（两个平台均不公开）与 `public-on-chictr`（中国临床试验注册中心公开）。后者必须给出适用的中英文配对字段。
 - 延后：干预性研究，以及药品、器械、IVD、特殊医学用途配方食品等产品注册路线，均为 `deferred_to_v2`。
 - 阻止：传统医学平台注册平台（暂未开通）与结果发布方式“其他”的未核验细节，标为 `out_of_scope_or_blocked`；不要猜填。
+
+## 研究计划书骨架：先读取规则，再生成
+
+当用户要从零准备、补齐或审查研究计划书时：
+
+1. 先确认国家／地区、研究路线、诊断试验与适用条件；中国大陆以外或干预性／产品注册路线不得套用当前 V1 骨架。
+2. 读取 [references/protocol-template-sources.yaml](references/protocol-template-sources.yaml)、[references/protocol-coverage-matrix.yaml](references/protocol-coverage-matrix.yaml) 与 [references/protocol-template-architecture.md](references/protocol-template-architecture.md)。区分国家／地区规则、平台观察、国际质量指南和医院补充层；不得把后两者冒充法定要求。
+3. 以 `scripts/render_protocol_template.py` 从覆盖矩阵生成 Markdown 骨架。例如：
+
+   ```powershell
+   py -3.13 scripts/render_protocol_template.py --diagnostic-trial no --biospecimen --output protocol-skeleton.md
+   ```
+
+   该骨架是代码生成的填写框架，不是项目事实，也不是固定 Word 模板。Word、Markdown 或院内格式只能从同一矩阵渲染。
+4. 在目标医院正式申报前，强制要求用户提供或确认本院伦理模板、附件和流程要求；不要从其他医院或国家迁移这些要求。
+5. 完成计划书后，再进入下方两阶段确认工作流，为登记系统生成逐项填写稿。
 
 ## 运行模式：先确定，再读取材料
 
@@ -59,3 +75,5 @@ description: 为中国医学研究伦理申报和国家医学研究登记准备�
 - `scripts/render_copyable_docx.py`：Markdown 填写稿 → Word 文档；使用 `compact_reference_guide` 的单色清单变体，并固定应用蓝色建议值、红色待确认值、黑色说明与可选项的语义样式。
 - `scripts/validate_v1_intake.py`：检查路线、选项路径及被阻止的分支。
 - `scripts/deidentify_protocol_docx.py`：研究方案 DOCX → 脱敏副本；还须清除修订痕迹和文档元数据，并进行残留模式检查。
+- `scripts/render_protocol_template.py`：从代码化覆盖矩阵生成中国大陆观察性研究的计划书骨架。
+- `scripts/validate_protocol_template_assets.py`：校验计划书资料登记册、模块、章节和来源引用。
