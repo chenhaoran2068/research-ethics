@@ -18,6 +18,13 @@ DEFAULT_CANONICAL = PROJECT_ROOT / "references" / "registration-tree.yaml"
 SUPPORTED_ROUTE = "investigator-observational"
 DISABLED_PLATFORM = "traditional-disabled"
 OPERATING_MODES = {"actual_submission", "test_public"}
+CONFIRMATION_STATUS = "explicitly_confirmed"
+CONFIRMATION_METHOD = "user_explicit"
+CORE_STRUCTURAL_PATHS = {
+    "research-category.route-leaf",
+    "research-category.diagnostic-trial",
+    "basic-information.sync-platform",
+}
 
 
 def load_mapping(path: Path) -> dict[str, Any]:
@@ -32,6 +39,81 @@ def selected_values(value: Any) -> list[str]:
     if isinstance(value, list):
         return [str(item) for item in value]
     return [str(value)]
+
+
+def _condition_control_paths(value: Any) -> set[str]:
+    """Return canonical control paths referenced by a condition expression."""
+    paths: set[str] = set()
+    if isinstance(value, dict):
+        control = value.get("control")
+        if isinstance(control, str):
+            paths.add(control)
+        for child in value.values():
+            paths.update(_condition_control_paths(child))
+    elif isinstance(value, list):
+        for child in value:
+            paths.update(_condition_control_paths(child))
+    return paths
+
+
+def structural_driver_paths(canonical: dict[str, Any]) -> set[str]:
+    """Find selection controls that can change page or field structure.
+
+    The canonical workflow remains the sole rules source: a structural driver is
+    any control referenced by a display, requiredness, enablement, or option
+    visibility condition in the authored workflow, plus the three V1 route
+    selectors that establish the starting route.
+    """
+    workflow = canonical.get("workflow", {})
+    if not isinstance(workflow, dict):
+        return set(CORE_STRUCTURAL_PATHS)
+    return CORE_STRUCTURAL_PATHS | _condition_control_paths(workflow.get("pages", []))
+
+
+def active_structural_paths(
+    validator: AtomicSchemaValidator, canonical: dict[str, Any], selections: dict[str, Any]
+) -> list[str]:
+    """List structural decisions visible for the proposed route.
+
+    A selection can reveal further structural decisions.  Callers therefore
+    regenerate the confirmation sheet after changing a proposed selection until
+    no newly visible decision remains unconfirmed.
+    """
+    active: set[str] = set()
+    for path in structural_driver_paths(canonical):
+        control = validator.controls.get(path)
+        if control is None:
+            continue
+        if path not in CORE_STRUCTURAL_PATHS and (not control.options or not control.observable):
+            continue
+        if path in CORE_STRUCTURAL_PATHS or all(validator._evaluate(condition, selections) for condition in control.visibility_chain):
+            active.add(path)
+    return sorted(active)
+
+
+def _confirmation_issues(
+    validator: AtomicSchemaValidator, canonical: dict[str, Any], metadata: dict[str, Any], selections: dict[str, Any]
+) -> list[str]:
+    confirmation = metadata.get("structural_confirmation")
+    if not isinstance(confirmation, dict):
+        return ["必须先完成 metadata.structural_confirmation；请先生成并获得用户明确确认的结构性确认单"]
+
+    issues: list[str] = []
+    if confirmation.get("status") != CONFIRMATION_STATUS:
+        issues.append(f"metadata.structural_confirmation.status 必须是 {CONFIRMATION_STATUS}")
+    if confirmation.get("method") != CONFIRMATION_METHOD:
+        issues.append(f"metadata.structural_confirmation.method 必须是 {CONFIRMATION_METHOD}")
+    confirmed = confirmation.get("confirmed_selections")
+    if not isinstance(confirmed, dict):
+        return issues + ["metadata.structural_confirmation.confirmed_selections 必须是映射"]
+
+    for path in active_structural_paths(validator, canonical, selections):
+        if path not in selections:
+            issues.append(f"结构性选择尚未给出：{path}；必须先向用户询问并确认")
+            continue
+        if confirmed.get(path) != selections[path]:
+            issues.append(f"结构性选择尚未获得用户明确确认或确认值不一致：{path}")
+    return issues
 
 
 def validate(canonical: dict[str, Any], intake: dict[str, Any]) -> list[str]:
@@ -49,8 +131,9 @@ def validate(canonical: dict[str, Any], intake: dict[str, Any]) -> list[str]:
         return ["intake.selections 必须是映射"]
     if not isinstance(metadata, dict):
         issues.append("intake.metadata 必须是映射")
-    elif metadata.get("operating_mode", "test_public") not in OPERATING_MODES:
-        issues.append("metadata.operating_mode 必须是 actual_submission 或 test_public")
+    else:
+        if metadata.get("operating_mode") not in OPERATING_MODES:
+            issues.append("metadata.operating_mode 必须明确为 actual_submission 或 test_public")
     if not isinstance(values, dict):
         issues.append("intake.values 必须是映射")
     if not isinstance(repeat_groups, dict):
@@ -64,6 +147,14 @@ def validate(canonical: dict[str, Any], intake: dict[str, Any]) -> list[str]:
         issues.append("必须选择公开策略 private 或 public-on-chictr")
     if selections.get("basic-information.sync-platform") == DISABLED_PLATFORM:
         issues.append("传统医学注册平台暂未开通，不能生成 V1 填写稿")
+
+    if (
+        isinstance(metadata, dict)
+        and selections.get("research-category.route-leaf") == SUPPORTED_ROUTE
+        and selections.get("research-category.diagnostic-trial") in {"yes", "no"}
+        and selections.get("basic-information.sync-platform") in {"private", "public-on-chictr"}
+    ):
+        issues.extend(_confirmation_issues(validator, canonical, metadata, selections))
 
     for path, selected in selections.items():
         control = validator.controls.get(path)

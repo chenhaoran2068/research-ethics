@@ -1,8 +1,57 @@
-# 脱敏回归样例：只包含已确认路线和少量虚构文本。
+# 脱敏回归样例：结构性选择均为合成且已显式确认的测试值。
+metadata:
+  operating_mode: test_public
+  structural_confirmation:
+    status: explicitly_confirmed
+    method: user_explicit
+    confirmed_selections:
+      research-category.route-leaf: investigator-observational
+      research-category.diagnostic-trial: 'no'
+      basic-information.sync-platform: private
+      basic-information.funding-international-cooperation: 否
+      basic-information.material-donation-flag: 否
+      data-sharing-and-public-disclosure.data-share-statement: do-not-share
+      data-sharing-and-public-disclosure.result-release-method: academic-publication
+      implementation-information.multicenter-flag: 否
+      other-information.platform-name: chictr
+      research-content.extra-inspection-measures: 否
+      research-content.research-phase: '1005.14'
+      research-design.biological-sample-collection: 'no'
+      research-design.exempt-consent: 'no'
+      research-design.indicator-type-level-2: therapeutic
+      research-design.intervention-type: surgery-operation
+      research-design.maximum-age-secondary-unit: unlimited
+      research-design.maximum-age-unit: unlimited
+      research-design.minimum-age-secondary-unit: unlimited
+      research-design.minimum-age-unit: unlimited
+      research-design.random-group: 'no'
+      research-design.study-design: cross-sectional
+      research-design.vulnerable-group: 'no'
+      research-design.transplant: 'no'
 selections:
   research-category.route-leaf: investigator-observational
   research-category.diagnostic-trial: 'no'
   basic-information.sync-platform: private
+  basic-information.funding-international-cooperation: 否
+  basic-information.material-donation-flag: 否
+  data-sharing-and-public-disclosure.data-share-statement: do-not-share
+  data-sharing-and-public-disclosure.result-release-method: academic-publication
+  implementation-information.multicenter-flag: 否
+  other-information.platform-name: chictr
+  research-content.extra-inspection-measures: 否
+  research-content.research-phase: '1005.14'
+  research-design.biological-sample-collection: 'no'
+  research-design.exempt-consent: 'no'
+  research-design.indicator-type-level-2: therapeutic
+  research-design.intervention-type: surgery-operation
+  research-design.maximum-age-secondary-unit: unlimited
+  research-design.maximum-age-unit: unlimited
+  research-design.minimum-age-secondary-unit: unlimited
+  research-design.minimum-age-unit: unlimited
+  research-design.random-group: 'no'
+  research-design.study-design: cross-sectional
+  research-design.vulnerable-group: 'no'
+  research-design.transplant: 'no'
 values:
   basic-information.research-title:
     value: 虚构观察性研究题目

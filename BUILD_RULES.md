@@ -14,6 +14,7 @@
 2. V1 仅支持研究者发起的观察性研究。干预性或产品注册请求必须明确标为 `deferred_to_v2`，不得套用观察性结论。
 3. `fully_live_verified`、`sample_verified`、`assumption_expanded`、`inferred_from_initial_tree`、`out_of_scope_or_blocked` 与 `deferred_to_v2` 必须如实保留，不能互相夸大。
 4. 填写稿只提供可复制文本、选择说明、实时字典提示和附件准备清单；不得替用户保存、提交、完成或上传。
+5. 生成填写稿前必须先通过结构性确认门槛：所有当前可见且会改变页面、字段、必填性、选项、重复组或附件的选择，均须由用户明确确认并写入 intake。研究计划书只能提供候选建议，不能代替用户确认。
 
 ## 隐私与安全
 

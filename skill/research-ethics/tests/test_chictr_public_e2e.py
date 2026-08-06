@@ -18,15 +18,16 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from render_copyable_checklist import read_yaml, render  # noqa: E402
 from render_copyable_docx import build  # noqa: E402
 from validate_dfs_ledger import validate_ledger  # noqa: E402
+from confirmation_support import confirmed_intake  # noqa: E402
 
 
 class ChictrPublicEndToEndTest(unittest.TestCase):
     def test_private_route_has_no_public_english_pairs_and_keeps_operator_guidance(self) -> None:
         canonical_path = ROOT / "references" / "registration-tree.yaml"
         ledger_path = ROOT / "references" / "dfs-exploration-ledger.yaml"
-        intake_path = ROOT / "tests" / "fixtures" / "observational-diagnostic-no.yaml"
         validated = validate_ledger(canonical_path, ledger_path)
-        markdown = render(read_yaml(canonical_path), read_yaml(intake_path), validated["ledger"])
+        canonical = read_yaml(canonical_path)
+        markdown = render(canonical, confirmed_intake(canonical), validated["ledger"])
 
         self.assertIn("医学研究题目", markdown)
         self.assertNotIn("Scientific title", markdown)
@@ -37,9 +38,9 @@ class ChictrPublicEndToEndTest(unittest.TestCase):
     def test_public_route_has_english_pairs_and_operator_guidance(self) -> None:
         canonical_path = ROOT / "references" / "registration-tree.yaml"
         ledger_path = ROOT / "references" / "dfs-exploration-ledger.yaml"
-        intake_path = ROOT / "tests" / "fixtures" / "observational-diagnostic-yes-chictr.yaml"
         validated = validate_ledger(canonical_path, ledger_path)
-        markdown = render(read_yaml(canonical_path), read_yaml(intake_path), validated["ledger"])
+        canonical = read_yaml(canonical_path)
+        markdown = render(canonical, confirmed_intake(canonical, diagnostic="yes", platform="public-on-chictr"), validated["ledger"])
 
         self.assertIn("Scientific title", markdown)
         self.assertIn("Public title", markdown)

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Render a de-identified, platform-ordered V1 copy/paste checklist.
+"""Render a platform-ordered V1 copy/paste checklist after explicit confirmation.
 
 The input contains only route selections and already-reviewed values.  This
 tool does not extract a protocol, decide a branch, or infer any study fact.
-It is intentionally a renderer: the calling agent remains responsible for
-asking the user about every missing structural decision.
+It is intentionally a renderer: validation blocks output until the user has
+explicitly confirmed every currently visible structural decision.
 """
 
 from __future__ import annotations
@@ -423,10 +423,13 @@ def repeat_group_lines(
 
 
 def render(canonical: dict[str, Any], intake: dict[str, Any], ledger: dict[str, Any]) -> str:
+    intake_issues = validate_intake(canonical, intake)
+    if intake_issues:
+        raise ValueError("填写稿生成被结构性确认门槛拦截：" + "; ".join(intake_issues))
     selections = intake.get("selections", {})
     values = intake.get("values", {})
     repeat_groups = intake.get("repeat_groups", {})
-    meta = intake.get("meta", {})
+    meta = intake.get("metadata", {})
     if not isinstance(selections, dict) or not isinstance(values, dict) or not isinstance(repeat_groups, dict):
         raise ValueError("intake selections, values and repeat_groups must all be mappings")
     if not isinstance(meta, dict):
