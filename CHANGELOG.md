@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0 - 2026-08-06
+
+- Adds a formal V1–V5 route roadmap and per-release acceptance boundary.
+- Adds a source registry that separates China-mainland binding rules, platform observations, international guidance, and hospital-specific inputs.
+- Adds a machine-readable protocol coverage matrix and deterministic Python generator for the supported China-mainland observational route.
+- Makes clear that Word is an output format, not the template truth source; target-hospital requirements remain an explicit private overlay.
+
 ## 1.0.3 - 2026-08-06
 
 - Replaces the single structural-only gate with an enforced two-stage confirmation flow.
