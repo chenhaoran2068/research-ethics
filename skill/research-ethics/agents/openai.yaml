@@ -1,4 +1,4 @@
 interface:
   display_name: "医学研究伦理申报填写稿"
-  short_description: "根据研究计划书先确认分支选择，再生成可复制伦理备案填写稿"
-  default_prompt: "Use $research-ethics in actual_submission mode to 先根据我的真实研究计划书生成结构性确认单；在我逐项明确确认前，不要生成观察性研究的逐项复制填写稿。"
+  short_description: "根据计划书先确认路线与缺口，再生成可复制伦理备案填写稿"
+  default_prompt: "Use $research-ethics in actual_submission mode to 先确认研究计划书提取的内容与结构路线，再按平台顺序分批补全缺口，最后生成观察性研究填写稿。"

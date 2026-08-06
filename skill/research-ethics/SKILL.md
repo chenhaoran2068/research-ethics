@@ -25,10 +25,10 @@ description: 为中国医学研究伦理申报和国家医学研究登记准备�
 ## 工作流
 
 1. 确认运行模式。从用户提供的研究计划书、伦理材料和资助材料中提取**候选**值，并在对话中注明依据位置；不要把候选值写成用户已决定的事实。`actual_submission` 可在用户授权的私有工作区使用真实材料；`test_public` 才先创建脱敏副本。
-2. **先过结构性确认门槛，禁止跳过。** 用候选 `selections` 运行 `scripts/render_structural_confirmation.py`，向用户一次展示当前可见的所有结构性选择：平台字段、候选值、可选项与会改变的字段／页面。必须明确询问用户确认或修改，不能因研究计划书看似已有答案就自行选定。
-3. 收到用户明确确认后，按 [references/intake-schema.md](references/intake-schema.md) 建立 intake：把确认过的值同时写入 `selections` 和 `metadata.structural_confirmation.confirmed_selections`，并写入 `status: explicitly_confirmed`、`method: user_explicit`。若选择后新出现结构性控件，重新生成确认单并再次询问，直至确认单无未确认项。实际申报 intake 只能放在用户授权的私有工作区，不能放入 skill、Git 或测试目录。
-4. 只有 `scripts/validate_v1_intake.py` 通过后，才运行 `scripts/render_copyable_checklist.py` 生成按平台页面顺序的 Markdown 填写稿；校验器和渲染器都会拒绝未完成结构性确认的 intake。非结构性的文本、日期、数值、实时字典和附件状态仍可显示为红色“待用户确认”。
-5. 把每个红色“待用户确认”明确分为：真实事实待确认、平台规则待核验、计划书可提取但映射待补全、平台实时字典待选择。把“账户自动带入”“实时字典中选择”“需上传附件”分别标明，不伪造内容。
+2. **先过第一阶段确认门槛，禁止跳过。** 先从计划书提取候选 `selections` 和 `values`，然后运行 `scripts/render_confirmation_batches.py --stage framework`。先由用户确认两类内容：全部当前可见的结构性选择，以及全部“已从研究计划书提取”的拟填写值。计划书只能提供建议，不能代替用户确认；用户确认或修正后，分别写入 `metadata.structural_confirmation` 和 `metadata.proposal_confirmation`。
+3. 若选择后新出现结构性控件，重新生成第一阶段确认单并再次询问，直至结构性选择稳定。然后运行 `scripts/render_confirmation_batches.py --stage gaps`，按平台页面顺序一批一批向用户列出**全部**剩余必填项、可选项和可重复组。用户必须给出内容，或明确选为不适用、账户自动带入、平台实时字典、附件已准备或暂缓；把结果写入 `metadata.completion_confirmation`。实际申报 intake 只能放在用户授权的私有工作区，不能放入 skill、Git 或测试目录。
+4. 只有 `scripts/validate_v1_intake.py` 通过两阶段确认校验后，才运行 `scripts/render_copyable_checklist.py` 生成按平台页面顺序的 Markdown 填写稿；校验器和渲染器都会拒绝跳过任一确认阶段的 intake。`user_deferred` 才保留红色“待用户确认”；其他已经明确处理的缺口不得伪装成普通缺失。
+5. 把仍保留的红色“待用户确认”明确分为：用户明确暂缓的真实事实、平台规则待核验、计划书映射待补全、平台实时字典待选择。把“账户自动带入”“实时字典中选择”“需上传附件”分别标明，不伪造内容。
 6. 使用工作区依赖中的 Python 运行 `scripts/render_copyable_docx.py`，由同一 Markdown 生成 Word 填写稿。所有 Word 填写稿必须使用同一视觉语义：建议填写／选择的实际值为蓝色；`待用户确认` 为红色；字段名、可选项、来源、操作和规则证据均为黑色。`actual_submission` 的 Word 只能输出到用户指定的私有目录；生成后按 documents 工作流渲染并检查页面；若渲染环境缺少 LibreOffice，则执行 DOCX 结构检查并明确说明未完成视觉检查。
 7. 运行现有 YAML、账本、产物校验器。若平台当前页面与规则不一致，以平台页面为准，记录为规则待修订，而不是默默修改研究内容。
 
@@ -46,7 +46,7 @@ description: 为中国医学研究伦理申报和国家医学研究登记准备�
 
 - 不执行保存、提交、完成、上传、删除或账号资料修改。
 - 不保留网页源码、截图、Cookie、密码、令牌、真实账号资料或用户未要求保存的研究材料。真实申报材料可仅在当前受控本地工作区和用户指定输出中使用，不复制到任何可公开或可复用资产。
-- 输出前核对：研究题目、单位、姓名、电话和邮箱仅来自用户明确提供或账户预填提示；没有依据时保持“待用户确认”。
+- 输出前核对：研究题目、单位、姓名、电话和邮箱仅来自用户明确提供或账户预填提示；没有依据时必须纳入第二阶段，只有用户明确暂缓时才保持“待用户确认”。
 - 本 skill 提供填表辅助，不代替伦理审查、法律意见或平台最终校验。
 
 ## 工具
@@ -54,7 +54,8 @@ description: 为中国医学研究伦理申报和国家医学研究登记准备�
 - [references/intake-schema.md](references/intake-schema.md)：输入结构、来源标记及可重复组格式。
 - [references/intake-template.yaml](references/intake-template.yaml)：仅含占位符的 intake 起点。
 - `scripts/render_copyable_checklist.py`：canonical YAML + intake → Markdown 填写稿。
-- `scripts/render_structural_confirmation.py`：canonical YAML + 候选 selections → 必须先由用户确认的结构性确认单。
+- `scripts/render_confirmation_batches.py`：第一阶段的“总体框架＋计划书已提取内容”确认单，以及第二阶段按平台顺序的缺失项批次确认单。
+- `scripts/render_structural_confirmation.py`：结构性确认单的兼容入口；新工作流优先使用两阶段确认工具。
 - `scripts/render_copyable_docx.py`：Markdown 填写稿 → Word 文档；使用 `compact_reference_guide` 的单色清单变体，并固定应用蓝色建议值、红色待确认值、黑色说明与可选项的语义样式。
 - `scripts/validate_v1_intake.py`：检查路线、选项路径及被阻止的分支。
 - `scripts/deidentify_protocol_docx.py`：研究方案 DOCX → 脱敏副本；还须清除修订痕迹和文档元数据，并进行残留模式检查。

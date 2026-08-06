@@ -5,6 +5,14 @@ metadata:
     status: pending  # pending | explicitly_confirmed
     method: "<only-after-user-explicit-confirmation>"
     confirmed_selections: {}
+  proposal_confirmation:
+    status: pending  # pending | explicitly_confirmed
+    method: "<only-after-user-explicit-confirmation>"
+    confirmed_values: {}
+  completion_confirmation:
+    status: pending  # pending | explicitly_confirmed
+    method: "<only-after-user-explicit-confirmation>"
+    resolutions: {}
 
 selections:
   research-category.route-leaf: investigator-observational

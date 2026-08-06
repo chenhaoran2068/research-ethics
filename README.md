@@ -41,11 +41,12 @@ The skill will:
 
 1. identify the V1 route and stop for V2 routes;
 2. extract only supported candidate values from the plan;
-3. first present a structural-confirmation sheet for every currently visible choice that changes fields, requiredness, pages, repeat groups, or attachments;
+3. first present a framework-confirmation sheet for every currently visible choice that changes fields, requiredness, pages, repeat groups, or attachments **and** every value extracted from the research plan;
 4. wait for the user's explicit confirmation, including any newly revealed structural choices;
-5. only then generate Markdown and Word filling drafts in platform order.
+5. then present all remaining required fields, optional fields, and repeat groups in platform order, one page batch at a time;
+6. only after both stages are explicitly completed generate Markdown and Word filling drafts in platform order.
 
-The research plan can supply a **recommendation** and source for a choice, but it never substitutes for this explicit confirmation. The renderer rejects an intake that does not carry matching user-confirmed structural selections.
+The research plan can supply a **recommendation** and source for a choice, but it never substitutes for explicit confirmation. The renderer rejects an intake until the framework stage and the page-ordered completion stage are both recorded. An item can remain red only when the user explicitly defers it; real-time platform dictionaries and attachment preparation are marked as such rather than silently treated as missing.
 
 ### Operating mode
 
@@ -79,6 +80,7 @@ py -3.13 scripts\validate_dfs_ledger.py
 py -3.13 scripts\validate_v1_artifacts.py
 py -3.13 scripts\check_v1_skill_readiness.py
 py -3.13 tests\test_structural_confirmation_gate.py
+py -3.13 tests\test_two_stage_confirmation.py
 py -3.13 tests\test_chictr_public_e2e.py
 ```
 

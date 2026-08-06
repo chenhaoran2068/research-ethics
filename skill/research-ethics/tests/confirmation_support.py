@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from validate_atomic_schema import AtomicSchemaValidator
+from confirmation_workflow import pending_completion_items
 from validate_v1_intake import active_structural_paths
 
 
@@ -61,6 +62,29 @@ def confirmed_intake(
                 "status": "explicitly_confirmed",
                 "method": "user_explicit",
                 "confirmed_selections": dict(selections),
+            },
+            # Regression tests use explicit synthetic deferrals for ordinary
+            # content.  Production use must collect real values or a user
+            # chosen resolution during the second confirmation stage.
+            "proposal_confirmation": {
+                "status": "explicitly_confirmed",
+                "method": "user_explicit",
+                "confirmed_values": {},
+            },
+            "completion_confirmation": {
+                "status": "explicitly_confirmed",
+                "method": "user_explicit",
+                "resolutions": {
+                    item["key"]: "user_deferred"
+                    for item in pending_completion_items(
+                        canonical,
+                        {
+                            "selections": selections,
+                            "values": {},
+                            "repeat_groups": {},
+                        },
+                    )
+                },
             },
         },
         "selections": selections,

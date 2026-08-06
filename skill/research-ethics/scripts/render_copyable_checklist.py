@@ -303,6 +303,24 @@ def join_instructions(instructions: list[str]) -> str:
     return ("；".join(cleaned) + "。") if cleaned else "以平台当前说明为准。"
 
 
+def completion_resolution(resolutions: dict[str, Any], key: str) -> str | None:
+    raw = resolutions.get(key)
+    if isinstance(raw, dict):
+        raw = raw.get("state")
+    return str(raw) if raw is not None else None
+
+
+def resolved_placeholder(state: str | None) -> tuple[str, str, str] | None:
+    """Render an explicitly handled non-value without turning it into red pending text."""
+    mapping = {
+        "not_applicable": ("不适用／不填写", "用户明确确认", "此字段已按当前路线明确处理为不适用。"),
+        "account_prefill": ("核对账户自动带入", "用户明确确认", "请以登录账户当前预填信息为准。"),
+        "platform_realtime": ("在平台当前实时字典中选择", "用户明确确认", "具体叶值不在文档中固化；请以平台当日下拉库为准。"),
+        "attachment_prepared": ("附件已准备，待用户自行上传", "用户明确确认", "本填写稿不会上传附件。"),
+    }
+    return mapping.get(state)
+
+
 def field_lines(
     title: str,
     path: str,
@@ -311,6 +329,8 @@ def field_lines(
     raw_values: dict[str, Any],
     selection_values: dict[str, Any],
     evidence: dict[str, str],
+    completion_resolutions: dict[str, Any],
+    resolution_key: str | None = None,
     *,
     heading: str = "###",
 ) -> list[str]:
@@ -326,6 +346,7 @@ def field_lines(
             "",
         ]
     raw_value = mapping_value(raw_values, path, raw_control)
+    state = completion_resolution(completion_resolutions, resolution_key or path)
     if raw_value is None and path in selection_values:
         value, source, note = human_option(raw_control, selection_values[path]), "已确认的选择", ""
     elif raw_value is None and default_value(path, selection_values) is not None:
@@ -334,8 +355,13 @@ def field_lines(
     else:
         value, source, note = value_details(raw_value)
         if raw_value is None:
-            source, pending_note = pending_details(raw_control, item, verification_status)
-            note = (note + "；" if note else "") + pending_note
+            resolved = resolved_placeholder(state)
+            if resolved is not None:
+                value, source, resolved_note = resolved
+                note = (note + "；" if note else "") + resolved_note
+            else:
+                source, pending_note = pending_details(raw_control, item, verification_status)
+                note = (note + "；" if note else "") + pending_note
     if path == "research-category.implementing-organization":
         value, source = "核对账户自动带入", "账户预填"
     choice_widget = any(token in item["widget"] for token in ("select", "radio", "checkbox"))
@@ -371,9 +397,17 @@ def repeat_group_lines(
     global_selections: dict[str, Any],
     intake_repeat_groups: dict[str, Any],
     evidence: dict[str, str],
+    completion_resolutions: dict[str, Any],
 ) -> list[str]:
     entries = intake_repeat_groups.get(group_path)
     if not isinstance(entries, list) or not entries:
+        state = completion_resolution(completion_resolutions, group_path)
+        if state == "not_applicable":
+            return [
+                f"### {page_number}.{field_number}｜{title}｜可重复填写组",
+                "- 平台操作：用户已确认本路线不新增该组项目。",
+                "",
+            ]
         entries = [{}]
         count_note = "未提供实例清单；先展示第 1 项模板，填写时请按实际数量点击“增加一项”。"
     else:
@@ -416,6 +450,8 @@ def repeat_group_lines(
                     entry_values,
                     local_selections,
                     evidence,
+                    completion_resolutions,
+                    resolution_key=f"{group_path}[{position}].{child_path}",
                     heading="#####",
                 )
             )
@@ -434,6 +470,10 @@ def render(canonical: dict[str, Any], intake: dict[str, Any], ledger: dict[str, 
         raise ValueError("intake selections, values and repeat_groups must all be mappings")
     if not isinstance(meta, dict):
         raise ValueError("intake.meta 必须是映射（如提供）")
+    completion = meta.get("completion_confirmation", {})
+    completion_resolutions = completion.get("resolutions", {}) if isinstance(completion, dict) else {}
+    if not isinstance(completion_resolutions, dict):
+        completion_resolutions = {}
     route = selections.get("research-category.route-leaf")
     if route not in V1_ROUTES:
         raise ValueError("observational V1 supports only investigator-observational; interventional is deferred_to_v2")
@@ -497,6 +537,7 @@ def render(canonical: dict[str, Any], intake: dict[str, Any], ledger: dict[str, 
                         selections,
                         repeat_groups,
                         evidence,
+                        completion_resolutions,
                     )
                 )
                 continue
@@ -515,6 +556,7 @@ def render(canonical: dict[str, Any], intake: dict[str, Any], ledger: dict[str, 
                     values,
                     selections,
                     evidence,
+                    completion_resolutions,
                 )
             )
     lines.extend(["## 附件准备清单（不上传）", ""])
@@ -522,8 +564,15 @@ def render(canonical: dict[str, Any], intake: dict[str, Any], ledger: dict[str, 
         for path, item, raw_control in attachment_rows:
             required = "必填" if item["required"] else "非必填"
             instructions = join_instructions(attachment_instructions(raw_control))
+            state = completion_resolution(completion_resolutions, path)
+            if state == "attachment_prepared":
+                preparation = "用户确认：附件已准备，待用户自行上传"
+            elif state == "user_deferred":
+                preparation = "准备状态：待用户确认"
+            else:
+                preparation = "准备状态：请按字段项核对"
             lines.append(
-                f"- {item['label']}（{required}，`{path}`）：准备状态：待用户确认；{instructions}"
+                f"- {item['label']}（{required}，`{path}`）：{preparation}；{instructions}"
             )
     else:
         lines.append("- 当前路线未显示可上传附件；请仍以平台当前页面为准。")
