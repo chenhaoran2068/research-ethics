@@ -1,11 +1,23 @@
 schema_version: "0.1"
-title: 中国大陆医学研究计划书覆盖矩阵
+title: 中国大陆通用医学研究计划书覆盖矩阵
 status: research_informed_draft
 reviewed_on: "2026-08-06"
 source_registry: protocol-template-sources.yaml
 scope:
   implemented_profile: china-mainland
   implemented_route: investigator-observational
+  language_policy:
+    canonical_language: zh-CN
+    supported_output_languages: [zh-CN, en]
+    bilingual_generation: same_facts_two_renderings
+    english_requires_user_confirmation: true
+    chictr_public_requires_platform_english_pairing: true
+    private_route_english_is_optional: true
+    note: "英文计划书是同源配对输出；只有平台公开路线中的实际英文控件才构成平台填写要求。"
+  hospital_policy:
+    generic_generation_requires_hospital_template: false
+    local_overlay: optional_private_extension
+    note: "中国通用骨架不以具体医院模板为前置条件；正式提交时由使用者自行按本院要求调整。"
   deferred_routes:
     - investigator-interventional
     - product-drug
@@ -21,7 +33,6 @@ profiles:
       - cn-investigator-clinical-2024
       - cn-personal-information-protection-law
       - cn-human-genetic-resources
-      - local-hospital-overlay
     generator_routes:
       investigator-observational:
         status: research_informed_draft
@@ -46,7 +57,7 @@ modules:
     order: 10
     title: 研究基本信息与治理
     applies_when: always
-    sources: [cn-investigator-clinical-2024, platform-observational-v1, local-hospital-overlay]
+    sources: [cn-investigator-clinical-2024, platform-observational-v1]
     chapters:
       - id: P-01
         title: 研究题目、版本与修订记录
@@ -166,7 +177,7 @@ modules:
     order: 60
     title: 伦理保护、运行与附件
     applies_when: always
-    sources: [cn-ethics-2023, cn-investigator-clinical-2024, cn-personal-information-protection-law, declaration-of-helsinki-2024, platform-observational-v1, local-hospital-overlay]
+    sources: [cn-ethics-2023, cn-investigator-clinical-2024, cn-personal-information-protection-law, declaration-of-helsinki-2024, platform-observational-v1]
     chapters:
       - id: P-19
         title: 风险—获益评估与风险最小化
@@ -234,7 +245,7 @@ modules:
     order: 90
     title: 多中心条件模块
     applies_when: multicenter
-    sources: [cn-ethics-2023, platform-observational-v1, local-hospital-overlay]
+    sources: [cn-ethics-2023, platform-observational-v1]
     chapters:
       - id: C-01
         title: 多中心架构、角色与协调

@@ -1,110 +1,94 @@
 # research-ethics
 
-`research-ethics` is a Codex skill for preparing a code-generated Chinese medical research-plan skeleton, checking its coverage, and turning a confirmed plan into a reviewable, platform-ordered registration filling draft.
+`research-ethics` 是一个 Codex skill，用于准备中国医学研究伦理材料、代码化研究计划书骨架，以及按国家医学研究登记备案信息系统页面顺序编排的可复制填写稿。
 
-It creates a **copyable preparation document**, not a submission. It never logs in, saves, submits, completes a registration, or uploads attachments on behalf of a user.
+它生成的是准备材料，不会登录、保存、提交、完成登记或上传附件，也不替代伦理审查、法律意见或平台最终校验。
 
-## V1.0 scope
+## V1.0 支持范围
 
-Supported:
+当前仅支持中国大陆：
 
-- Researcher-initiated clinical research → observational research.
-- Diagnostic trial: yes or no.
-- Two publication strategies: two platforms not public, or public on the Chinese Clinical Trial Registry (ChiCTR).
-- Chinese fields plus the applicable ChiCTR English companion fields.
-- Repeated groups, attachment preparation requirements, real-time dictionary guidance, and explicit evidence levels.
+- 研究者发起的临床研究 → 观察性研究；
+- 诊断试验：是／否；
+- 两个平台均不公开，或在中国临床试验注册中心（ChiCTR）公开；
+- 相应的中文字段、ChiCTR 英文配对字段、重复组、附件准备要求与实时字典提示。
 
-Deferred to V2:
+当前状态为 `READY_WITH_EXCLUSIONS`：规则基于现场抽样、已记录的平台结构与明确的局部性假设，不声称已穷尽所有平台组合。
 
-- Interventional research.
-- Product-registration routes: drugs, devices, IVDs, and special medical-purpose foods.
+以下路线延后至 V2，不能套用观察性研究规则：干预性研究、药品、医疗器械、体外诊断试剂和特殊医学用途配方食品。
 
-The current release is `READY_WITH_EXCLUSIONS`: it is based on documented sampling and locality assumptions, not a claim that every possible platform combination has been replayed live.
+## 计划书：覆盖矩阵、语义规则与同源双语事实
 
-## Code-generated protocol skeletons
+计划书不是由一份手工 Word 模板或逐句改写生成，而是由三层共同决定：
 
-V1 also provides a research-informed, deterministic protocol skeleton for the supported China-mainland observational route. The machine-readable coverage matrix—not a hand-maintained Word document—defines chapters, conditions, platform mappings, and evidence roles. It distinguishes:
+```text
+覆盖矩阵（章节、顺序、适用条件）
+  + 语义组合规则（段落／小节／清单／表格）
+  + 私有事实模型（已确认或待确认的 statement_id）
+  = 中文、英文或双语研究计划书
+```
 
-- binding China-mainland requirements;
-- observed platform fields;
-- international ethics and reporting guidance; and
-- the mandatory, separately supplied hospital overlay.
+- 叙述段按完整论点组织，通常包含 2–5 个相互关联的陈述；不得按句号、换行或来源摘录机械断段。
+- 定义、标准、流程和附件按适合的清单或步骤表达；只有三条及以上同构记录适合横向比较时使用表格。
+- “研究结果发布、数据共享与再利用边界”固定拆为三个独立小节，避免混杂。
+- 中文与英文从同一 `statement_id` 读取，不允许临时翻译、补写或用不同事实填充两种语言。
+- 缺失事实显示为待用户确认，生成器不根据常识、标题或文献猜测补全。
 
-It can generate a Markdown skeleton using, for example:
+示例：
 
 ```powershell
 py -3.13 scripts\render_protocol_template.py --diagnostic-trial no --output protocol-skeleton.md
+py -3.13 scripts\render_semantic_protocol.py --facts private-facts.yaml --language bilingual --output protocol-bilingual.md
+py -3.13 scripts\render_protocol_docx.py --markdown protocol-bilingual.md --output protocol-bilingual.docx
 ```
 
-The skeleton is a completion framework, not an ethics-approved protocol and not a substitute for the target hospital's format. See [`skill/research-ethics/references/version-roadmap.md`](skill/research-ethics/references/version-roadmap.md) for the V1–V5 route plan and [`protocol-template-architecture.md`](skill/research-ethics/references/protocol-template-architecture.md) for the architecture.
+默认输出带有 `presentation_status: content_structure_draft`：内容、章节、段落逻辑和待确认项已生成，但尚未声称完成机构品牌、视觉美编、分页控制或最终提交版式。视觉质量必须经过独立的 Word／PDF 审查与机构模板适配。
 
-## Install in Codex
+## 使用方式
 
-Copy the skill folder into your Codex skills directory:
+在 Codex 对话中，例如：
+
+> 使用 `$research-ethics` 读取我的研究计划书，先确认观察性研究的登记结构，再生成按平台顺序可复制填写的草稿。
+
+工作流：
+
+1. 判断是否属于 V1 支持路线；V2 路线会明确停止，不臆造规则。
+2. 从研究计划书提取候选值和来源。
+3. 先分批确认会改变页面结构的选择，以及从计划书提取出的拟填写内容。
+4. 再按平台页面顺序确认剩余必填项、可选项、重复组、实时字典和附件准备情况。
+5. 两个确认阶段完成后，生成 Markdown 和 Word 填写稿。
+
+Word 颜色语义：蓝色为建议填写／选择的实际值；红色为待用户确认；黑色为字段名、选项、来源、操作说明、附件规则和平台证据。
+
+## 安全与隐私
+
+- `actual_submission` 允许在用户授权的本地私有工作区使用真实事实，但不得复制到 Git、测试、示例、日志或已安装 skill。
+- `test_public` 的持久化输入和输出必须脱敏。
+- 不公开研究计划书、截图、网页源码、账号资料、凭据、真实填写稿或原始附件。
+- 公开版由 `scripts/prepare_public_release.py` 的白名单生成；不得整体复制构建目录。
+
+## 安装
+
+将仓库内的 `skill/research-ethics` 复制到：
 
 ```text
 <CODEX_HOME>/skills/research-ethics/
 ```
 
-The installable directory is [`skill/research-ethics`](skill/research-ethics). Do not install the repository root as a skill.
+不要将仓库根目录作为 skill 安装。
 
-## Use
+## 验证
 
-In a Codex conversation, ask for example:
-
-> Use `$research-ethics` to read my research plan and create a platform-ordered copy/paste draft for an observational study.
-
-The skill will:
-
-1. identify the V1 route and stop for V2 routes;
-2. extract only supported candidate values from the plan;
-3. first present a framework-confirmation sheet for every currently visible choice that changes fields, requiredness, pages, repeat groups, or attachments **and** every value extracted from the research plan;
-4. wait for the user's explicit confirmation, including any newly revealed structural choices;
-5. then present all remaining required fields, optional fields, and repeat groups in platform order, one page batch at a time;
-6. only after both stages are explicitly completed generate Markdown and Word filling drafts in platform order.
-
-The research plan can supply a **recommendation** and source for a choice, but it never substitutes for explicit confirmation. The renderer rejects an intake until the framework stage and the page-ordered completion stage are both recorded. An item can remain red only when the user explicitly defers it; real-time platform dictionaries and attachment preparation are marked as such rather than silently treated as missing.
-
-### Operating mode
-
-- **Actual submission**: say that you are preparing a real ethics application or registration. The skill may use the necessary real project facts in a user-authorized local private workspace and output; it does not automatically de-identify them. It must never copy those facts into Git, examples, tests, logs, or the installed skill.
-- **Test or public use**: say that the material is for a demo, regression test, public example, or sharing. The skill must de-identify any persistent input and output first.
-- **Unclear purpose**: the skill asks which mode applies before retaining material.
-
-Word output semantics:
-
-- blue: a proposed value or selection;
-- red: `待用户确认` (requires confirmation);
-- black: labels, choices, sources, instructions, attachment rules, and platform evidence.
-
-Each unresolved item is classified as one of: real-world fact, platform rule, mapping gap, or real-time platform dictionary.
-
-## Safety and privacy
-
-- Check all generated values against the current platform page before submission.
-- Do not treat the output as ethics approval, legal advice, or final platform guidance.
-- Do not commit research plans, screenshots, source HTML, account data, credentials, or real filling drafts to this repository.
-- Keep actual-submission and test/public workspaces separate.
-- Attachments are listed as preparation requirements only; the skill never uploads them.
-
-## Validation
-
-From `skill/research-ethics`, run:
+在 `skill/research-ethics` 目录运行：
 
 ```powershell
-py -3.13 scripts\validate_atomic_schema.py references\registration-tree.yaml
-py -3.13 scripts\validate_dfs_ledger.py
-py -3.13 scripts\validate_v1_artifacts.py
-py -3.13 scripts\check_v1_skill_readiness.py
-py -3.13 tests\test_structural_confirmation_gate.py
-py -3.13 tests\test_two_stage_confirmation.py
-py -3.13 tests\test_chictr_public_e2e.py
+py -3.13 -m unittest discover -s tests -p 'test_*.py' -q
 py -3.13 scripts\validate_protocol_template_assets.py
-py -3.13 tests\test_protocol_template_generator.py
+py -3.13 scripts\validate_semantic_protocol_assets.py
 ```
 
-See `references/v1-acceptance.md` and `references/chictr-public-route-acceptance.md` for the exact V1 evidence boundary.
+更多 V1 边界、平台规则与版本路线见 `references/`。
 
 ## License
 
-Released under the [MIT License](LICENSE).
+MIT License.

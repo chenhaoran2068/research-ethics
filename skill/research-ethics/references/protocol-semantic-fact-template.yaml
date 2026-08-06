@@ -1,0 +1,44 @@
+# 私有项目事实模型模板。不得将真实研究信息提交到公共仓库或公开产物。
+schema_version: "0.1"
+metadata:
+  route: investigator-observational
+  diagnostic_trial: "no"
+  conditions: []
+  fact_confirmation: pending
+  presentation_status: content_structure_draft
+
+# 每一条陈述在中英文中共用同一 id。confirmed 表示研究者已确认；
+# pending 表示生成器应保留待确认提示，而不是臆造内容。
+chapters:
+  P-04:
+    units:
+      - id: background-and-gap
+        statements:
+          - id: p04.clinical-problem
+            status: pending
+            prompt_zh: "待确认：目标疾病或临床问题的负担、现有实践与研究必要性。"
+            prompt_en: "To confirm: the target clinical problem, current practice, and rationale for the study."
+          - id: p04.evidence-and-gap
+            status: pending
+            prompt_zh: "待确认：已有证据、关键缺口及本研究拟解决的问题。"
+            prompt_en: "To confirm: existing evidence, the key gap, and the question this study will address."
+  P-18:
+    units:
+      - id: results-publication
+        statements:
+          - id: p18.results-publication
+            status: pending
+            prompt_zh: "待确认：结果发布的范围、时点、渠道及避免选择性报告的安排。"
+            prompt_en: "To confirm: result scope, timing, channels, and safeguards against selective reporting."
+      - id: data-sharing
+        statements:
+          - id: p18.data-sharing
+            status: pending
+            prompt_zh: "待确认：数据是否共享、共享对象、访问条件及去标识化措施。"
+            prompt_en: "To confirm: whether data will be shared, recipients, access conditions, and de-identification safeguards."
+      - id: data-reuse
+        statements:
+          - id: p18.data-reuse
+            status: pending
+            prompt_zh: "待确认：数据再利用目的、审批边界、保存期限与撤回或销毁安排。"
+            prompt_en: "To confirm: reuse purposes, approval boundaries, retention, and withdrawal or destruction arrangements."
