@@ -2,7 +2,7 @@
 
 ## Governed Study Bridge
 
-V1.1.0 can be used after a user explicitly selects the compatible
+V1.1.1 can be used after a user explicitly selects the compatible
 `governed-research-workflow` ethics-preparation route for a China Mainland,
 researcher-initiated observational Study. It adds no automatic discovery,
 submission, upload, approval, or project-state transition.
