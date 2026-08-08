@@ -5,6 +5,23 @@ description: 为中国医学研究伦理申报和国家医学研究登记准备�
 
 # research-ethics
 
+## Governed Study Bridge
+
+Use `governed_study` only after the user explicitly selects a compatible
+`governed-research-workflow` ethics-preparation route. Read
+`references/governed-study-bridge.md` before using this context.
+
+The user must name one exact Study root, select `actual_submission` or
+`test_public`, state the preparation task, and name the permitted protocol and
+compliance inputs. Do not discover projects, scan directories, follow record
+references, infer governance facts, or invoke this context automatically.
+
+Derived preparation drafts may be written only to the user-approved destination
+under `03_protocol/derived/ethics_preparation/<package_id>/`. They must not
+replace the current protocol, establish an ethics/access/registration fact,
+advance a Study gate, or substitute for material in
+`02_registry/compliance/01_ethics_and_consent/`.
+
 生成可复核的“中国通用、代码化方案骨架”和“平台填写准备稿”，不替用户登录、保存、提交或上传。
 
 ## 当前支持范围

@@ -1,5 +1,33 @@
 # research-ethics
 
+## Governed Study Bridge
+
+V1.1.0 can be used after a user explicitly selects the compatible
+`governed-research-workflow` ethics-preparation route for a China Mainland,
+researcher-initiated observational Study. It adds no automatic discovery,
+submission, upload, approval, or project-state transition.
+
+For this optional context, use the `governed_study` instructions and
+`MODULE_MANIFEST.yaml` in the installable Skill. The current editable protocol
+remains in `03_protocol/`; derived preparation drafts are separate from actual
+ethics and registration evidence in `02_registry/compliance/`. The user must
+still confirm current official, institutional, and project-specific conditions
+before an actual submission task.
+
+### Maintenance And Expansion
+
+Before every `actual_submission`, the accountable human must recheck current
+official, institutional, jurisdictional, and project requirements. Review the
+Skill's public-source references at least every 90 days and immediately after
+an official/platform or institutional-template change, a discovered error or
+near miss, a System authority/path change, or a request for a new study type.
+
+A V1 field correction that does not change this bridge's scope or authority may
+be handled as a Skill patch. A new jurisdiction, prospective or
+researcher-assigned study, trial/intervention route, product/device/IVD route,
+credential workflow, submission service, or System authority change requires a
+separate Charter and, where relevant, coordinated System and Skill review.
+
 `research-ethics` 是一个 Codex skill，用于准备中国医学研究伦理材料、代码化研究计划书骨架，以及按国家医学研究登记备案信息系统页面顺序编排的可复制填写稿。
 
 它生成的是准备材料，不会登录、保存、提交、完成登记或上传附件，也不替代伦理审查、法律意见或平台最终校验。

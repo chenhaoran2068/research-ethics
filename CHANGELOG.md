@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.0 Bridge Addendum - 2026-08-08
+
+- Adds the explicit `governed_study` bridge context, public module manifest,
+  and Research System record-boundary guidance.
+- The bridge remains preparation only: it does not discover a Study, submit,
+  upload, approve, register, or change any project state.
+- Documents the 90-day public-source review cadence, immediate update triggers,
+  and the Charter threshold for future scope or authority changes.
+
 ## 1.1.0 - 2026-08-06
 
 - Adds a formal V1–V5 route roadmap and per-release acceptance boundary.
