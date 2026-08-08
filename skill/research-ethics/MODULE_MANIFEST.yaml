@@ -1,0 +1,59 @@
+module_manifest_version: 1.0.0
+module_id: research-ethics
+module_version: 1.1.0
+bridge_interface_version: 1.0.0
+module_kind: ethics_and_registration_material_preparation
+governed_system_compatibility:
+  system_id: governed-research-workflow
+  required_capability_id: GRW-CAP-200-01
+  accepted_bridge_interface_versions:
+    - 1.0.0
+supported_scope:
+  jurisdictions:
+    - china-mainland
+  research_routes:
+    - researcher-initiated-observational
+    - observational-diagnostic-conditional
+  material_modes:
+    - actual_submission
+    - test_public
+  context_modes:
+    - standalone
+    - governed_study
+governed_study_requirements:
+  explicit_user_request: required
+  exact_study_root: required
+  explicit_input_allowlist: required
+  user_selected_material_mode: required
+  source_discovery: forbidden
+  automatic_invocation: forbidden
+record_boundaries:
+  current_protocol_authority: 03_protocol/
+  derived_preparation_drafts: 03_protocol/derived/ethics_preparation/<package_id>/
+  actual_compliance_evidence: 02_registry/compliance/01_ethics_and_consent/
+  human_decision_references: 00_state/lifecycle/
+  execution_contract: 07_analysis/00_contract/
+  no_authority_claim_from_draft: true
+explicit_exclusions:
+  - prospective-researcher-assigned-study
+  - randomized-trial
+  - interventional-study
+  - product-registration
+  - device-route
+  - ivd-route
+  - non-china-mainland-route
+  - automatic-submission-or-upload
+  - credential-handling
+maintenance:
+  currentness_required_before_actual_submission: true
+  routine_public_source_review_interval_days: 90
+  immediate_review_triggers:
+    - official-notice-or-platform-field-change
+    - institutional-template-change
+    - discovered-error-or-near-miss
+    - bridge-contract-or-system-authority-change
+    - request-for-new-research-type
+authority_boundary: >-
+  This manifest is source-free compatibility metadata. It does not establish
+  study eligibility, ethics approval, registration, access, institutional
+  compliance, a project decision, or permission to process real material.
