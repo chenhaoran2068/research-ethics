@@ -19,7 +19,7 @@ class GovernedStudyBridgeTests(unittest.TestCase):
 
     def test_manifest_declares_only_the_supported_bridge_scope(self) -> None:
         self.assertEqual("research-ethics", self.manifest["module_id"])
-        self.assertEqual("1.1.0", self.manifest["module_version"])
+        self.assertEqual("1.1.1", self.manifest["module_version"])
         self.assertEqual("1.0.0", self.manifest["bridge_interface_version"])
         self.assertEqual(
             "GRW-CAP-200-01",
@@ -68,11 +68,14 @@ class GovernedStudyBridgeTests(unittest.TestCase):
         bridge = (ROOT / "references" / "governed-study-bridge.md").read_text(
             encoding="utf-8"
         )
-        readme = (ROOT.parents[1] / "README.md").read_text(encoding="utf-8")
         self.assertIn("every 90 days", bridge)
         self.assertIn("separate Charter", bridge)
-        self.assertIn("at least every 90 days", readme)
-        self.assertIn("coordinated System and Skill review", readme)
+        maintenance = self.manifest["maintenance"]
+        self.assertEqual(90, maintenance["routine_public_source_review_interval_days"])
+        self.assertIn(
+            "bridge-contract-or-system-authority-change",
+            maintenance["immediate_review_triggers"],
+        )
 
 
 if __name__ == "__main__":

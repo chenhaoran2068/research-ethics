@@ -1,6 +1,6 @@
 module_manifest_version: 1.0.0
 module_id: research-ethics
-module_version: 1.1.0
+module_version: 1.1.1
 bridge_interface_version: 1.0.0
 governed_system_compatibility:
   system_id: governed-research-workflow

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.1 - 2026-08-08
+
+- Fix the governed-Study bridge maintenance test so it validates installable
+  module metadata instead of assuming a repository-root README is present.
+- No ethics-preparation behavior, scope, bridge authority, or external route
+  changed.
+
 ## 1.1.0 Bridge Addendum - 2026-08-08
 
 - Adds the explicit `governed_study` bridge context, public module manifest,
